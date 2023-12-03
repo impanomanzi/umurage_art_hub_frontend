@@ -1,0 +1,61 @@
+.switcher-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding-top: 7rem;
+}
+.switcher-container h3 {
+  font-weight: 650;
+}
+.exhibition-container {
+  display: flex;
+}
+#switcher-header {
+  font-size: 2rem;
+  color: black;
+  font-weight: 700;
+}
+.switcher-button-container button {
+  font-size: 1.2rem;
+  font-weight: 650;
+}
+
+.on-state {
+  background-color: #334455;
+  color: white;
+  border-width: 5px;
+  box-shadow: 2px 2px 5px rgb(60, 54, 54) rgb(60, 54, 54),
+    -2px -2px 5px rgb(60, 54, 54);
+}
+
+.switch-btn {
+  margin: 0;
+  box-shadow: 2px 2px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54);
+}
+.off-btn {
+  border-left: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.on-btn {
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.on-btn:hover {
+  background-color: #334455;
+  color: white;
+}
+
+.off-btn:hover {
+  background-color: #334455;
+  color: white;
+}
+
+@media screen and (max-device-width: 576px) {
+  .switcher-container {
+    padding-top: 2rem;
+  }
+}

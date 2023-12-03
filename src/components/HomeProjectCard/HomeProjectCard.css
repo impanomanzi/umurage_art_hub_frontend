@@ -1,0 +1,24 @@
+.home-project-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  box-shadow: 2px 2px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54);
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+.home-project-card-nav {
+  display: flex;
+  margin-top: 1rem;
+}
+
+.home-project-card-nav button {
+  border-color: #6d3a13;
+  margin-right: 0.5rem;
+}
+.home-project-card-nav button:hover {
+  background-color: #334455;
+}
+.home-project-card-image-container img {
+  height: 100%;
+  width: 100%;
+}

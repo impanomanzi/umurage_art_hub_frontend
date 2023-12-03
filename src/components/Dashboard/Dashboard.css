@@ -1,0 +1,40 @@
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.dashboard-exhibition-card,
+.dashboard-gallery-card,
+.dashboard-painter-card,
+.dashboard-analytics-card {
+  content: "";
+  flex: 1;
+  height: 200px;
+  margin: 2rem;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1em;
+  font-size: 1.5rem;
+  box-shadow: 2px 2px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54);
+}
+.dashboard-exhibition-card {
+  background-color: rgb(166, 233, 166);
+  color: black;
+}
+
+.dashboard-gallery-card {
+  background-color: rgb(186, 23, 23);
+  color: black;
+}
+
+.dashboard-painter-card {
+  background-color: rgb(200, 171, 221);
+  color: white;
+}
+.dashboard-analytics-card {
+  background-color: rgb(24, 65, 81);
+  color: black;
+}

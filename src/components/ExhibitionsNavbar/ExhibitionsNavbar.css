@@ -1,0 +1,20 @@
+.exhibition-menu-container button {
+  border-color: #334455;
+  font-size: 1.2rem;
+  font-weight: 650;
+  color: #334455;
+  margin: 0.1rem;
+}
+.exhibition-menu-container {
+  display: flex;
+}
+.exhibition-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#exhibitions {
+  font-size: 2rem;
+  color: black;
+  font-weight: 700;
+}

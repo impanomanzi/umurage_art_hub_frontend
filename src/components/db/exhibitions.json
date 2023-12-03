@@ -1,0 +1,92 @@
+[
+    {"id":"first",
+        "name":"Potrait show",
+        "image":"/public/images/exhibitions/exhibition1.jpg",
+        "location":"Fake street 250 KK Nyarutarama",
+        "status":"upcoming",
+        "date":"2023-25-12 2024-25-01",
+        "host":"King Aime",
+        "fees":"50000Rwf"
+
+    },
+    {"id":"second",
+        "name":"Paint and Sip",
+        "image":"/public/images/exhibitions/exhibition2.jpg",
+        "location":"Fake street 250 KK Nyarutarama",
+        "status":"upcoming",
+        "date":"2023-25-12 2024-25-01",
+        "host":"John Doe",
+        "fees":"15000Rwf"
+
+    },
+    {"id":"third",
+        "name":"Painting night",
+        "image":"/public/images/exhibitions/exhibition3.jpg",
+        "location":"Fake street 250 KK Nyarutarama",
+        "status":"current",
+        "date":"2023-25-12 2024-25-01",
+        "host":"Jeane smith",
+        "fees":"200000Rwf"
+
+    } ,
+    {"id":"third",
+        "name":"Painting night",
+        "image":"/public/images/exhibitions/exhibition3.jpg",
+        "location":"Fake street 250 KK Nyarutarama",
+        "status":"current",
+        "date":"2023-25-12 2024-25-01",
+        "host":"Jeane smith",
+        "fees":"200000Rwf"
+
+    } ,
+    {"id":"third",
+        "name":"Painting night",
+        "image":"/public/images/exhibitions/exhibition3.jpg",
+        "location":"Fake street 250 KK Nyarutarama",
+        "status":"current",
+        "date":"2023-25-12 2024-25-01",
+        "host":"Jeane smith",
+        "fees":"200000Rwf"
+
+    } ,
+    {"id":"third",
+        "name":"Painting night",
+        "image":"/public/images/exhibitions/exhibition3.jpg",
+        "location":"Fake street 250 KK Nyarutarama",
+        "status":"current",
+        "date":"2023-25-12 2024-25-01",
+        "host":"Jeane smith",
+        "fees":"200000Rwf"
+
+    } ,
+    {"id":"third",
+        "name":"Painting night",
+        "image":"/public/images/exhibitions/exhibition3.jpg",
+        "location":"Fake street 250 KK Nyarutarama",
+        "status":"current",
+        "date":"2023-25-12 2024-25-01",
+        "host":"Jeane smith",
+        "fees":"200000Rwf"
+
+    } ,
+    {"id":"third",
+        "name":"Painting night",
+        "image":"/public/images/exhibitions/exhibition3.jpg",
+        "location":"Fake street 250 KK Nyarutarama",
+        "status":"current",
+        "date":"2023-25-12 2024-25-01",
+        "host":"Jeane smith",
+        "fees":"200000Rwf"
+
+    } ,
+    {"id":"third",
+        "name":"Painting night",
+        "image":"/public/images/exhibitions/exhibition3.jpg",
+        "location":"Fake street 250 KK Nyarutarama",
+        "status":"current",
+        "date":"2023-25-12 2024-25-01",
+        "host":"Jeane smith",
+        "fees":"200000Rwf"
+
+    } 
+]

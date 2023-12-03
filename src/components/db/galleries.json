@@ -1,0 +1,136 @@
+[
+    {
+        "Galleryname":"Ntyaze ubwo",
+        "image":"/public/images/paintings/ntyaze-bwo.png",
+        "category":"Art work",
+        "owner":"Isaie"
+
+    },
+    {  
+        "Galleryname":"Nyiramubande mu cyogajuru",
+        "image":"/public/images/paintings/nyiramubande-mu-cyogajuru.png",
+        "category":"Art work",
+        "owner":"Isaie"
+
+    },
+    {  
+        "Galleryname":"Shade",
+        "image":"/public/images/paintings/shade.png",
+        "category":"Art work",
+        "owner":"Erico"
+
+    },
+    
+
+    {
+        "Galleryname":"Own words",
+        "image":"/public/images/paintings/own-words.png",
+        "category":"Art work",
+        "owner":"Erico"
+    },
+    {
+        "Galleryname":"",
+        "image":"/public/images/paintings/potrait1.png",
+        "category":"Potrait",
+        "owner":"Isaie"
+    },
+    {
+        "Galleryname":"",
+        "image":"/public/images/paintings/potrait2.png",
+        "category":"Potrait",
+        "owner":"Muhire_y"
+
+    },
+    {
+        "Galleryname":"",
+        "image":"/public/images/paintings/potrait3.png",
+        "category":"Potrait",
+        "owner":"Rwigema"
+
+    } ,
+    {
+        "Galleryname":"",
+        "image":"/public/images/paintings/potrait4.png",
+        "category":"Potrait",
+        "owner":"Isaie"
+
+    },{
+        "Galleryname":"Ntyaze ubwo",
+        "image":"/public/images/paintings/ntyaze-bwo.png",
+        "category":"Art work",
+        "owner":"Isaie"
+
+    },
+    {  
+        "Galleryname":"Nyiramubande mu cyogajuru",
+        "image":"/public/images/paintings/nyiramubande-mu-cyogajuru.png",
+        "category":"Art work",
+        "owner":"Isaie"
+
+    },{
+        "Galleryname":"Ntyaze ubwo",
+        "image":"/public/images/paintings/ntyaze-bwo.png",
+        "category":"Art work",
+        "owner":"Isaie"
+
+    },
+    {  
+        "Galleryname":"Nyiramubande mu cyogajuru",
+        "image":"/public/images/paintings/nyiramubande-mu-cyogajuru.png",
+        "category":"Art work",
+        "owner":"Isaie"
+
+    },{
+        "Galleryname":"Ntyaze ubwo",
+        "image":"/public/images/paintings/ntyaze-bwo.png",
+        "category":"Art work",
+        "owner":"Isaie"
+
+    },
+    {  
+        "Galleryname":"Nyiramubande mu cyogajuru",
+        "image":"/public/images/paintings/nyiramubande-mu-cyogajuru.png",
+        "category":"Art work",
+        "owner":"Isaie"
+
+    },{
+        "Galleryname":"Ntyaze ubwo",
+        "image":"/public/images/paintings/ntyaze-bwo.png",
+        "category":"Art work",
+        "owner":"Isaie"
+
+    },
+    {  
+        "Galleryname":"Nyiramubande mu cyogajuru",
+        "image":"/public/images/paintings/nyiramubande-mu-cyogajuru.png",
+        "category":"Art work",
+        "owner":"Isaie"
+
+    },{
+        "Galleryname":"Ntyaze ubwo",
+        "image":"/public/images/paintings/ntyaze-bwo.png",
+        "category":"Art work",
+        "owner":"Isaie"
+
+    },
+    {  
+        "Galleryname":"Nyiramubande mu cyogajuru",
+        "image":"/public/images/paintings/nyiramubande-mu-cyogajuru.png",
+        "category":"Art work",
+        "owner":"kevin"
+
+    },{
+        "Galleryname":"Ntyaze ubwo",
+        "image":"/public/images/paintings/ntyaze-bwo.png",
+        "category":"Art work",
+        "owner":"Fils"
+
+    },
+    {  
+        "Galleryname":"Nyiramubande mu cyogajuru",
+        "image":"/public/images/paintings/nyiramubande-mu-cyogajuru.png",
+        "category":"Art work",
+        "owner":"Fiston"
+
+    }
+]

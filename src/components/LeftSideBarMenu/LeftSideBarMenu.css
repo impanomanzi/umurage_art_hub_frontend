@@ -1,0 +1,24 @@
+.left-sidebar-menu {
+  display: grid;
+  grid-template-columns: 100%;
+}
+.left-sidebar-menu button {
+  border-color: #334455;
+  margin-top: 0.5rem;
+}
+.left-sidebar-menu button:hover {
+  background-color: #334455;
+}
+
+@media screen and (max-device-width: 576px) {
+  .left-sidebar-menu {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .left-sidebar-menu button {
+    height: 40px;
+    width: auto;
+    text-align: left;
+  }
+}

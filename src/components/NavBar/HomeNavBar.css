@@ -1,0 +1,22 @@
+.home-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  height: 10vh;
+  background-color: #0d1a27;
+}
+
+.home-navbar__logo h1 {
+  color: white;
+}
+
+@media screen and (max-device-width: 576px) {
+  .home-navbar .home-navbar__logo {
+    padding-right: 2rem;
+  }
+
+  .home-navbar__logo h1 {
+    font-size: 2.2rem;
+  }
+}

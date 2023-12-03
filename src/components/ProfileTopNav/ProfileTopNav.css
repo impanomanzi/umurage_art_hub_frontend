@@ -1,0 +1,38 @@
+.profile-top-nav-container {
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 6px 5px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54);
+}
+.menu-area {
+  display: flex;
+}
+.profile-top-nav-container button {
+  margin-right: 0.5rem;
+}
+.username-area {
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+.profile-pic-area {
+  border: 2px solid #4c5b6b;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin: 1em;
+  border-radius: 1em;
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+}
+.user-profile-drawer h2 {
+  font-size: 2rem;
+  background-color: #4c5b6b;
+  padding: 1.2rem;
+}
+@media screen and (max-device-width: 576px) {
+  .menu-area {
+    display: none;
+  }
+}

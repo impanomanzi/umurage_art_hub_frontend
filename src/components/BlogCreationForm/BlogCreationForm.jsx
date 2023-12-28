@@ -53,7 +53,7 @@ function BlogCreationForm() {
             rows={10}
           />
         </div>
-        <input type="submit" value={"POST"} />
+        <button type="submit">Post</button>
       </form>
     </div>
   );

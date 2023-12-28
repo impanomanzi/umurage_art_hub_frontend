@@ -8,6 +8,9 @@ import NotFound from "../NotFound/NotFound";
 import { Link, BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Dashboard from "../Dashboard/Dashboard";
 function Profile() {
+  // let currentUserId = localStorage.getItem("userId");
+  // let currentAuthKey = localStorage.getItem("authKey");
+
   return (
     <>
       <div>

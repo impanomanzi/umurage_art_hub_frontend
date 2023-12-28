@@ -3,7 +3,10 @@
   text-align: center;
   margin-right: 1rem;
 }
-
+.gallery-outer-container {
+  margin-top: 2.2rem;
+  font-family: roboto;
+}
 .gallery-header-container {
   display: flex;
   align-items: center;
@@ -21,7 +24,6 @@
 .gallery-header {
   color: white;
   opacity: 75%;
-  box-shadow: 2px 2px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54);
 }
 .galleries-container {
   display: flex;

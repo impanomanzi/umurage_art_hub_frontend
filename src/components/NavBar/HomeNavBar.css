@@ -1,22 +1,30 @@
+@font-face {
+  font-family: roboto-itallic;
+  src: url(/src/assets/fonts/Roboto-Thin.ttf);
+}
 .home-navbar {
+  font-family: roboto-itallic;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  height: 10vh;
-  background-color: #0d1a27;
+  padding: 0 10px 0 10px;
+  height: fit-content;
+  background-color: #0a0b0c;
+  /* padding-top: 1em; */
+  /* box-shadow: 2px 2px 2px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54); */
 }
 
 .home-navbar__logo h1 {
-  color: white;
+  padding-top: 1rem;
+  color: rgb(173, 168, 21);
 }
 
 @media screen and (max-device-width: 576px) {
   .home-navbar .home-navbar__logo {
-    padding-right: 2rem;
+    /* padding-right: 2rem; */
   }
 
   .home-navbar__logo h1 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
   }
 }

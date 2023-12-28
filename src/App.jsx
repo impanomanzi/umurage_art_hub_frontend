@@ -14,18 +14,44 @@ import UserProfilePage from "./components/UserProfilePage/UserProfilePage.jsx";
 import LoginForm from "./components/LogInForm/LoginForm.jsx";
 import PayementRegistrationForm from "./components/PaymentRegistrationForm/PayementRegistrationForm.jsx";
 import GalleryShow from "./components/GalleryShow/GalleryShow.jsx";
+import ExhibitionPaintings from "./components/ExhibitionPaintings/ExhibitionPaintings.jsx";
+import ExhibitionShowPage from "./components/ExhibitionShowPage/ExhibitionShowPage.jsx";
+import ExhibitionPaintingShow from "./components/ExhibitionPaintingShow/ExhibitionPaintingShow.jsx";
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" Component={Home} />
-          <Route path="/profile" Component={Profile} />
-          <Route path="/sign-in" Component={LoginForm} />
+          <Route path="/exhibition/:id" Component={ExhibitionShowPage} />
+          <Route path="/view_painting/:id" Component={ExhibitionPaintingShow} />
+          <Route
+            path="/sign-in"
+            Component={() => {
+              return (
+                <LoginForm
+                  onUserId={(userId) => {
+                    localStorage.setItem("userId", userId);
+                  }}
+                  onAuthKey={(authKey) =>
+                    localStorage.setItem("authKey", authKey)
+                  }
+                />
+              );
+            }}
+          />
+          <Route
+            path="/profile"
+            Component={() => {
+              return <Profile />;
+            }}
+          />
           <Route path="/payment/:id" Component={PayementRegistrationForm} />
           <Route path="/gallery/:name" Component={GalleryShow} />
+          <Route
+            path="/exhibition_paintings/:id"
+            Component={ExhibitionPaintings}
+          />
           <Route
             path="/gallery"
             Component={() => {
@@ -38,6 +64,7 @@ function App() {
           />
           <Route path="/user-profile" Component={UserProfilePage} />
           <Route path="*" Component={NotFound} />
+          <Route path="/checkout/:payement-data" />
         </Routes>
         <Footer />
       </BrowserRouter>

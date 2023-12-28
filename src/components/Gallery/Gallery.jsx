@@ -12,9 +12,21 @@ function Gallery(props) {
   const [galleries, setGalleries] = useState([]);
   // gettings galleries from server
   useEffect(() => {
-    fetch(`${settings.server_domain}/get_paintings`)
+    let requestForm = new FormData();
+    requestForm.append("user_id", localStorage.getItem("userId"));
+    requestForm.append("auth_key", localStorage.getItem("authKey"));
+    let request = {
+      method: "POST",
+      body: requestForm,
+    };
+    fetch(`${settings.server_domain}/get_paintings`, request)
       .then((response) => response.json())
-      .then((data) => setGalleries(data));
+      .then((data) => {
+        typeof data != "string"
+          ? setGalleries(data)
+          : (document.querySelector(".gallery-outer-container").innerHTML =
+              data);
+      });
   }, []);
   // function to remove dupplication from an array
   const removeDuplication = (array) => {
@@ -38,21 +50,51 @@ function Gallery(props) {
     return item.owner;
   });
   let galleryOwner = removeDuplication(galleryOwners);
-
+  const removegSkeletons = () => {
+    if (document.querySelectorAll(`.skeleton-gallery`)) {
+      document.querySelectorAll(`.skeleton-gallery`).forEach((element) => {
+        element.style.display = "none";
+      });
+      // document
+      //   .querySelector(`.skeleton${index} skeleton-content`)
+      //   .classList.remove("");
+    }
+  };
   return (
-    <>
-      <div className="gallery-header">
-        <hr />
+    <div className="gallery-outer-container">
+      {/* <div className="gallery-header">
+        <br />{" "}
         <h2>
-          Galleries <i className="fas fa-arrow-down"></i>
+          <i className="fas fa-th-large"></i> Galleries
         </h2>
-        <hr />
-      </div>
+      </div> */}
       <div className="gallery-container">
+        <div className="skeleton-gallery skeleton ">
+          <p className="skeleton-content">&nbsp;</p>
+        </div>
+        <div className="skeleton-gallery skeleton ">
+          <p className="skeleton-content">&nbsp;</p>
+        </div>
+        <div className="skeleton-gallery skeleton ">
+          <p className="skeleton-content">&nbsp;</p>
+        </div>
+        <div className="skeleton-gallery skeleton ">
+          <p className="skeleton-content">&nbsp;</p>
+        </div>
+        <div className="skeleton-gallery skeleton ">
+          <p className="skeleton-content">&nbsp;</p>
+        </div>
+        <div className="skeleton-gallery skeleton ">
+          <p className="skeleton-content">&nbsp;</p>
+        </div>
+        <div className="skeleton-gallery skeleton ">
+          <p className="skeleton-content">&nbsp;</p>
+        </div>
+
         {galleryOwner.map((item, index) => {
           return (
             <div key={index}>
-              <h3 style={{ color: "#ffcc99" }}>{item}</h3>
+              <h3 style={{ color: "inherit" }}>{item}</h3>
               <Link to={`/gallery/${item}`}>
                 <HomeProjectsSlider
                   projects={galleries.filter((innerItem) => {
@@ -64,8 +106,9 @@ function Gallery(props) {
             </div>
           );
         })}
+        {removegSkeletons()}
       </div>
-    </>
+    </div>
   );
 }
 

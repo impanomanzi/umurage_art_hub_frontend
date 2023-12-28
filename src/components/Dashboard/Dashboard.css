@@ -18,7 +18,6 @@
   align-items: center;
   border-radius: 1em;
   font-size: 1.5rem;
-  box-shadow: 2px 2px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54);
 }
 .dashboard-exhibition-card {
   background-color: rgb(166, 233, 166);
@@ -37,4 +36,17 @@
 .dashboard-analytics-card {
   background-color: rgb(24, 65, 81);
   color: black;
+}
+
+@media screen and (max-device-width: 676px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+  .dashboard-exhibition-card,
+  .dashboard-gallery-card,
+  .dashboard-painter-card,
+  .dashboard-analytics-card {
+    flex: 1;
+    margin: 1em;
+  }
 }

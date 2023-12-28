@@ -5,12 +5,10 @@ import NavBar from "../NavBar/HomeNavBar.jsx";
 import ProjectCard from "../ProjectCard/ProjectCard.jsx";
 import HomeProjectsSlider from "../HomeProjectsSlider/HomeProjectsSlider.jsx";
 import ExhibitionsNavbar from "../ExhibitionsNavbar/ExhibitionsNavbar.jsx";
-// import exhibitions from "../db/exhibitions.json";
 import Gallery from "../Gallery/Gallery.jsx";
 import Exhibitions from "../Exhibitions/Exhibitions.jsx";
 import settings from "../settings.json";
 function Home() {
-  // const [currentTab, setCurrentTab] = useState("paintings");
   const [exhibitions, setExhibitions] = useState([]);
   const [imagesObject, setImagesObject] = useState({}); // Declare imagesObject in the outer scope
   // function to remove dupplication from an array
@@ -32,44 +30,49 @@ function Home() {
     return clearArray;
   };
   useEffect(() => {
-    fetch(`${settings.server_domain}/get_exhibitions`)
+    // const cookieValue = document.cookie
+    //   .split("; ")
+    //   .find((row) => row.startsWith("session="))
+    //   .split("=")[1];
+    // console.log(cookieValue);
+    const headers = new Headers();
+    headers.set("Cookie", `session=${""}`);
+    fetch(`${settings.server_domain}/get_exhibitions`, {
+      method: "GET",
+      headers: headers,
+    })
       .then((response) => response.json())
       .then((data) => {
         setExhibitions(data);
       });
   }, []);
-  // useEffect(() => {
-  //   const fetchImages = async fetch() => {
-  //     // const images = await import.meta.glob(
-  //     //   "/public/images/*.{png,jpg,jpeg,svg}"
-  //     // );
-  //     setImagesObject(images); // Set imagesObject in the state
-  //     const keys = Object.keys(images);
-  //     let projectArray = keys.map((image) => {
-  //       return { image: image, price: "5000Rwf", artist: "XXX" };
-  //     });
-  //     setImageArray(projectArray);
-  //   };
-
-  //   fetchImages();
-  // }, []);
 
   return (
-    <div className="home-main-container">
+    <div className="home">
       <NavBar />
-      <div className="home-exhibition-container">
-        <Exhibitions exhibitions={exhibitions} />
+      <div className="home-main-container">
+        <div className="exhibition-section">
+          {/* <header>
+            <h1>Currently available exhibtions</h1>
+            <p>
+              All exhibition are available. So, select which is better for you.
+            </p>
+          </header> */}
+          <div className="home-exhibition-container">
+            <Exhibitions exhibitions={exhibitions} />
+          </div>
+        </div>
+        <div className="gallery-section">
+          <header>
+            <h1>Expoler galleries</h1>
+            <p>
+              All our painters everyone has gallery expoler their galleries and
+              appreciate their work.
+            </p>
+          </header>
+          <Gallery exhibitions={exhibitions} />
+        </div>
       </div>
-      {/* <HomeProjectsSlider projects={exhibitions} /> */}
-      <Gallery exhibitions={exhibitions} />
-
-      {/* <div className="home-main">
-        <div className="project-container"></div>
-      </div>
-
-      <div className="switcher">
-        <Switcher onText="Paintings" offText="Photos" />
-      </div> */}
     </div>
   );
 }

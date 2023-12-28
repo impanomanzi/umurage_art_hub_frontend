@@ -1,9 +1,9 @@
-.footer-container {
-  display: none;
-}
 .profile-header {
   background-color: #6c7783;
   opacity: 90%;
   height: 4vh;
   margin-top: 5px;
+}
+.galleries-container {
+  background-color: #152331;
 }

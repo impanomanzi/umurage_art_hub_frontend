@@ -3,18 +3,25 @@
   grid-template-columns: 24% 24% 24% 24%;
   flex-wrap: wrap;
   gap: 1rem;
-
-  background-color: rgb(52, 71, 79);
+}
+.gallery-shw {
+  background-color: #152331;
+}
+.gallery-shw #gsh {
+  /* font-family: roboto; */
+  color: white;
+  opacity: 75%;
 }
 .gallery-show-header {
-  background-color: #0d1a27;
-  color: white;
+  background-color: #152331;
+
+  /* font-family: roboto-itallic; */
 }
 @media screen and (max-device-width: 576px) {
   .galleries-container {
-    display: grid;
-    grid-template-columns: 45% 45%;
-    flex-wrap: wrap;
-    gap: 1rem;
+    display: flex;
+    /* grid-template-columns: 45% 45%; */
+    flex-direction: column;
+    /* grid-column-gap: 1em; */
   }
 }

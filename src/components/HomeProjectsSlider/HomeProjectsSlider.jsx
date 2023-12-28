@@ -4,6 +4,7 @@ import { Carousel, Container, Row, Col } from "react-bootstrap";
 import ProjectCard from "../ProjectCard/ProjectCard";
 import "./HomeProjectsSlider.css";
 import { Link } from "react-router-dom";
+import settings from "../settings.json";
 
 function HomeProjectsSlider(props) {
   return (
@@ -13,7 +14,12 @@ function HomeProjectsSlider(props) {
         {props.projects.map((project, index) => {
           return (
             <Carousel.Item interval={1500}>
-              <img src={project.image} />
+              <img
+                src={project.image.replace(
+                  "http://localhost:5000",
+                  `${settings.server_domain}`
+                )}
+              />
               {/* <Carousel.Caption>
                 <div className="slider-meta-container">
                   <Link to={`/payment/${project.id}`}>

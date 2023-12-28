@@ -1,16 +1,19 @@
 .exhibition-card {
-  box-shadow: 2px 2px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54);
+  /* box-shadow: 2px 2px 5px #456687, -2px -2px 5px rgb(60, 54, 54); */
   width: 100%;
   max-height: 15%;
   border-radius: 15px;
   margin: 0.5rem;
-  color: black;
+  color: rgba(0, 0, 0, 0.196);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: white;
+  color: black;
+  background-color: rgb(185, 181, 181);
+  /* font-family: roboto; */
+  box-shadow: inset;
 }
 
 .exhibition-meta {
@@ -37,13 +40,14 @@
   margin-left: 0.85em;
   margin-right: 0.85em;
 }
-.exhibition-image img {
+.exhibition-image img,
+.exhibition-image {
   height: 35vh;
   width: 250px;
   border-top-right-radius: 15px;
   border-top-left-radius: 15px;
-  padding: 1em;
-  box-shadow: 2px 2px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54);
+  padding-bottom: 2px;
+  /* box-shadow: 2px 2px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54); */
 }
 
 .exhibition-nav-img img {
@@ -79,11 +83,11 @@
 .exhibition-card button {
   align-items: center;
   width: 100%;
-  background-color: #334455;
-  color: white;
+  /* background-color: rgb(5, 51, 158); */
+  /* color: white; */
   font-size: 1.2rem;
-  border-radius: 0.5em;
-  box-shadow: 2px 2px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54);
+  /* border-radius: 0.5em; */
+  /* box-shadow: 2px 2px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54); */
 }
 .exhibition-card button:hover {
   background-color: white;

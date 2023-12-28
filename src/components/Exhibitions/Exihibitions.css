@@ -1,3 +1,7 @@
+/* @font-face {
+  font-family: roboto;
+  src: url("/src/assets/fonts/Roboto-Black.ttf");
+} */
 .exhibitions-container {
   display: flex;
   margin-left: 1rem;
@@ -5,16 +9,10 @@
   overflow-x: scroll;
 }
 .exhibitions-outer-container {
-  height: 60vh;
+  height: 50vh;
+  /* font-family: roboto; */
 }
-.exhibition-header {
-  margin-top: 1rem;
-  color: white;
-  opacity: 85%;
-  display: flex;
-  margin-bottom: 1rem;
-  box-shadow: 2px 2px 2px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54);
-}
+
 .exhibition-outer-container {
   display: flex;
   flex-direction: column;

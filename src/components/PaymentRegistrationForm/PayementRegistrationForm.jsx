@@ -25,10 +25,12 @@ function PayementRegistrationForm() {
         });
         const handleOnSubmit = (event) => {
           event.preventDefault();
+
           ReactDOM.createRoot(
-            document.querySelector(".payment-registration-form-container")
+            document.querySelector(".payment-form-container")
           ).render(
             <CheckoutForm
+              id={exhibitionId}
               firstName={firstName}
               lastName={lastName}
               email={email}
@@ -39,14 +41,21 @@ function PayementRegistrationForm() {
           );
         };
         let form = (
-          <div>
-            <FormNavbar />
-            <form onSubmit={handleOnSubmit}>
-              <h2 style={{ backgroundColor: "#ffcc99", padding: "1rem" }}>
+          <div className="container">
+            <div className="alert alert-warning alert-dismissible">
+              {/* <h4 className="alert-heading">
+                  <i className="fas fa-info"></i>
+                </h4> */}
+              <p className="h3">
                 You're going to pay {wantedExhibition[0].fees} for{" "}
                 {wantedExhibition[0].name}
-              </h2>
-              <div className="form-inputs-container">
+              </p>
+            </div>
+            <form
+              onSubmit={handleOnSubmit}
+              className="row justify-content-center col-md-6"
+            >
+              <div className="form-group">
                 <label htmlFor="first_name">FIRST NAME</label>
                 <input
                   type="text"
@@ -55,9 +64,10 @@ function PayementRegistrationForm() {
                   onChange={(event) => {
                     firstName = event.target.value;
                   }}
+                  className="form-control"
                 />
               </div>
-              <div className="form-inputs-container">
+              <div className="form-group">
                 <label htmlFor="last_name">LAST NAME</label>
                 <input
                   type="text"
@@ -65,10 +75,11 @@ function PayementRegistrationForm() {
                   onChange={(event) => {
                     lastName = event.target.value;
                   }}
+                  className="form-control"
                 />
               </div>
 
-              <div className="form-inputs-container">
+              <div className="form-group">
                 <label htmlFor="email">EMAIL</label>
                 <input
                   name="email"
@@ -76,9 +87,10 @@ function PayementRegistrationForm() {
                   onChange={(event) => {
                     email = event.target.value;
                   }}
+                  className="form-control"
                 />
               </div>
-              <div className="form-inputs-container">
+              <div className="form-group">
                 <label htmlFor="phone">PHONE</label>
                 <input
                   name="phone"
@@ -86,14 +98,17 @@ function PayementRegistrationForm() {
                   onChange={(event) => {
                     phoneNumber = event.target.value;
                   }}
+                  className="form-control"
                 />
               </div>
-              <button type="submit">continue</button>
+              <button type="submit" className="btn btn-dark">
+                <p className="h4">continue</p>
+              </button>
             </form>
           </div>
         );
         ReactDOM.createRoot(
-          document.querySelector(".payment-registration-form-container")
+          document.querySelector(".payment-form-container")
         ).render(form);
       })
 
@@ -103,8 +118,11 @@ function PayementRegistrationForm() {
   }, []);
 
   return (
-    <div className="payment-registration-form-container">
-      <h5>Getting exhibition info...</h5>
+    <div>
+      <FormNavbar />
+      <div className="payment-form-container container">
+        <h5>Getting exhibition info...</h5>
+      </div>
     </div>
   );
 }

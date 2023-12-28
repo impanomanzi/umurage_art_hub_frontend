@@ -36,7 +36,7 @@ function PainterCreationForm() {
 
   return (
     <div className="payment-registration-form-container">
-      <h2>CREATE NEW PAINTER</h2>
+      <h2>CREATE NEW PAINTER ACCOUNT</h2>
       <hr />
 
       <form

@@ -1,0 +1,27 @@
+.exhibition-painting-show-container {
+  display: flex;
+  /* font-family: roboto; */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1rem;
+  padding-bottom: 1em;
+  margin-top: 1px;
+  background-color: #152331;
+}
+.exhibition-painting-img {
+  height: 71vh;
+  border: 2px solid whitesmoke;
+  border-radius: 10px;
+}
+.exhibition-painting-img img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+@media screen and (max-device-width: 576px) {
+  .exhibition-painting-img {
+    margin: 1em;
+  }
+}

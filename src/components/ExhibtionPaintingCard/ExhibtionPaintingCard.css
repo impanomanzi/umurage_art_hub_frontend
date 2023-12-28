@@ -1,0 +1,17 @@
+.exhibition-painting-card {
+  border-radius: 15px;
+  margin: 0.5rem;
+  color: black;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  background-color: white;
+}
+.exhibition-painting-card img {
+  height: 35vh;
+  width: 250px;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+}

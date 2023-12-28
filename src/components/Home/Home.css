@@ -6,6 +6,61 @@
 .home-exhibition-container {
   height: 65vh;
 }
+.home {
+  background-color: #152331;
+}
+.gallery-section {
+  background-color: white;
+  color: black;
+}
+
+.gallery-section header {
+  /* color: white; */
+  /* max-width: 60%; */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* font-family: roboto-itallic; */
+}
+.home-main-container .exhibition-section header {
+  color: black;
+  /* max-width: 60%; */
+  /* text-align: center; */
+  background-color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* font-family: roboto-itallic; */
+}
+
+.exhibition-section {
+  /* background-color: #152331; */
+  height: 100vh;
+}
+.home-main-container .exhibition-section header h1 {
+  font-size: 3.5em;
+  font-weight: 400;
+  line-break: strict;
+  /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+  opacity: 0.6;
+  line-break: anywhere;
+  /* line-height: 2em; */
+}
+/* .home-main-container header h1 { */
+/* font-size: 2.5em; */
+/* font-weight: 400; */
+
+/* font-family: roboto; */
+/* } */
+.home-main-container header p {
+  font-size: 1.4em;
+}
 .project-container {
   display: flex;
   flex-wrap: wrap;
@@ -24,5 +79,8 @@
   .project-container {
     align-items: center;
     flex-direction: column;
+  }
+  .home-main-container .exhibition-section header h1 {
+    font-size: 2.7em;
   }
 }

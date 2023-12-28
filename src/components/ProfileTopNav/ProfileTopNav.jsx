@@ -14,16 +14,12 @@ function ProfileTopNav() {
   const [openMenu, setOpenMenu] = useState(false);
   return (
     <div className="profile-top-nav-container">
-      <div className="navbar-menu">
-        <button onClick={() => setOpenMenu(true)} className="menu-button-bars">
-          <i className="fas fa-bars"></i>
-        </button>
-      </div>
+      <h2>Umurage art hub</h2>
       <Drawer
         className="user-profile-drawer"
         open={openMenu}
         onClose={() => setOpenMenu(false)}
-        anchor="left"
+        anchor="right"
       >
         <Box
           sx={{ width: 250 }}
@@ -57,6 +53,14 @@ function ProfileTopNav() {
                 <ListItemText primary={"Exhibitions"} />
               </ListItemButton>
             </ListItem>
+            <ListItem>
+              <ListItemButton>
+                <ListItemIcon>
+                  <i className="fas fa-user-circle"></i>
+                </ListItemIcon>
+                <ListItemText primary={<span>ISAE</span>} />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
       </Drawer>
@@ -72,17 +76,17 @@ function ProfileTopNav() {
         <button>
           <b>Exhibitions</b>
         </button>
+        <div className="profile-pic-area">
+          <span>
+            <i className="fas fa-user-circle"></i>
+          </span>
+          <span>ISAE</span>
+        </div>
       </div>
-      <h5>
-        <i>
-          <b>Umurage art hub</b>
-        </i>
-      </h5>
-      <div className="profile-pic-area">
-        <span>
-          <i className="fas fa-user-circle"></i>
-        </span>
-        <span>ISAE</span>
+      <div className="navbar-menu">
+        <button onClick={() => setOpenMenu(true)} className="menu-button-bars">
+          <i className="fas fa-bars"></i>
+        </button>
       </div>
     </div>
   );

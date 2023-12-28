@@ -13,52 +13,27 @@ function Footer() {
         </a>
       </div>
       <div className="footer">
-        <div className="social-medias">
-          <span>
-            <h3>Our Social Medias</h3>
-          </span>
+        <span>
+          <h3>Umurage art hub LTD</h3>
           <hr />
-          <div>
-            <span>
-              <BsTwitter />
-              &nbsp;<b>@E-painitingRRwanda</b>
-            </span>
-            <span>
-              <SiLinkedin />
-              &nbsp;<b>painitingRRwanda</b>
-            </span>
-            <span>
-              <BsYoutube />
-              &nbsp;<b>painitingRRwanda</b>
-            </span>
-            <span>
-              <BsFacebook />
-              &nbsp;<b>painitingRRwanda</b>
-            </span>
-          </div>
-        </div>
-        <div className="links">
+        </span>
+        <div className="socials">
           <span>
-            <h3>Work with us</h3>
+            <BsTwitter />
+            &nbsp;<b>@E-painitingRRwanda</b>
           </span>
-          <hr />
-          <div>
-            <span>
-              <a href="#">Sell</a>
-            </span>
-            <span>
-              <a href="#">Advertise</a>
-            </span>
-            <span>
-              <a href="#">Buy</a>
-            </span>
-            <span>
-              <a href="#">Referals</a>
-            </span>
-            <span>
-              <a href="#">Join us</a>
-            </span>
-          </div>
+          <span>
+            <SiLinkedin />
+            &nbsp;<b>painitingRRwanda</b>
+          </span>
+          <span>
+            <BsYoutube />
+            &nbsp;<b>painitingRRwanda</b>
+          </span>
+          <span>
+            <BsFacebook />
+            &nbsp;<b>painitingRRwanda</b>
+          </span>
         </div>
       </div>
     </div>

@@ -1,0 +1,13 @@
+.inner-exhibition-paintings-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  /* gap: 1rem; */
+}
+
+@media screen and (max-device-width: 576px) {
+  .inner-exhibition-paintings-container {
+    flex-direction: column;
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "./ListView.css";
+// import "./ListView.css";
+import "bootstrap/dist/css/bootstrap.css";
 
 function ListView(props) {
   // extracting keys from an object to be use as table headers
@@ -7,55 +8,59 @@ function ListView(props) {
   // const [changeDetected, setChangeDetected] = useState(false);
   return (
     // creating table headers
-    <div className="table">
-      <div className="table-row table-headers">
-        {headers.map((item, index) => {
+    <table className="table  table-bordered table-responsive table-hover table-sm">
+      <thead className="table-dark">
+        <tr>
+          {headers.map((item, index) => {
+            return (
+              <th scope="col" key={index}>
+                {item.toUpperCase()}
+              </th>
+            );
+          })}
+
+          <th scope="col">OPTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {props.items.map((item, index) => {
           return (
-            <div className="table-data table-header" key={index}>
-              {item.toUpperCase()}
-            </div>
+            <tr key={index}>
+              {headers.map((innerItem, innerIndex) => {
+                return (
+                  <td className="user-select-all" key={innerIndex}>
+                    {/* <b className="identifier">{innerItem}</b> */}
+                    <p className="data-description">{item[innerItem]}</p>
+                  </td>
+                );
+              })}
+              <div className="table-data">
+                <div key={index} className="options-container">
+                  {props.options.map((optionItem, optionIndex) => {
+                    return (
+                      <button
+                        value={optionItem.text}
+                        key={optionIndex}
+                        onClick={(id) => {
+                          // changeDetected === true
+                          //   ? setChangeDetected(false)
+                          //   : setChangeDetected(true);
+
+                          optionItem.callBack(item);
+                        }}
+                      >
+                        <i className={optionItem.icon}></i>
+                        {optionItem.text}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </tr>
           );
         })}
-        <div className="table-data table-header">OPTIONS</div>
-      </div>
-
-      {props.items.map((item, index) => {
-        return (
-          <div className="table-row" key={index}>
-            {headers.map((innerItem, innerIndex) => {
-              return (
-                <div className="table-data" key={innerIndex}>
-                  <b className="identifier">{innerItem}</b>
-                  <p className="data-description">{item[innerItem]}</p>
-                </div>
-              );
-            })}
-            <div className="table-data">
-              <div key={index} className="options-container">
-                {props.options.map((optionItem, optionIndex) => {
-                  return (
-                    <button
-                      value={optionItem.text}
-                      key={optionIndex}
-                      onClick={(id) => {
-                        // changeDetected === true
-                        //   ? setChangeDetected(false)
-                        //   : setChangeDetected(true);
-
-                        optionItem.callBack(item);
-                      }}
-                    >
-                      <i className={optionItem.icon}></i>
-                      {optionItem.text}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+      </tbody>
+    </table>
   );
 }
 

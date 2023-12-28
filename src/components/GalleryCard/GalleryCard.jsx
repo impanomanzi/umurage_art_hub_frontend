@@ -1,32 +1,35 @@
 import React from "react";
 import "./GalleryCard.css";
 import { Link } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.css";
+import settings from "../settings.json";
 
 function GalleryCard(props) {
   return (
-    <Link
-      to={`https://wa.me/?phone=${props.gallery.phone}`}
-      className="gallery-card"
-    >
-      <div className="gallery-image">
-        <img
-          src={props.gallery.image}
-          loading="lazy"
-          alt={`exbhition-${props.gallery.name}`}
-        />
-      </div>
+    <div className="gallery-card card">
+      <img
+        src={props.gallery.image.replace(
+          "http://localhost:5000",
+          `${settings.server_domain}`
+        )}
+        className="card-img-top gallery-image"
+        loading="lazy"
+        alt={`exbhition-${props.gallery.name}`}
+      />
+      <div className="card-body">
+        {/* <p className="card-text">
+          Name:{props.gallery.name} <br />
+          Category:{props.gallery.category}
+        </p> */}
 
-      <div className="gallery-meta">
-        <div className="gallery-details">
-          <span>
-            <b>Name:</b> <i>{props.gallery.name}</i>
-          </span>
-          <span>
-            <b>Category:</b> <i>{props.gallery.category}</i>
-          </span>
-        </div>
+        <Link
+          to={`https://wa.me/${props.gallery.phone}`.trim()}
+          className="btn btn-primary"
+        >
+          <i className="fas fa-phone"></i>
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 }
 

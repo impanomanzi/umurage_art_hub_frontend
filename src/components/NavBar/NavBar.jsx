@@ -1,19 +1,16 @@
 import "./NavBar.css";
 import React, { useState, useEffect } from "react";
-// import Exhibitions from "../Exhibitions/Exhibitions";
-// import ProfileHome from "../ProfileHome/ProfileHome";
 import { HiOutlineBars3 } from "react-icons/hi2";
-// import { Link } from "react-router-dom";
 import ReactDOM from "react-dom/client";
 import ExhibitionCreationForm from "../ExhibitionCreationForm/ExhibitionCreationForm";
 import PainterCreationForm from "../PainterCreationForm/PainterCreationForm";
 import BlogCreationForm from "../BlogCreationForm/BlogCreationForm";
 import PaintingCreationForm from "../PaintingCreationForm/PaintingCreationForm";
 import Dashboard from "../Dashboard/Dashboard";
-// import exhibitions from "../db/exhibitions.json";
-// import paintings from "../db/galleries.json";
 import ListView from "../ListView/ListView";
 import settings from "../settings.json";
+import ExhibitionImagesForm from "../ExhibitionImagesForm/ExhibitionImagesForm";
+import "bootstrap/dist/css/bootstrap.css";
 import {
   Box,
   Drawer,
@@ -52,6 +49,16 @@ function NavBar(props) {
             );
           },
         },
+        {
+          subText: "Add paintings",
+          icon: "fas fa-plus",
+          callBack: () => {
+            ReactDOM.createRoot(document.querySelector(".profile-main")).render(
+              <ExhibitionImagesForm />
+            );
+          },
+        },
+        ,
         {
           subText: "List exhibition",
           icon: "fas fa-table",
@@ -229,51 +236,104 @@ function NavBar(props) {
     // },
   ];
   const [openMenu, setOpenMenu] = useState(false);
+  let currentOpen = "";
+  let currentBtn = "";
+  // document.querySelector(currentBtn).style.backgroundColor = "#334455";
+  const handleOpenDropDwon = (index) => {
+    console.log(currentBtn);
+    if (
+      document.querySelector(".dropdown-menu-" + index).style.display ===
+      "block"
+    ) {
+      document.querySelector(".dropdown-menu-" + index).style.display = "none";
+    } else {
+      if (currentOpen)
+        document.querySelector(currentOpen).style.display = "none";
+      document.querySelector(".dropdown-menu-" + index).style.display = "block";
+      currentOpen = ".dropdown-menu-" + index;
+    }
+  };
+
   return (
     <>
       <div className="navbar" id="top">
         <div className="navbar__logo" id="NavBarLogo">
           <h1>{settings.site_name}</h1>
         </div>
-        <div className="navbar__elements">
-          {navBaritems.map((item, index) => {
-            return (
-              <details
-                className="pc-link-btn"
-                key={index}
-                onClick={item.callBack}
-              >
-                <summary>{item.text}</summary>
-                <div className="sub-buttons-container">
-                  {item.subHeadings.map((innerItem, innerIndex) => {
-                    return (
-                      <button
-                        className={`sub-link-btn ${innerItem.subText}`}
-                        key={innerIndex}
-                        onClick={innerItem.callBack}
-                      >
-                        <i className={innerItem.icon}></i>
-                        {innerItem.subText}
-                      </button>
-                    );
-                  })}
+        <div
+          className="dashboard-navbar"
+          onMouseLeave={() => {
+            if (currentOpen)
+              document.querySelector(currentOpen).style.display = "none";
+          }}
+        >
+          <div className="navbar__elements">
+            {navBaritems.map((item, index) => {
+              return (
+                <div
+                  className={`drop-down`}
+                  key={index}
+                  onClick={item.callBack}
+                >
+                  <button
+                    className={`btn btn-secondary dropdown-toggle drop-down-btn-${index}`}
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    onMouseEnter={() => {
+                      handleOpenDropDwon(index);
+                    }}
+                    onClick={() => {
+                      handleOpenDropDwon(index);
+                    }}
+                  >
+                    {item.text}
+                  </button>
+                  <div
+                    className={`dropdown-menu dropdown-menu-${index}`}
+                    onMouseLeave={() => {
+                      document.querySelector(
+                        ".dropdown-menu-" + index
+                      ).style.display = "none";
+                    }}
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    {item.subHeadings.map((innerItem, innerIndex) => {
+                      return (
+                        <button
+                          className="dropdown-item"
+                          key={innerIndex}
+                          onClick={innerItem.callBack}
+                        >
+                          <i className={innerItem.icon}></i>
+                          {innerItem.subText}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-              </details>
-            );
-          })}
+              );
+            })}
+          </div>
+          <div>
+            <button>
+              <i className="fas fa-cog"></i>
+            </button>
+            <button>
+              <i className="fas fa-user-circle"></i>
+            </button>
+          </div>
         </div>
-        <button className="primary">
-          <i className="fas fa-cog"></i>
-        </button>
-        <button className="primary">
-          <i className="fas fa-user-circle"></i>
-          {props.username}
-        </button>
+
         <div className="navbar-menu">
-          <HiOutlineBars3
+          <button
             onClick={() => setOpenMenu(true)}
-            className="menu-button-bars"
-          />
+            className="menu-button-bars "
+          >
+            <i className="fas fa-bars"></i>
+          </button>
         </div>
         <Drawer
           open={openMenu}
@@ -286,6 +346,11 @@ function NavBar(props) {
             onclick={() => setOpenMenu(false)}
             onKeyDown={() => setOpenMenu(false)}
           >
+            <ListItem>
+              <ListItemButton>
+                <ListItemText className="menu-text">Menu</ListItemText>
+              </ListItemButton>
+            </ListItem>
             <List className="drawer">
               {navBaritems.map((item, index) => {
                 return (
@@ -316,6 +381,26 @@ function NavBar(props) {
                   </ListItem>
                 );
               })}
+              <ListItem>
+                <ListItemButton>
+                  <ListItemText>
+                    <ListItemIcon>
+                      <i className="fas fa-cog"></i>
+                    </ListItemIcon>
+                    Settings
+                  </ListItemText>
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton>
+                  <ListItemText>
+                    <ListItemIcon>
+                      <i className="fas fa-user-circle"></i>
+                    </ListItemIcon>
+                    Profile
+                  </ListItemText>
+                </ListItemButton>
+              </ListItem>
             </List>
           </Box>
         </Drawer>

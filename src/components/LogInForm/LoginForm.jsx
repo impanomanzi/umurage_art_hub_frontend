@@ -66,8 +66,8 @@ function LoginForm(props) {
           </center>
           <center>
             {" "}
-            <a href="https://127.0.0.1:5000/login">
-              <img src="/public/images/web_light_sq_ctn@1x.png" />
+            <a href={`${settings.server_domain}/login`}>
+              <img src="/web_light_sq_SI.svg" />
             </a>
           </center>
         </form>

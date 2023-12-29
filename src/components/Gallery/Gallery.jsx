@@ -93,7 +93,7 @@ function Gallery(props) {
 
         {galleryOwner.map((item, index) => {
           return (
-            <div key={index}>
+            <div key={index} className="card">
               <h3 style={{ color: "inherit" }}>{item}</h3>
               <Link to={`/gallery/${item}`}>
                 <HomeProjectsSlider

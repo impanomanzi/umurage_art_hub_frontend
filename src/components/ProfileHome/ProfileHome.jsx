@@ -1,7 +1,7 @@
 import React from "react";
 import "./ProfileHome.css";
 import LeftSideBarMenu from "../LeftSideBarMenu/LeftSideBarMenu";
-import HomeProjectCard from "../HomeProjectCard/HOmeProjectCard";
+import HomeProjectCard from "../HomeProjectCard/HomeProjectCard.css";
 
 function ProfileHome() {
   let projects = [

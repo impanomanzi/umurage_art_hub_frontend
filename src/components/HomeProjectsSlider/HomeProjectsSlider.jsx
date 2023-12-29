@@ -9,7 +9,7 @@ import settings from "../settings.json";
 
 function HomeProjectsSlider(props) {
   return (
-    <Container className="card carousel-container">
+    <Container className="carousel-container">
       <div className="carousel-left"></div>
       <Carousel variant="dark" className="carousel" slide={false} fade>
         {props.projects.map((project, index) => {

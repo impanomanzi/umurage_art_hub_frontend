@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./Gallery.css";
 import "../ExhibitionCard/ExhibitionCard.css";
+import "bootstrap/dist/css/bootstrap.css";
 // import galleries from "../db/galleries.json";
 import GalleryCard from "../GalleryCard/GalleryCard";
 import GalleriesContainer from "../GalleriesContainer/GalleriesContainer";

@@ -1,6 +1,6 @@
 import React from "react";
 import NavBar from "../NavBar/NavBar";
-import "./profile.css";
+import "./Profile.css";
 import Home from "../Home/Home";
 import ProfileHome from "../ProfileHome/ProfileHome";
 import Exhibitions from "../Exhibitions/Exhibitions";

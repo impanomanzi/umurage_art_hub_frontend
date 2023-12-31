@@ -17,16 +17,11 @@ function GalleryCard(props) {
         alt={`exbhition-${props.gallery.name}`}
       />
       <div className="card-body">
-        {/* <p className="card-text">
-          Name:{props.gallery.name} <br />
-          Category:{props.gallery.category}
-        </p> */}
-
         <Link
           to={`https://wa.me/${props.gallery.phone}`.trim()}
           className="btn btn-primary"
         >
-          <i className="fas fa-phone"></i>
+          Buy now
         </Link>
       </div>
     </div>

@@ -4,7 +4,6 @@
 }
 .carousel-container {
   display: flex;
-  /* box-shadow: 2px 2px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54); */
   flex: 1;
   color: inherit;
 }

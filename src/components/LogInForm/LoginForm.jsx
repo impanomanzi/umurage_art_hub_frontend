@@ -25,7 +25,8 @@ function LoginForm(props) {
           localStorage.setItem("session", data.session);
           localStorage.setItem("userId", data.userId);
           props.onClientLoggedIn();
-          navigate("/user-profile");
+          navigate(`/profile/${localStorage.getItem("userId")}`);
+          // navigate("/user-profile");
         } else {
           let errorMessage = (
             <p className="alert alert-warning">

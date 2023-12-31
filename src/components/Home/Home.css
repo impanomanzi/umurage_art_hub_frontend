@@ -12,22 +12,18 @@
 .gallery-section {
   background-color: white;
   color: black;
+  height: auto;
 }
 
 .gallery-section header {
-  /* color: white; */
-  /* max-width: 60%; */
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* font-family: roboto-itallic; */
 }
 .home-main-container .exhibition-section header {
   color: black;
-  /* max-width: 60%; */
-  /* text-align: center; */
   background-color: white;
   text-align: center;
   display: flex;

@@ -55,19 +55,10 @@ function Gallery(props) {
       document.querySelectorAll(`.skeleton-gallery`).forEach((element) => {
         element.style.display = "none";
       });
-      // document
-      //   .querySelector(`.skeleton${index} skeleton-content`)
-      //   .classList.remove("");
     }
   };
   return (
     <div className="gallery-outer-container">
-      {/* <div className="gallery-header">
-        <br />{" "}
-        <h2>
-          <i className="fas fa-th-large"></i> Galleries
-        </h2>
-      </div> */}
       <div className="gallery-container">
         <div className="skeleton-gallery skeleton ">
           <p className="skeleton-content">&nbsp;</p>
@@ -93,7 +84,7 @@ function Gallery(props) {
 
         {galleryOwner.map((item, index) => {
           return (
-            <div key={index} className="card">
+            <div key={index} className="card gallery-home-card">
               <h3 style={{ color: "inherit" }}>{item}</h3>
               <Link to={`/gallery/${item}`}>
                 <HomeProjectsSlider

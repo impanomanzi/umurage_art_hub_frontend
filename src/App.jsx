@@ -34,7 +34,7 @@ function App() {
               return <LoginForm onClientLoggedIn={() => setLogin(true)} />;
             }}
           />
-          <Route path="/profile" Component={Profile} />
+          <Route path="/profile/:id" Component={Profile} />
 
           <Route path="/payment/:id" Component={PayementRegistrationForm} />
           <Route path="/gallery/:name" Component={GalleryShow} />

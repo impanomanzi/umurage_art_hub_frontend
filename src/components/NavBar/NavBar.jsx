@@ -176,7 +176,6 @@ function NavBar(props) {
             fetch(`${settings.server_domain}/api/blog/get_blogs`)
               .then((response) => response.json())
               .then((data) => {
-                // console.log(data);
                 ReactDOM.createRoot(
                   document.querySelector(".profile-main")
                 ).render(
@@ -230,15 +229,10 @@ function NavBar(props) {
         },
       ],
     },
-    // {
-    //   text: "settings",
-    //   subHeadings: ["Create blog", "List blogs"],
-    // },
   ];
   const [openMenu, setOpenMenu] = useState(false);
   let currentOpen = "";
   let currentBtn = "";
-  // document.querySelector(currentBtn).style.backgroundColor = "#334455";
   const handleOpenDropDwon = (index) => {
     console.log(currentBtn);
     if (
@@ -255,19 +249,19 @@ function NavBar(props) {
   };
 
   return (
-    <>
-      <div className="navbar" id="top">
-        <div className="navbar__logo" id="NavBarLogo">
-          <h1>{settings.site_name}</h1>
-        </div>
-        <div
-          className="dashboard-navbar"
-          onMouseLeave={() => {
-            if (currentOpen)
-              document.querySelector(currentOpen).style.display = "none";
-          }}
-        >
-          <div className="navbar__elements">
+    <div className="navbar">
+      <div className="navbar__logo" id="NavBarLogo">
+        <h1>{settings.site_name}</h1>
+      </div>
+      <div
+        className="pc-navbar"
+        onMouseLeave={() => {
+          if (currentOpen)
+            document.querySelector(currentOpen).style.display = "none";
+        }}
+      >
+        <div className="nav-item-container">
+          <div className="dropdown-container">
             {navBaritems.map((item, index) => {
               return (
                 <div
@@ -317,6 +311,7 @@ function NavBar(props) {
               );
             })}
           </div>
+
           <div>
             <button>
               <i className="fas fa-cog"></i>
@@ -326,15 +321,17 @@ function NavBar(props) {
             </button>
           </div>
         </div>
+      </div>
+      <div className="navbar-menu-btn">
+        <button
+          onClick={() => setOpenMenu(true)}
+          className="menu-button-bars btn btn-outline-secondary "
+        >
+          <i className="fas fa-bars"></i>
+        </button>
+      </div>
 
-        <div className="navbar-menu">
-          <button
-            onClick={() => setOpenMenu(true)}
-            className="menu-button-bars "
-          >
-            <i className="fas fa-bars"></i>
-          </button>
-        </div>
+      <div className="mobile-nav">
         <Drawer
           open={openMenu}
           onClose={() => setOpenMenu(false)}
@@ -356,17 +353,19 @@ function NavBar(props) {
                 return (
                   <ListItem key={index}>
                     <details
-                      className="link-btn"
+                      className="link-btn card"
                       key={index}
                       onClick={item.callBack}
+                      style={{ padding: "0 1em 0 1em" }}
                     >
-                      <summary>{item.text}</summary>
+                      <summary className="lead">{item.text}</summary>
 
                       {item.subHeadings.map((innerItem, innerIndex) => {
                         return (
                           <button
                             key={innerIndex}
-                            className="sub-link-btn"
+                            className="sub-link-btn card"
+                            style={{ margin: "0.7em 0 0.7em 0" }}
                             onClick={() => {
                               innerItem.callBack();
                               console.log("Clicked");
@@ -405,7 +404,7 @@ function NavBar(props) {
           </Box>
         </Drawer>
       </div>
-    </>
+    </div>
   );
 }
 

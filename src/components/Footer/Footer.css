@@ -6,7 +6,9 @@
   justify-content: space-between;
   font-family: roboto-itallic;
 }
-
+.footer-container {
+  margin-top: 2rem;
+}
 .footer-container .back-top {
   display: flex;
   flex-direction: column;

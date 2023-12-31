@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./ExhibitionImagesForm.css";
 import ReactDOM from "react-dom/client";
 import settings from "../settings.json";
-// import { useParams } from "react-router-dom";
 
 function ExhibitionImagesForm() {
   let exhibitionNames;
@@ -18,8 +17,8 @@ function ExhibitionImagesForm() {
       fetch(`${settings.server_domain}/get_painters`)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           painters = data;
+
           let painting;
           let paintingName;
           let paintingDescription;
@@ -46,16 +45,55 @@ function ExhibitionImagesForm() {
             fetch(`${settings.server_domain}/add_exhibition_painting`, options)
               .then((response) => response.json())
               .then((data) => {
-                console.log(data);
+                document.querySelector(
+                  ".submit-btn"
+                ).innerHTML = `<i className="fas fa-plus"></i> add`;
+                document.querySelector(".painting-form").reset();
+                if (data.success) {
+                  let message = (
+                    <div className="alert alert-success">
+                      <center>
+                        <span>Painting added successfully </span>
+                      </center>
+                    </div>
+                  );
+                  ReactDOM.createRoot(
+                    document.querySelector(".message")
+                  ).render(message);
+                } else {
+                  let message = (
+                    <div className="alert alert-danger">
+                      <center>
+                        <span>Adding new painting failed </span>
+                      </center>
+                    </div>
+                  );
+                  ReactDOM.createRoot(
+                    document.querySelector(".message")
+                  ).render(message);
+                }
               })
               .catch((error) => {
-                console.log(error);
+                let message = (
+                  <div className="alert alert-danger">
+                    <center>
+                      <span>error happened while adding painting </span>
+                    </center>
+                  </div>
+                );
+                ReactDOM.createRoot(document.querySelector(".message")).render(
+                  message
+                );
+                document.querySelector(
+                  ".submit-btn"
+                ).innerHTML = `<i className="fas fa-plus"></i> add`;
               });
           };
 
           let form = (
             <div className="payment-registration-form-container">
-              <form onSubmit={handleOnSubmit}>
+              <div className="message"></div>
+              <form onSubmit={handleOnSubmit} className="painting-form">
                 <h2>ADD EXHIBITION'S PAINTINGS</h2>
                 <hr />
                 <div className="form-inputs-container">
@@ -70,10 +108,11 @@ function ExhibitionImagesForm() {
                           value={item}
                           key={index}
                           onClick={(event) => {
-                            painter = item.fullname;
+                            painter = item.username;
                           }}
+                          style={{ color: "black" }}
                         >
-                          {item.fullname}
+                          {item.username}
                         </option>
                       );
                     })}
@@ -144,7 +183,13 @@ function ExhibitionImagesForm() {
                   </div>
                   <button
                     type="submit"
+                    className="btn btn-primary submit-btn"
                     onClick={(event) => {
+                      event.target.innerHTML = `<center>
+                      <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </center>`;
                       {
                         document.querySelector(".list-group").innerHTML += `
                 <li className="list-group-item">
@@ -176,7 +221,15 @@ function ExhibitionImagesForm() {
         });
     });
 
-  return <div className="exhibition-paintings-container"></div>;
+  return (
+    <div className="exhibition-paintings-container">
+      <center>
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </center>
+    </div>
+  );
 }
 
 export default ExhibitionImagesForm;

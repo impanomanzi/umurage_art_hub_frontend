@@ -18,22 +18,21 @@ import {
 import Dashboard from "../Dashboard/Dashboard";
 function Profile() {
   let navigate = useNavigate();
-  let userId = useParams().userId;
+  let userId = useParams().id;
   const validateUser = () => {
     fetch(`${settings.server_domain}/api/authorize/${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data.success) {
           let content = (
-            <>
+            <div className="profile-container">
               <div>
                 <NavBar username="Rafiki" />
               </div>
               <div className="profile-main">
                 <Dashboard />
               </div>
-            </>
+            </div>
           );
           let container = document.querySelector(".dashboard-container");
           ReactDOM.createRoot(container).render(content);

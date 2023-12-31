@@ -5,7 +5,7 @@
 }
 .gallery-outer-container {
   margin-top: 2.2rem;
-  font-family: roboto;
+  height: 100%;
 }
 .gallery-header-container {
   display: flex;
@@ -39,7 +39,9 @@
   padding: 10px;
   border-radius: 0.5em;
 }
-
+.gallery-home-card {
+  height: 25%;
+}
 @media screen and (max-device-width: 576px) {
   .gallery-container {
     display: grid;

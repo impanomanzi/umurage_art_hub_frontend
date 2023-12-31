@@ -9,7 +9,7 @@ function Footer() {
     <div className="footer-container">
       <div className="back-top">
         <a href="#top">
-          <button>Back top</button>
+          <button className="btn btn-outline-primary">Back top</button>
         </a>
       </div>
       <div className="footer">

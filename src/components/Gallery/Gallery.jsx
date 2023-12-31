@@ -13,12 +13,11 @@ function Gallery(props) {
   const [galleries, setGalleries] = useState([]);
   // gettings galleries from server
   useEffect(() => {
-    let requestForm = new FormData();
-    requestForm.append("user_id", localStorage.getItem("userId"));
-    requestForm.append("auth_key", localStorage.getItem("authKey"));
     let request = {
       method: "POST",
-      body: requestForm,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("session")}`,
+      },
     };
     fetch(`${settings.server_domain}/get_paintings`, request)
       .then((response) => response.json())

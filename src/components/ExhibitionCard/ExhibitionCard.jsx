@@ -22,12 +22,9 @@ function ExhibitionCard(props) {
         <h3>Price: {props.exhibition.fees}</h3>
       </div>
 
-      {/* {props.exhibition.status === "upcoming" ||
-      props.exhibition.status === "current" ? ( */}
       <Link to={`/exhibition/${props.exhibition.id}`} className="join-btn">
         <button className="btn btn-primary">Join</button>
       </Link>
-      {/* ) : null} */}
     </div>
   );
 }

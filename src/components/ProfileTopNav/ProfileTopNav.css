@@ -9,6 +9,13 @@
 .menu-area {
   display: flex;
 }
+.nav-dropdown {
+  background-color: #152331;
+}
+.dropdown-item:hover {
+  background-color: white;
+  color: #152331;
+}
 .profile-top-nav-container button {
   margin-right: 0.5rem;
   background-color: transparent;

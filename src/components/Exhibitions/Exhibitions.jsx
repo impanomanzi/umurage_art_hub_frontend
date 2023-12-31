@@ -6,9 +6,6 @@ function Exhibitions(props) {
   const removeSkeletons = (index) => {
     if (document.querySelector(`.skeleton${index}`)) {
       document.querySelector(`.skeleton${index}`).style.display = "none";
-      // document
-      //   .querySelector(`.skeleton${index} skeleton-content`)
-      //   .classList.remove("");
     }
   };
   return (

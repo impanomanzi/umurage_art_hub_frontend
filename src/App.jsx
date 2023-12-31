@@ -1,13 +1,13 @@
 import { useState } from "react";
 
 import "./App.css";
-
 import Home from "./components/Home/Home.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import "bootstrap/dist/css/bootstrap.css";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Navigate } from "react-router-dom";
 import { Route } from "react-router-dom";
 import { Routes } from "react-router-dom";
+
 import Profile from "./components/Profile/Profile.jsx";
 import NotFound from "./components/NotFound/NotFound.jsx";
 import UserProfilePage from "./components/UserProfilePage/UserProfilePage.jsx";
@@ -18,6 +18,9 @@ import ExhibitionPaintings from "./components/ExhibitionPaintings/ExhibitionPain
 import ExhibitionShowPage from "./components/ExhibitionShowPage/ExhibitionShowPage.jsx";
 import ExhibitionPaintingShow from "./components/ExhibitionPaintingShow/ExhibitionPaintingShow.jsx";
 function App() {
+  const [login, setLogin] = useState(false);
+  const [adminLoggedin, setAdminLogged] = useState(false);
+
   return (
     <>
       <BrowserRouter>
@@ -28,24 +31,11 @@ function App() {
           <Route
             path="/sign-in"
             Component={() => {
-              return (
-                <LoginForm
-                  onUserId={(userId) => {
-                    localStorage.setItem("userId", userId);
-                  }}
-                  onAuthKey={(authKey) =>
-                    localStorage.setItem("authKey", authKey)
-                  }
-                />
-              );
+              return <LoginForm onClientLoggedIn={() => setLogin(true)} />;
             }}
           />
-          <Route
-            path="/profile"
-            Component={() => {
-              return <Profile />;
-            }}
-          />
+          <Route path="/profile" Component={Profile} />
+
           <Route path="/payment/:id" Component={PayementRegistrationForm} />
           <Route path="/gallery/:name" Component={GalleryShow} />
           <Route
@@ -62,7 +52,16 @@ function App() {
               );
             }}
           />
-          <Route path="/user-profile" Component={UserProfilePage} />
+          <Route
+            path="/user-profile"
+            element={
+              login ? (
+                <UserProfilePage login={login} />
+              ) : (
+                <Navigate to={"/sign-in"} replace={true} />
+              )
+            }
+          />
           <Route path="*" Component={NotFound} />
           <Route path="/checkout/:payement-data" />
         </Routes>

@@ -8,7 +8,9 @@ import ExhibitionsNavbar from "../ExhibitionsNavbar/ExhibitionsNavbar.jsx";
 import Gallery from "../Gallery/Gallery.jsx";
 import Exhibitions from "../Exhibitions/Exhibitions.jsx";
 import settings from "../settings.json";
+import { useNavigate } from "react-router-dom";
 function Home() {
+  let navigate = useNavigate();
   const [exhibitions, setExhibitions] = useState([]);
   const [imagesObject, setImagesObject] = useState({}); // Declare imagesObject in the outer scope
   // function to remove dupplication from an array
@@ -29,21 +31,22 @@ function Home() {
     }
     return clearArray;
   };
+  let fetched = false;
   useEffect(() => {
-    // const cookieValue = document.cookie
-    //   .split("; ")
-    //   .find((row) => row.startsWith("session="))
-    //   .split("=")[1];
-    // console.log(cookieValue);
-    const headers = new Headers();
-    headers.set("Cookie", `session=${""}`);
     fetch(`${settings.server_domain}/get_exhibitions`, {
       method: "GET",
-      headers: headers,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("session")}`,
+      },
     })
       .then((response) => response.json())
       .then((data) => {
-        setExhibitions(data);
+        if (data.message != false) {
+          fetched = true;
+          setExhibitions(data);
+        } else {
+          navigate("/sign-in");
+        }
       });
   }, []);
 
@@ -52,12 +55,6 @@ function Home() {
       <NavBar />
       <div className="home-main-container">
         <div className="exhibition-section">
-          {/* <header>
-            <h1>Currently available exhibtions</h1>
-            <p>
-              All exhibition are available. So, select which is better for you.
-            </p>
-          </header> */}
           <div className="home-exhibition-container">
             <Exhibitions exhibitions={exhibitions} />
           </div>

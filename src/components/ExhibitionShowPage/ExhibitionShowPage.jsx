@@ -8,13 +8,10 @@ import FormNavbar from "../NavBar/FormNavbar";
 
 function ExhibitionShowPage() {
   let exhibitionId = useParams().id;
-  fetch(`${settings.server_domain}/get_exhibitions `)
+  fetch(`${settings.server_domain}/get_exhibition/${exhibitionId}`)
     .then((response) => response.json())
     .then((data) => {
-      let wanted = data.filter((item) => {
-        return item.id === exhibitionId;
-      })[0];
-      console.log(wanted);
+      let wanted = data;
       let exhibitionPage = (
         <div className="exhibition-page-container">
           <div className="exhibition-description">
@@ -50,9 +47,6 @@ function ExhibitionShowPage() {
               </button>
             </a>
           </div>
-          {/* <Link to={`/payment/${exhibitionId}`} className="join-btn"> */}
-
-          {/* </Link> */}
         </div>
       );
       ReactDOM.createRoot(

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./ProfileTopNav.css";
 import { HiOutlineBars3 } from "react-icons/hi2";
+import settings from "../settings.json";
 import {
   Box,
   Drawer,
@@ -10,8 +11,33 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 function ProfileTopNav() {
   const [openMenu, setOpenMenu] = useState(false);
+  const navigate = useNavigate();
+  const handleOpenDropDown = (event) => {
+    if (document.querySelector(".nav-dropdown").style.display === "none") {
+      document.querySelector(".nav-dropdown").style.display = "block";
+    } else {
+      document.querySelector(".nav-dropdown").style.display = "none";
+    }
+  };
+  const logout = () => {
+    fetch(`${settings.server_domain}/custom-logout`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("session")}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          localStorage.removeItem("session");
+          localStorage.removeItem("userId");
+          navigate("/");
+        }
+      });
+  };
   return (
     <div className="profile-top-nav-container">
       <h2>Umurage art hub</h2>
@@ -27,7 +53,7 @@ function ProfileTopNav() {
           onclick={() => setOpenMenu(false)}
           onKeyDown={() => setOpenMenu(false)}
         >
-          <h2>Umurage art hub</h2>
+          <h2>ISAE</h2>
           <List className="drawer">
             <ListItem>
               <ListItemButton>
@@ -38,7 +64,7 @@ function ProfileTopNav() {
               </ListItemButton>
             </ListItem>
             <ListItem>
-              <ListItemButton>
+              <ListItemButton onClick={logout}>
                 <ListItemIcon>
                   <i className="fas fa-newspaper"></i>
                 </ListItemIcon>
@@ -53,12 +79,13 @@ function ProfileTopNav() {
                 <ListItemText primary={"Exhibitions"} />
               </ListItemButton>
             </ListItem>
+
             <ListItem>
               <ListItemButton>
                 <ListItemIcon>
-                  <i className="fas fa-user-circle"></i>
+                  <i className="fas fa-sign-out-alt "></i>
                 </ListItemIcon>
-                <ListItemText primary={<span>ISAE</span>} />
+                <ListItemText primary="logout" />
               </ListItemButton>
             </ListItem>
           </List>
@@ -76,11 +103,30 @@ function ProfileTopNav() {
         <button>
           <b>Exhibitions</b>
         </button>
-        <div className="profile-pic-area">
-          <span>
-            <i className="fas fa-user-circle"></i>
-          </span>
-          <span>ISAE</span>
+        <div className="dropdown">
+          <button
+            className="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            onClick={handleOpenDropDown}
+            onMouseEnter={handleOpenDropDown}
+          >
+            <i className="fas fa-user-circle"></i> &nbsp;ISAE
+          </button>
+          <div
+            className={`dropdown-menu nav-dropdown`}
+            aria-labelledby="dropdownMenuButton"
+            onMouseLeave={() => {
+              document.querySelector(".nav-dropdown").style.display = "none";
+            }}
+          >
+            <button className="dropdown-item" onClick={logout}>
+              <i className="fas fa-sign-out-alt "></i>&nbsp;Logout
+            </button>
+          </div>
         </div>
       </div>
       <div className="navbar-menu">

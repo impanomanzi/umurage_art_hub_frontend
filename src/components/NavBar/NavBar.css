@@ -22,12 +22,12 @@
   /* margin-left: 1em; */
   /* margin-right: 1em; */
 }
-.dropdown-menu {
+/* .dropdown-menu {
   display: none;
 }
 .dropdown-toggle:hover .dropdown-menu {
   display: block;
-}
+} */
 .dashboard-navbar button {
   margin-right: 3px;
 }
@@ -45,10 +45,10 @@
   padding-top: 0rem;
   color: rgb(173, 168, 21);
 }
-.dropdown-item:hover {
+/* .dropdown-item:hover {
   background-color: #152331;
   color: whitesmoke;
-}
+} */
 summary {
   color: black;
 }

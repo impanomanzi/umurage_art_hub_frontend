@@ -4,7 +4,6 @@ import ProfileTopNav from "../ProfileTopNav/ProfileTopNav";
 import ProfileBottomNav from "../ProfileBottomNav/ProfileBottomNav";
 import settings from "../settings.json";
 import GalleryCard from "../GalleryCard/GalleryCard";
-// import useHistory from "react-router-dom";
 import "./UserProfilePage.css";
 function UserProfilePage(props) {
   // let history = useHistory();

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import ReactDOM from "react-dom/client";
+import { Link, useNavigate } from "react-router-dom";
 import FormTemplate from "../FormTemplate/FormTemplate";
 import FormNavbar from "../NavBar/FormNavbar";
 import settings from "../settings.json";
 function LoginForm(props) {
+  let navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const handleOnSubmit = (event) => {
@@ -19,10 +21,20 @@ function LoginForm(props) {
       .then((response) => response.json())
       .then((data) => {
         document.querySelector(".formMessage").innerHTML = data.message;
-        if (data.message === "success") {
-          document.cookie = `session=${data.session}`;
+        if (data.message) {
+          localStorage.setItem("session", data.session);
+          localStorage.setItem("userId", data.userId);
+          props.onClientLoggedIn();
+          navigate("/user-profile");
         } else {
-          // document.querySelector(".formMessage").innerHTML = "Failed to login";
+          let errorMessage = (
+            <p className="alert alert-warning">
+              Username or password is incorrect
+            </p>
+          );
+          ReactDOM.createRoot(document.querySelector(".formMessage")).render(
+            errorMessage
+          );
         }
       });
   };
@@ -31,7 +43,7 @@ function LoginForm(props) {
     <div>
       <FormNavbar />
       <div className="payment-registration-form-container">
-        <h2>LOG IN To Continue</h2>
+        <h2>LOG IN TO UMURAGE ART HUB</h2>
         <hr />
         <span className="formMessage"></span>
         <form onSubmit={handleOnSubmit}>

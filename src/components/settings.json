@@ -1,7 +1,3 @@
-// {
-//   "server_domain": "http://localhost:5000",
-//   "site_name": "Umurage Art Hub"
-// }
 {
   "server_domain": "https://umuragearthub.onrender.com",
   "site_name": "Umurage Art Hub"

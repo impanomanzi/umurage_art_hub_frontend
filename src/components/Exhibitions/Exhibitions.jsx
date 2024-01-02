@@ -4,9 +4,7 @@ import ExhibitionCard from "../ExhibitionCard/ExhibitionCard";
 import "./Exihibitions.css";
 function Exhibitions(props) {
   const removeSkeletons = (index) => {
-    if (document.querySelector(`.skeleton${index}`)) {
-      document.querySelector(`.skeleton${index}`).style.display = "none";
-    }
+    document.querySelector(`.exhibitions-container`).innerHTML = "";
   };
   return (
     <div className="exhibitions-outer-container">

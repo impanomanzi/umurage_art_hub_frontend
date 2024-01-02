@@ -12,7 +12,7 @@ function ListView(props) {
       <div className="list-group-item active">
         <h4 className="h4">{props.title}</h4>
       </div>
-
+      <div className="message"></div>
       {props.items.map((item, index) => {
         return (
           <div
@@ -25,7 +25,7 @@ function ListView(props) {
               class="btn btn-primary"
               style={{ width: "4rem", height: "2rem" }}
             >
-              <h4 class="badge badge-light h4">
+              <h4>
                 <center>{index + 1}</center>
               </h4>
             </button>
@@ -49,16 +49,12 @@ function ListView(props) {
                 {props.options.map((optionItem, optionIndex) => {
                   return (
                     <button
-                      className="btn btn-outline-secondary"
+                      className={`btn btn-outline-secondary ${optionItem.text}-${index}`}
                       style={{ marginLeft: "1em" }}
                       value={optionItem.text}
                       key={optionIndex}
-                      onClick={(id) => {
-                        // changeDetected === true
-                        //   ? setChangeDetected(false)
-                        //   : setChangeDetected(true);
-
-                        optionItem.callBack(item);
+                      onClick={(event) => {
+                        optionItem.callBack(event, item);
                       }}
                     >
                       <i className={optionItem.icon}></i>

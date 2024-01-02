@@ -12,10 +12,8 @@ import { useNavigate } from "react-router-dom";
 function Home() {
   let navigate = useNavigate();
   const [exhibitions, setExhibitions] = useState([]);
-  const [imagesObject, setImagesObject] = useState({}); // Declare imagesObject in the outer scope
   // function to remove dupplication from an array
   const removeDuplication = (array) => {
-    // console.log(array);
     let clearArray = [];
 
     for (let i = 0; i < array.length; i++) {
@@ -53,6 +51,7 @@ function Home() {
   return (
     <div className="home">
       <NavBar />
+      <div className="message"></div>
       <div className="home-main-container">
         <div className="exhibition-section">
           <div className="home-exhibition-container">

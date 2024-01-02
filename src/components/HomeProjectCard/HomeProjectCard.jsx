@@ -1,5 +1,5 @@
 import React from "react";
-import "./HomeProjectCard.css";
+import "../HomeProjectCard";
 
 function HomeProjectCard(props) {
   return (

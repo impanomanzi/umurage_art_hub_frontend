@@ -24,9 +24,12 @@ function LoginForm(props) {
         if (data.message) {
           localStorage.setItem("session", data.session);
           localStorage.setItem("userId", data.userId);
+          localStorage.setItem("username", data.username);
           props.onClientLoggedIn();
-          navigate(`/profile/${localStorage.getItem("userId")}`);
-          // navigate("/user-profile");
+          console.log(data.role);
+          if (data.role === "admin")
+            navigate(`/profile/${localStorage.getItem("userId")}`);
+          else navigate("/user-profile");
         } else {
           let errorMessage = (
             <p className="alert alert-warning">

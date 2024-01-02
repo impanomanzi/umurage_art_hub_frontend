@@ -53,7 +53,7 @@ function ProfileTopNav() {
           onclick={() => setOpenMenu(false)}
           onKeyDown={() => setOpenMenu(false)}
         >
-          <h2>ISAE</h2>
+          <h2>{localStorage.getItem("username")}</h2>
           <List className="drawer">
             <ListItem>
               <ListItemButton>
@@ -81,7 +81,7 @@ function ProfileTopNav() {
             </ListItem>
 
             <ListItem>
-              <ListItemButton>
+              <ListItemButton onClick={logout}>
                 <ListItemIcon>
                   <i className="fas fa-sign-out-alt "></i>
                 </ListItemIcon>
@@ -114,7 +114,8 @@ function ProfileTopNav() {
             onClick={handleOpenDropDown}
             onMouseEnter={handleOpenDropDown}
           >
-            <i className="fas fa-user-circle"></i> &nbsp;ISAE
+            <i className="fas fa-user-circle"></i> &nbsp;
+            {localStorage.getItem("username")}
           </button>
           <div
             className={`dropdown-menu nav-dropdown`}

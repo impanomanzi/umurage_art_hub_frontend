@@ -4,7 +4,7 @@
   justify-content: center;
 }
 .home-exhibition-container {
-  height: 65vh;
+  align-items: center;
 }
 .home {
   background-color: #152331;
@@ -37,7 +37,8 @@
 
 .exhibition-section {
   /* background-color: #152331; */
-  height: 100vh;
+
+  height: 75vh;
 }
 .home-main-container .exhibition-section header h1 {
   font-size: 3.5em;

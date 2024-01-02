@@ -147,6 +147,7 @@ function ExhibitionImagesForm() {
                     </label>
                     <input
                       type="file"
+                      required
                       onChange={(event) => {
                         painting = event.target.files[0];
                       }}
@@ -158,6 +159,7 @@ function ExhibitionImagesForm() {
                     </label>
                     <input
                       type="file"
+                      required
                       onChange={(event) => {
                         paintingAudio = event.target.files[0];
                       }}
@@ -170,12 +172,14 @@ function ExhibitionImagesForm() {
                       onChange={(event) => {
                         paintingName = event.target.value;
                       }}
+                      required
                     />
                   </div>
                   <div className="form-inputs-container">
                     <label htmlFor="painting-description">DESCRIPTION</label>
                     <textarea
                       type="text"
+                      required
                       onChange={(event) => {
                         paintingDescription = event.target.value;
                       }}

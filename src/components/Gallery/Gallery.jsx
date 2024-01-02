@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import "./Gallery.css";
 import "../ExhibitionCard/ExhibitionCard.css";
 import "bootstrap/dist/css/bootstrap.css";
-// import galleries from "../db/galleries.json";
 import GalleryCard from "../GalleryCard/GalleryCard";
 import GalleriesContainer from "../GalleriesContainer/GalleriesContainer";
 import HomeProjectsSlider from "../HomeProjectsSlider/HomeProjectsSlider";
@@ -22,10 +21,22 @@ function Gallery(props) {
     fetch(`${settings.server_domain}/get_paintings`, request)
       .then((response) => response.json())
       .then((data) => {
-        typeof data != "string"
-          ? setGalleries(data)
-          : (document.querySelector(".gallery-outer-container").innerHTML =
-              data);
+        if (data.success) setGalleries(data.data);
+        else {
+          ReactDOM.createRoot(document.querySelector(".message")).render(
+            <div className="alert alert-danger">
+              <center>Failed to load </center>
+              <button
+                className="btn btn-outline-secondary"
+                onClick={(event) => {
+                  window.location.reload();
+                }}
+              >
+                Reload
+              </button>
+            </div>
+          );
+        }
       });
   }, []);
   // function to remove dupplication from an array
@@ -84,7 +95,7 @@ function Gallery(props) {
 
         {galleryOwner.map((item, index) => {
           return (
-            <div key={index} className="card gallery-home-card">
+            <div key={index} className="gallery-home-card">
               <h3 style={{ color: "inherit" }}>{item}</h3>
               <Link to={`/gallery/${item}`}>
                 <HomeProjectsSlider

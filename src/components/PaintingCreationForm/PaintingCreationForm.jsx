@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import ReactDOM from "react-dom/client";
 import "../FormTemplate/FormTemplate.css";
 import settings from "../settings.json";
 function PaintingCreationForm() {
@@ -10,6 +11,7 @@ function PaintingCreationForm() {
   formData.append("name", name);
   formData.append("category", category);
   formData.append("painting", painting);
+  formData.append("owner", localStorage.getItem("userId"));
   let options = {
     method: "PUT",
     headers: {
@@ -19,27 +21,76 @@ function PaintingCreationForm() {
   };
   const handleOnSubmit = (event) => {
     event.preventDefault();
+    ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
+      <center>
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </center>
+    );
     fetch(`${settings.server_domain}/add_new_painting`, options)
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          document.querySelector(".submit-button").innerHTML = "Done";
+          ReactDOM.createRoot(document.querySelector(".message")).render(
+            <div className={`alert alert-success`}>
+              <center>
+                <p className="lead">Painting added succesfully</p>
+              </center>
+            </div>
+          );
+          ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
+            <span>
+              <i className="fas fa-plus "></i>
+              Add
+            </span>
+          );
+          document.querySelector(".painting-form").reset();
+        } else {
+          ReactDOM.createRoot(document.querySelector(".message")).render(
+            <div className={`alert alert-danger`}>
+              <center>
+                <p className="lead">failed to add new painting</p>
+              </center>
+            </div>
+          );
+          ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
+            <span>
+              <i className="fas fa-plus "></i>
+              Add
+            </span>
+          );
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        ReactDOM.createRoot(document.querySelector(".message")).render(
+          <div className={`alert alert-danger`}>
+            <center>
+              <p className="lead">Error happened while adding new painting</p>
+            </center>
+          </div>
+        );
+        ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
+          <span>
+            <i className="fas fa-plus "></i>
+            Add
+          </span>
+        );
+      });
   };
 
   return (
     <div className="payment-registration-form-container">
       <h2>Add new painitng</h2>
       <hr />
-
-      <form onSubmit={handleOnSubmit}>
+      <div className="message"></div>
+      <form onSubmit={handleOnSubmit} className="painting-form">
         <div className="form-inputs-container">
           <label htmlFor="name">Name</label>
           <input
             type="text"
             name="name"
+            required
             autoComplete="off"
             onChange={(event) => {
               setName(event.target.value);
@@ -50,6 +101,7 @@ function PaintingCreationForm() {
           <label htmlFor="category">Category</label>
           <select
             name="category"
+            required
             onChange={(event) => {
               setCategory(event.target.value);
             }}
@@ -63,19 +115,17 @@ function PaintingCreationForm() {
           <label htmlFor="painting">Painting</label>
           <input
             name="painiting"
+            required
             type="file"
             onChange={(event) => {
               setPainting(event.target.files[0]);
             }}
           />
         </div>
-        <button type="submit" className="submit-button">
+        <button type="submit" className="submit-btn btn btn-primary">
           Add New
         </button>
       </form>
-      <div className="form-inputs-container">
-        <img src={painting.name} alt={painting.name} />
-      </div>
     </div>
   );
 }

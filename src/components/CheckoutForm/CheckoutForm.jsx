@@ -15,7 +15,6 @@ function CheckoutForm(props) {
       <hr />
 
       <form className="row col-md-5">
-        {/* <script src="https://www.paypal.com/sdk/js?client-id=ATXE7I-Cou4tO1E9__yFBYMxdsx_p4cuzWTLd58CCBCRCl8kCLfyf2aOPptkY1xodLyYaicBMtWPaDC2&currency=USD"></script> */}
         <div className="form-group">
           <label htmlFor="first_name"> YOUR FIRST NAME</label>
           <input

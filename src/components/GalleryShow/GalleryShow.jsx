@@ -13,31 +13,15 @@ function GalleryShow(props) {
   useEffect(() => {
     fetch(`${settings.server_domain}/get_paintings`)
       .then((response) => response.json())
-      .then((data) => setGalleries(data));
+      .then((data) => {
+        setGalleries(data.data);
+      });
   }, []);
   let galleryOwner = useParams().name;
   let wantedGallery = galleries.filter((item) => {
     return item.owner === galleryOwner;
   });
-  // let gImages;
-  // const callBack = (images) => {
-  //   // creatng image obsever
-  //   let observer = new IntersectionObserver((entries, observer) => {
-  //     entries.forEach((entry) => {
-  //       if (!entry.isIntersecting) return;
-  //       let galleryCard = entry.target;
-  //       galleryCard.querySelector("gallery-image").src = galleryCard
-  //         .querySelector("gallery-image")
-  //         .getAttribute("data-src");
-  //       observer.unobserve(galleryCard);
-  //     });
-  //   });
-  //   // getting all gallery images
-  //   // let images = document.querySelector(".gallery-card");
-  //   images.forEach((image) => {
-  //     observer.observe(image);
-  //   });
-  // };
+
   return (
     <div className="gallery-shw">
       <FormNavbar />

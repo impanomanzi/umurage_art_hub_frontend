@@ -9,6 +9,7 @@ import PaintingCreationForm from "../PaintingCreationForm/PaintingCreationForm";
 import Dashboard from "../Dashboard/Dashboard";
 import ListView from "../ListView/ListView";
 import settings from "../settings.json";
+import { useNavigate } from "react-router-dom";
 import ExhibitionImagesForm from "../ExhibitionImagesForm/ExhibitionImagesForm";
 import "bootstrap/dist/css/bootstrap.css";
 import {
@@ -21,6 +22,19 @@ import {
   ListItemText,
 } from "@mui/material";
 function NavBar(props) {
+  let items = [];
+
+  const loading = () => {
+    ReactDOM.createRoot(document.querySelector(".profile-main")).render(
+      <div className="exhibition-paintings-container">
+        <center>
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </center>
+      </div>
+    );
+  };
   let navBaritems = [
     {
       text: "Dashboard",
@@ -63,14 +77,60 @@ function NavBar(props) {
           subText: "List exhibition",
           icon: "fas fa-table",
           callBack: () => {
+            loading();
             let options = [
               { text: "Edit", callBack: null, icon: "fas fa-pen" },
-              { text: "Delete", callBack: null, icon: "fas fa-trash" },
+              {
+                text: "Delete",
+                callBack: (event, item) => {
+                  fetch(
+                    `${settings.server_domain}/delete_exhibition/${item.id}`,
+                    {
+                      method: "DELETE",
+                    }
+                  )
+                    .then((response) => response.json())
+                    .then((data) => {
+                      if (data.success) {
+                        // if exhibition has deleted from database update UI
+
+                        ReactDOM.createRoot(
+                          document.querySelector(".profile-main")
+                        ).render(
+                          <ListView
+                            items={data.data}
+                            title="List of Exhibtions"
+                            options={options}
+                          />
+                        );
+                      } else {
+                        ReactDOM.createRoot(
+                          document.querySelector(".message")
+                        ).render(
+                          <div className="alert alert-danger">
+                            <center>Failed to delete that exhibitions</center>
+                          </div>
+                        );
+                      }
+                    })
+                    .catch((error) => {
+                      ReactDOM.createRoot(
+                        document.querySelector(".message")
+                      ).render(
+                        <div className="alert alert-danger">
+                          <center>Failed to delete that exhibitions</center>
+                        </div>
+                      );
+                    });
+                },
+                icon: "fas fa-trash",
+              },
             ];
             // fetching exhibition from server
             fetch(`${settings.server_domain}/get_exhibitions`)
               .then((response) => response.json())
               .then((data) => {
+                items = data;
                 ReactDOM.createRoot(
                   document.querySelector(".profile-main")
                 ).render(
@@ -101,6 +161,7 @@ function NavBar(props) {
           subText: "List painters",
           icon: "fas fa-table",
           callBack: () => {
+            loading();
             let options = [
               {
                 text: "Edit",
@@ -109,11 +170,44 @@ function NavBar(props) {
               },
               {
                 text: "Delete",
-                callBack: (painter) => {
+                callBack: (event, painter) => {
                   fetch(
                     `${settings.server_domain}/delete_painter/${painter.id}`,
                     { method: "DELETE" }
-                  );
+                  )
+                    .then((response) => response.json())
+                    .then((data) => {
+                      if (data.success) {
+                        // if painter has deleted from database update UI
+
+                        ReactDOM.createRoot(
+                          document.querySelector(".profile-main")
+                        ).render(
+                          <ListView
+                            items={data.data}
+                            title="List of all registered painters"
+                            options={options}
+                          />
+                        );
+                      } else {
+                        ReactDOM.createRoot(
+                          document.querySelector(".message")
+                        ).render(
+                          <div className="alert alert-danger">
+                            <center>Failed to delete that Painter</center>
+                          </div>
+                        );
+                      }
+                    })
+                    .catch((er) => {
+                      ReactDOM.createRoot(
+                        document.querySelector(".message")
+                      ).render(
+                        <div className="alert alert-danger">
+                          <center>Failed to delete that painter</center>
+                        </div>
+                      );
+                    });
                 },
                 icon: "fas fa-trash",
               },
@@ -131,7 +225,13 @@ function NavBar(props) {
                   />
                 );
               })
-              .catch((error) => console.log(error));
+              .catch((error) => {
+                ReactDOM.createRoot(document.querySelector(".message")).render(
+                  <div className="alert alert-danger">
+                    <center>Failed to load painters</center>
+                  </div>
+                );
+              });
           },
         },
       ],
@@ -152,6 +252,7 @@ function NavBar(props) {
           subText: "List blogs",
           icon: "fas fa-table",
           callBack: () => {
+            loading();
             let options = [
               { text: "Edit", callBack: null, icon: "fas fa-trash" },
               {
@@ -207,23 +308,76 @@ function NavBar(props) {
           subText: "List Paintings",
           icon: "fas fa-table",
           callBack: () => {
+            loading();
             let paintings = [];
             let options = [
               { text: "Edit", callBack: null, icon: "fas fa-pen" },
-              { text: "Delete", callBack: null, icon: "fas fa-trash" },
+              {
+                text: "Delete",
+                callBack: (event, painting) => {
+                  fetch(
+                    `${settings.server_domain}/delete_painting/${painting.id}`,
+                    { method: "DELETE" }
+                  )
+                    .then((response) => response.json())
+                    .then((data) => {
+                      if (data.success) {
+                        // if painting has deleted from database update UI
+
+                        ReactDOM.createRoot(
+                          document.querySelector(".profile-main")
+                        ).render(
+                          <ListView
+                            items={data.data}
+                            title="List of paintings"
+                            options={options}
+                          />
+                        );
+                      } else {
+                        ReactDOM.createRoot(
+                          document.querySelector(".message")
+                        ).render(
+                          <div className="alert alert-danger">
+                            <center>Failed to delete that Painter</center>
+                          </div>
+                        );
+                      }
+                    })
+                    .catch((er) => {
+                      ReactDOM.createRoot(
+                        document.querySelector(".message")
+                      ).render(
+                        <div className="alert alert-danger">
+                          <center>Failed to delete that painting</center>
+                        </div>
+                      );
+                    });
+                },
+                icon: "fas fa-trash",
+              },
             ];
             fetch(`${settings.server_domain}/get_paintings`)
               .then((response) => response.json())
               .then((data) => {
-                ReactDOM.createRoot(
-                  document.querySelector(".profile-main")
-                ).render(
-                  <ListView
-                    items={data}
-                    title="List of List of paintings"
-                    options={options}
-                  />
-                );
+                if (data.success) {
+                  ReactDOM.createRoot(
+                    document.querySelector(".profile-main")
+                  ).render(
+                    <ListView
+                      items={data.data}
+                      title="List of List of paintings"
+                      options={options}
+                    />
+                  );
+                } else {
+                  ReactDOM.createRoot(
+                    document.querySelector(".profile-main")
+                  ).render(
+                    <div className="alert alert-danger">
+                      <center>Failed to delete that painter</center>
+                    </div>
+                  );
+                }
               });
           },
         },
@@ -231,10 +385,19 @@ function NavBar(props) {
     },
   ];
   const [openMenu, setOpenMenu] = useState(false);
+
+  const btnLoading = (root) => {
+    ReactDOM.createRoot(document.querySelector(`${root}`)).render(
+      <center>
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </center>
+    );
+  };
   let currentOpen = "";
   let currentBtn = "";
   const handleOpenDropDwon = (index) => {
-    console.log(currentBtn);
     if (
       document.querySelector(".dropdown-menu-" + index).style.display ===
       "block"
@@ -317,7 +480,7 @@ function NavBar(props) {
               <i className="fas fa-cog"></i>
             </button>
             <button>
-              <i className="fas fa-user-circle"></i>
+              <i className="fas fa-sign-out-alt "></i> &nbsp;
             </button>
           </div>
         </div>
@@ -368,7 +531,6 @@ function NavBar(props) {
                             style={{ margin: "0.7em 0 0.7em 0" }}
                             onClick={() => {
                               innerItem.callBack();
-                              console.log("Clicked");
                               setOpenMenu(false);
                             }}
                           >
@@ -391,12 +553,32 @@ function NavBar(props) {
                 </ListItemButton>
               </ListItem>
               <ListItem>
-                <ListItemButton>
+                <ListItemButton
+                  onClick={() => {
+                    const navigate = useNavigate();
+                    fetch(`${settings.server_domain}/custom-logout`, {
+                      method: "GET",
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "session"
+                        )}`,
+                      },
+                    })
+                      .then((response) => response.json())
+                      .then((data) => {
+                        if (data.success) {
+                          localStorage.removeItem("session");
+                          localStorage.removeItem("userId");
+                          navigate("/");
+                        }
+                      });
+                  }}
+                >
                   <ListItemText>
                     <ListItemIcon>
-                      <i className="fas fa-user-circle"></i>
+                      <i className="fas fa-sign-out-alt "></i> &nbsp;
                     </ListItemIcon>
-                    Profile
+                    Logout
                   </ListItemText>
                 </ListItemButton>
               </ListItem>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import FormTemplate from "../FormTemplate/FormTemplate";
 import settings from "../settings.json";
+import ReactDOM from "react-dom/client";
 function ExhibitionCreationForm() {
   const [name, setName] = useState("");
   const [host, setHost] = useState("");
@@ -11,8 +12,13 @@ function ExhibitionCreationForm() {
 
   const handleOnSubmit = (event) => {
     event.preventDefault();
-    document.querySelector(".submit-button").classList.innerHTML =
-      "uploading...";
+    ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
+      <center>
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </center>
+    );
     let formData = new FormData();
     formData.append("name", name);
     formData.append("host", host);
@@ -33,29 +39,68 @@ function ExhibitionCreationForm() {
     fetch(`${settings.server_domain}/add_new_exhibition`, request)
       .then((response) => response.json())
       .then((data) => {
+        ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
+          <span>
+            <i className="fas fa-plus "></i>
+            Add
+          </span>
+        );
         if (data.success) {
-          document
-            .querySelector(".submit-button")
-            .classList.remove("uploading");
-          document.querySelector(".submit-button").innerHTML = "Done";
-          document.querySelector(".List exhibition").click();
+          ReactDOM.createRoot(document.querySelector(".message")).render(
+            <div className={`alert alert-success`}>
+              <center>
+                <p className="lead">Exhibition added succesfully</p>
+              </center>
+            </div>
+          );
+          document.querySelector(".exhibition-form").reset();
+        } else if (data.exhibitionExist) {
+          ReactDOM.createRoot(document.querySelector(".message")).render(
+            <div className={`alert alert-danger`}>
+              <center>
+                <p className="lead">Exhibition Already Exists.</p>
+              </center>
+            </div>
+          );
+        } else {
+          ReactDOM.createRoot(document.querySelector(".message")).render(
+            <div className={`alert alert-danger`}>
+              <center>
+                <p className="lead">failed to add new Exhibition</p>
+              </center>
+            </div>
+          );
         }
       })
       .catch((error) => {
-        console.log(error);
+        ReactDOM.createRoot(document.querySelector(".message")).render(
+          <div className={`alert alert-danger`}>
+            <center>
+              <p className="lead">Error happened while adding Exhibition</p>
+            </center>
+          </div>
+        );
+        ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
+          <span>
+            <i className="fas fa-plus "></i>
+            Add
+          </span>
+        );
       });
   };
   return (
     <div className="payment-registration-form-container">
       <h2>CREATE NEW EXHIBITION</h2>
       <hr />
+      <div className="message"></div>
 
-      <form onSubmit={handleOnSubmit}>
+      <form onSubmit={handleOnSubmit} className="exhibition-form">
         <div className="form-inputs-container">
           <label htmlFor="name">EXHIBITION NAME</label>
           <input
             type="text"
             name="name"
+            required
             onChange={(event) => {
               setName(event.target.value);
             }}
@@ -66,6 +111,7 @@ function ExhibitionCreationForm() {
           <input
             type="text"
             name="host"
+            required
             onChange={(event) => {
               setHost(event.target.value);
             }}
@@ -74,6 +120,7 @@ function ExhibitionCreationForm() {
         <div className="form-inputs-container">
           <label htmlFor="startdate">START DATE</label>
           <input
+            required
             type="date"
             name="startdate"
             onChange={(event) => {
@@ -86,6 +133,7 @@ function ExhibitionCreationForm() {
           <input
             type="date"
             name="enddate"
+            required
             onChange={(event) => {
               setEnddate(event.target.value);
             }}
@@ -96,6 +144,7 @@ function ExhibitionCreationForm() {
           <input
             type="number"
             name="fees"
+            required
             onChange={(event) => {
               setFees(event.target.value);
             }}
@@ -105,13 +154,14 @@ function ExhibitionCreationForm() {
           <label htmlFor="banner">EXHIBITION BANNER</label>
           <input
             type="file"
+            required
             name="banner"
             onChange={(event) => {
               setExhibitionBanner(event.target.files[0]);
             }}
           />
         </div>
-        <button type="submit" className="submit-button">
+        <button type="submit" className="submit-btn btn btn-primary">
           <i className="fas fa-plus "></i>
           Add Exhibition
         </button>

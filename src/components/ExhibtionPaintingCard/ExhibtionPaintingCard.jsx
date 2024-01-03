@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import settings from "../settings.json";
 
 function ExhibtionPaintingCard(props) {
+  console.log(props.item);
   return (
     <div className="card exhibition-painting-card">
       <img
@@ -18,7 +19,7 @@ function ExhibtionPaintingCard(props) {
         <h5 className="card-title">{props.item.name}</h5>
         <p className="card-text">{props.item.description}</p>
         <a
-          href={`/view_painting/${props.item.id}?i=${props.item.image}&a=${props.item.audio}`}
+          href={`/view_painting/${props.item.id}?i=${props.item.image}&a=${props.item.audio}&name=${props.item.name}&des=${props.item.description}&painter=${props.item.painter}&exhibition=${props.item.owner}`}
           className="btn btn-primary"
         >
           <i className="fas fa-eye"></i>

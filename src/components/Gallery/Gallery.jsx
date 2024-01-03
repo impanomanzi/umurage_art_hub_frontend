@@ -3,8 +3,6 @@ import ReactDOM from "react-dom/client";
 import "./Gallery.css";
 import "../ExhibitionCard/ExhibitionCard.css";
 import "bootstrap/dist/css/bootstrap.css";
-import GalleryCard from "../GalleryCard/GalleryCard";
-import GalleriesContainer from "../GalleriesContainer/GalleriesContainer";
 import HomeProjectsSlider from "../HomeProjectsSlider/HomeProjectsSlider";
 import { Link } from "react-router-dom";
 import settings from "../settings.json";
@@ -23,19 +21,6 @@ function Gallery(props) {
       .then((data) => {
         if (data.success) setGalleries(data.data);
         else {
-          ReactDOM.createRoot(document.querySelector(".message")).render(
-            <div className="alert alert-danger">
-              <center>Failed to load </center>
-              <button
-                className="btn btn-outline-secondary"
-                onClick={(event) => {
-                  window.location.reload();
-                }}
-              >
-                Reload
-              </button>
-            </div>
-          );
         }
       });
   }, []);
@@ -61,39 +46,23 @@ function Gallery(props) {
     return item.owner;
   });
   let galleryOwner = removeDuplication(galleryOwners);
-  const removegSkeletons = () => {
-    if (document.querySelectorAll(`.skeleton-gallery`)) {
-      document.querySelectorAll(`.skeleton-gallery`).forEach((element) => {
-        element.style.display = "none";
-      });
-    }
-  };
+
   return (
     <div className="gallery-outer-container">
+      <div className="skeletons">
+        <div className="gallery-loading" style={{ color: "black" }}>
+          <center>
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+              <p className="lead">Loading Galleries</p>
+            </div>
+          </center>
+        </div>
+      </div>
+      <div className="message"></div>
       <div className="gallery-container">
-        <div className="skeleton-gallery skeleton ">
-          <p className="skeleton-content">&nbsp;</p>
-        </div>
-        <div className="skeleton-gallery skeleton ">
-          <p className="skeleton-content">&nbsp;</p>
-        </div>
-        <div className="skeleton-gallery skeleton ">
-          <p className="skeleton-content">&nbsp;</p>
-        </div>
-        <div className="skeleton-gallery skeleton ">
-          <p className="skeleton-content">&nbsp;</p>
-        </div>
-        <div className="skeleton-gallery skeleton ">
-          <p className="skeleton-content">&nbsp;</p>
-        </div>
-        <div className="skeleton-gallery skeleton ">
-          <p className="skeleton-content">&nbsp;</p>
-        </div>
-        <div className="skeleton-gallery skeleton ">
-          <p className="skeleton-content">&nbsp;</p>
-        </div>
-
         {galleryOwner.map((item, index) => {
+          document.querySelector(`.gallery-loading`).innerHTML = "";
           return (
             <div key={index} className="gallery-home-card">
               <h3 style={{ color: "inherit" }}>{item}</h3>
@@ -108,7 +77,6 @@ function Gallery(props) {
             </div>
           );
         })}
-        {removegSkeletons()}
       </div>
     </div>
   );

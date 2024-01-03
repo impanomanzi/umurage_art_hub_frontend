@@ -10,7 +10,6 @@ function ExhibitionPaintings() {
   fetch(`${settings.server_domain}/get_exhibition_paintings/${id}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       let paintings = data;
       let paintingsEl = (
         <div className="inner-exhibition-paintings-container">

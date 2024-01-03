@@ -51,7 +51,7 @@ function Home() {
   return (
     <div className="home">
       <NavBar />
-      <div className="message"></div>
+
       <div className="home-main-container">
         <div className="exhibition-section">
           <div className="home-exhibition-container">
@@ -60,11 +60,7 @@ function Home() {
         </div>
         <div className="gallery-section">
           <header>
-            <h1>Expoler galleries</h1>
-            <p>
-              All our painters everyone has gallery expoler their galleries and
-              appreciate their work.
-            </p>
+            <h1 className="h1">Galleries</h1>
           </header>
           <Gallery exhibitions={exhibitions} />
         </div>

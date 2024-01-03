@@ -383,6 +383,167 @@ function NavBar(props) {
         },
       ],
     },
+    {
+      text: "Customer",
+      subHeadings: [
+        {
+          subText: "List customers",
+          icon: "fas fa-list",
+          callBack: () => {
+            loading();
+            fetch(`${settings.server_domain}/get_customers`, {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("session")}`,
+              },
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                // console.log(data);
+                if (data.success) {
+                  let options = [
+                    { text: "Edit", callBack: null, icon: "fas fa-pen" },
+                    {
+                      text: "Delete",
+                      callBack: (event, customer) => {
+                        ReactDOM.createRoot(
+                          document.querySelector(".message")
+                        ).render(
+                          <div className="exhibition-paintings-container">
+                            <center>
+                              <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                              </div>
+                            </center>
+                          </div>
+                        );
+                        let formData = new FormData();
+                        formData.append("customer_id", customer.id);
+                        fetch(`${settings.server_domain}/delete_customer`, {
+                          method: "DELETE",
+                          Authorization: `Bearer ${localStorage.getItem(
+                            "session"
+                          )}`,
+                          body: formData,
+                        })
+                          .then((response) => response.json())
+                          .then((data) => {
+                            if (data.success) {
+                              ReactDOM.createRoot(
+                                document.querySelector(".profile-main")
+                              ).render(
+                                <ListView
+                                  items={data.data}
+                                  title="List of customers"
+                                  options={options}
+                                />
+                              );
+                            } else {
+                              ReactDOM.createRoot(
+                                document.querySelector(".message")
+                              ).render(
+                                <div className="alert alert-danger">
+                                  <center>
+                                    Failed to delete that customer
+                                  </center>
+                                </div>
+                              );
+                            }
+                          });
+                      },
+                      icon: "fas fa-trash",
+                    },
+                    {
+                      text: "Change status",
+                      callBack: (event, customer) => {
+                        ReactDOM.createRoot(
+                          document.querySelector(".message")
+                        ).render(
+                          <div className="exhibition-paintings-container">
+                            <center>
+                              <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                              </div>
+                            </center>
+                          </div>
+                        );
+                        let formData = new FormData();
+                        formData.append("customer_id", customer.id);
+                        formData.append("current_status", customer.status);
+                        fetch(
+                          `${settings.server_domain}/update_customer_status`,
+                          {
+                            method: "POST",
+                            headers: {
+                              Authorization: `Bearer ${localStorage.getItem(
+                                "session"
+                              )}`,
+                            },
+                            body: formData,
+                          }
+                        )
+                          .then((response) => response.json())
+                          .then((data) => {
+                            if (data.success) {
+                              document.querySelector(".message").innerHTML = "";
+                              ReactDOM.createRoot(
+                                document.querySelector(".profile-main")
+                              ).render(
+                                <ListView
+                                  items={data.data}
+                                  title="List of customers"
+                                  options={options}
+                                />
+                              );
+                            } else {
+                              ReactDOM.createRoot(
+                                document.querySelector(".message")
+                              ).render(
+                                <div className="alert alert-danger">
+                                  <center>
+                                    Failed to update customer status
+                                  </center>
+                                </div>
+                              );
+                            }
+                          })
+                          .catch((error) => {
+                            ReactDOM.createRoot(
+                              document.querySelector(".message")
+                            ).render(
+                              <div className="alert alert-danger">
+                                <center>
+                                  error happened updating customer status
+                                </center>
+                              </div>
+                            );
+                          });
+                      },
+                    },
+                  ];
+
+                  ReactDOM.createRoot(
+                    document.querySelector(".profile-main")
+                  ).render(
+                    <ListView
+                      items={data.data}
+                      title="List of customers"
+                      options={options}
+                    />
+                  );
+                }
+              })
+              .catch((error) => {
+                ReactDOM.createRoot(document.querySelector(".message")).render(
+                  <div className="alert alert-danger">
+                    <center>Error happened while deleting customer</center>
+                  </div>
+                );
+              });
+          },
+        },
+      ],
+    },
   ];
   const [openMenu, setOpenMenu] = useState(false);
 

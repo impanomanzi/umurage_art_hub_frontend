@@ -1,13 +1,18 @@
 .exhibition-painting-show-container {
   display: flex;
   /* font-family: roboto; */
+  flex: 2;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding-top: 1rem;
   padding-bottom: 1em;
   margin-top: 1px;
+}
+.painting-container {
+  display: flex;
   background-color: #152331;
+  color: white;
 }
 .exhibition-painting-img {
   height: 71vh;
@@ -23,5 +28,9 @@
 @media screen and (max-device-width: 576px) {
   .exhibition-painting-img {
     margin: 1em;
+  }
+  .painting-container {
+    display: flex;
+    flex-direction: column;
   }
 }

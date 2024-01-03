@@ -38,12 +38,20 @@ function ExhibitionShowPage() {
           />
 
           <div className="exhibition-continue">
-            <h3>Entrace:</h3>
-            <h1>{wanted.fees} </h1>
-            <h4>Rwf</h4>
+            <h3 className="h3">Entrace:</h3>
+            <h1 className="h1">{wanted.fees} </h1>
+            <h4 className="h4"> Rwf</h4>
             <a href={`/payment/${exhibitionId}`}>
               <button className="btn btn-primary">
                 Continue &nbsp; <i className="fas fa-arrow"></i>
+              </button>
+            </a>
+            <a href={`/check_payment/${exhibitionId}`}>
+              <button
+                className="btn btn-secondary"
+                style={{ marginTop: "1em" }}
+              >
+                Already paid? &nbsp; <i className="fas fa-arrow"></i>
               </button>
             </a>
           </div>

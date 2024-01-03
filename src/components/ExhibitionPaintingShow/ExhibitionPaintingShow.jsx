@@ -9,27 +9,45 @@ function ExhibitionPaintingShow(props) {
   return (
     <>
       <FormNavbar />
-      <div className="exhibition-painting-show-container">
-        <div className="exhibition-painting-img">
-          <img
-            src={`${query.get("i")}`.replace(
+      <div className="painting-container">
+        <span>
+          <center>
+            <h3 className="h3">Name</h3>
+            <p className="lead">
+              {query.get("name")} <br />
+              {/* Painter:{query.get("painter")} <br /> */}
+              {/* Exhibition: {query.get("exhibition")} */}
+            </p>
+          </center>
+        </span>
+        <div className="exhibition-painting-show-container">
+          <div className="exhibition-painting-img">
+            <img
+              src={`${query.get("i")}`.replace(
+                "http://localhost:5000",
+                `${settings.server_domain}`
+              )}
+              alt=""
+            />
+          </div>
+          <audio
+            src={`${query.get("a")}`.replace(
               "http://localhost:5000",
               `${settings.server_domain}`
             )}
-            alt=""
-          />
+            controls="controls"
+            preload="auto"
+            autoPlay
+          >
+            AUDIO NOT SUPPORTED
+          </audio>
         </div>
-        <audio
-          src={`${query.get("a")}`.replace(
-            "http://localhost:5000",
-            `${settings.server_domain}`
-          )}
-          controls="controls"
-          preload="auto"
-          autoPlay
-        >
-          AUDIO NOT SUPPORTED
-        </audio>
+        <span>
+          <center>
+            <h3 className="h3">Description</h3>
+            <p className="lead">{query.get("des")}</p>
+          </center>
+        </span>
       </div>
     </>
   );

@@ -17,6 +17,7 @@ import GalleryShow from "./components/GalleryShow/GalleryShow.jsx";
 import ExhibitionPaintings from "./components/ExhibitionPaintings/ExhibitionPaintings.jsx";
 import ExhibitionShowPage from "./components/ExhibitionShowPage/ExhibitionShowPage.jsx";
 import ExhibitionPaintingShow from "./components/ExhibitionPaintingShow/ExhibitionPaintingShow.jsx";
+import CheckPaymentForm from "./components/CheckPaymentForm/CheckPaymentForm.jsx";
 function App() {
   const [login, setLogin] = useState(false);
   const [adminLoggedin, setAdminLogged] = useState(false);
@@ -35,6 +36,7 @@ function App() {
             }}
           />
           <Route path="/profile/:id" Component={Profile} />
+          <Route path="/check_payment/:id" Component={CheckPaymentForm} />
 
           <Route path="/payment/:id" Component={PayementRegistrationForm} />
           <Route path="/gallery/:name" Component={GalleryShow} />

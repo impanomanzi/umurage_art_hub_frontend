@@ -6,7 +6,7 @@ import settings from "../settings.json";
 import CheckoutForm from "../CheckoutForm/CheckoutForm";
 import FormNavbar from "../NavBar/FormNavbar";
 function PayementRegistrationForm() {
-  let exhibitionId = useParams().id;
+  const exhibitionId = useParams().id;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -25,27 +25,71 @@ function PayementRegistrationForm() {
         });
         const handleOnSubmit = (event) => {
           event.preventDefault();
-
-          ReactDOM.createRoot(
-            document.querySelector(".payment-form-container")
-          ).render(
-            <CheckoutForm
-              id={exhibitionId}
-              firstName={firstName}
-              lastName={lastName}
-              email={email}
-              phoneNumber={phoneNumber}
-              exhibitionName={wantedExhibition[0].name}
-              amount={wantedExhibition[0].fees}
-            />
+          document.querySelector(".message").innerHTML = "";
+          ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
+            <center>
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </center>
           );
+          let formData = new FormData();
+          formData.append("firstname", firstName);
+          formData.append("lastName", lastName);
+          formData.append("email", email);
+          formData.append("phonenumber", phoneNumber);
+          formData.append("exhibition", exhibitionId);
+          fetch(`${settings.server_domain}/add_customer`, {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
+                <span>continue</span>
+              );
+              if (data.success) {
+                ReactDOM.createRoot(
+                  document.querySelector(".payment-form-container")
+                ).render(
+                  <CheckoutForm
+                    id={exhibitionId}
+                    firstName={firstName}
+                    lastName={lastName}
+                    email={email}
+                    phoneNumber={phoneNumber}
+                    exhibitionName={wantedExhibition[0].name}
+                    amount={wantedExhibition[0].fees}
+                  />
+                );
+              } else {
+                ReactDOM.createRoot(document.querySelector(".message")).render(
+                  <div className={`alert alert-danger`}>
+                    <center>
+                      <p className="lead">failed to submit your request</p>
+                    </center>
+                  </div>
+                );
+              }
+            })
+            .catch((error) => {
+              ReactDOM.createRoot(document.querySelector(".message")).render(
+                <div className={`alert alert-danger`}>
+                  <center>
+                    <p className="lead">
+                      erro happened while submiting your informations
+                    </p>
+                  </center>
+                </div>
+              );
+              ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
+                <span>continue</span>
+              );
+            });
         };
         let form = (
           <div className="container">
             <div className="alert alert-warning alert-dismissible">
-              {/* <h4 className="alert-heading">
-                  <i className="fas fa-info"></i>
-                </h4> */}
               <p className="h3">
                 You're going to pay {wantedExhibition[0].fees} for{" "}
                 {wantedExhibition[0].name}
@@ -53,13 +97,15 @@ function PayementRegistrationForm() {
             </div>
             <form
               onSubmit={handleOnSubmit}
-              className="row justify-content-center col-md-6"
+              className="row justify-content-center col-md-6 payment-form"
             >
+              <div className="message"></div>
               <div className="form-group">
                 <label htmlFor="first_name">FIRST NAME</label>
                 <input
                   type="text"
                   name="name"
+                  required
                   autoComplete="off"
                   onChange={(event) => {
                     firstName = event.target.value;
@@ -72,6 +118,7 @@ function PayementRegistrationForm() {
                 <input
                   type="text"
                   name="last_name"
+                  required
                   onChange={(event) => {
                     lastName = event.target.value;
                   }}
@@ -84,6 +131,7 @@ function PayementRegistrationForm() {
                 <input
                   name="email"
                   type="email"
+                  required
                   onChange={(event) => {
                     email = event.target.value;
                   }}
@@ -95,13 +143,14 @@ function PayementRegistrationForm() {
                 <input
                   name="phone"
                   type="text"
+                  required
                   onChange={(event) => {
                     phoneNumber = event.target.value;
                   }}
                   className="form-control"
                 />
               </div>
-              <button type="submit" className="btn btn-dark">
+              <button type="submit" className="btn btn-primary submit-btn">
                 <p className="h4">continue</p>
               </button>
             </form>

@@ -5,7 +5,6 @@ function ListView(props) {
   // extracting keys from an object to be use as table headers
   let headers = Object.keys(props.items[0]);
   let number = headers.length;
-  // const [changeDetected, setChangeDetected] = useState(false);
   return (
     // creating table headers
     <div className="list-group" style={{ margin: "1rem 0.8rem 1rem 0.8rem" }}>

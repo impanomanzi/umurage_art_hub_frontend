@@ -140,7 +140,7 @@ function ExhibitionImagesForm() {
                     })}
                   </select>
                 </div>
-                <div className="painting-container">
+                <div className="painting-image-container">
                   <div className="form-inputs-container">
                     <label htmlFor="painting">
                       <i className="fas fa-image"></i>

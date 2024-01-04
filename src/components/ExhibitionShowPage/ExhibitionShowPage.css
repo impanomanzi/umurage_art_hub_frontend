@@ -52,4 +52,8 @@
   .exhibition-page-container img {
     width: 100%;
   }
+  .exhibition-description {
+    display: flex;
+    flex-direction: row;
+  }
 }

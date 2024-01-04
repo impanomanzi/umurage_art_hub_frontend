@@ -16,7 +16,7 @@ function GalleryCard(props) {
         loading="lazy"
         alt={`exbhition-${props.gallery.name}`}
       />
-      <div className="card-body">
+      <div className="card-body gallery-card-body">
         <Link
           to={`https://wa.me/${props.gallery.phone}`.trim()}
           className="btn btn-primary"

@@ -14,19 +14,26 @@ function ExhibitionShowPage() {
       let wanted = data;
       let exhibitionPage = (
         <div className="exhibition-page-container">
-          <div className="exhibition-description">
-            <p>
-              <h1>{wanted.name}</h1>
+          <div>
+            <h1 className="h1" style={{ color: "white" }}>
+              {wanted.name}
+            </h1>
+            <p className="exhibition-description">
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Molestiae in asperiores pariatur dolor molestias ipsum rem,
-                temporibus iusto distinctio quibusdam impedit, laboriosam
-                quisquam unde omnis doloremque eligendi praesentium quo sit.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde
-                repellendus tempora molestias pariatur accusantium labore ex
-                dolores at odit, voluptates ea distinctio necessitatibus enim
-                rem porro iste recusandae incidunt placeat.
+                <i className="fas fa-user-alt"></i>&nbsp;
+                {wanted.host}
               </p>
+              &nbsp;&nbsp; &nbsp;
+              <p>
+                <i className="fas fa-calendar"></i>
+                &nbsp; {wanted.startdate}
+              </p>
+              &nbsp; &nbsp;
+              <p>
+                <i className="fas fa-calendar"></i>
+                &nbsp; {wanted.enddate}
+              </p>
+              &nbsp;
             </p>
           </div>
           <img

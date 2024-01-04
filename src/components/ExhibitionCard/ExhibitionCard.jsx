@@ -18,13 +18,24 @@ function ExhibitionCard(props) {
       </div>
 
       <div className="exhibition-meta">
-        <h5> {props.exhibition.name}</h5>
-        <h3>Price: {props.exhibition.fees}</h3>
+        <h5 className="h5"> {props.exhibition.name}</h5>
+        <p className="lead">
+          <i className="fas fa-calendar"></i>
+          <p className="lead">
+            {props.exhibition.startdate}
+            &nbsp;
+            <i className="fas fa-arrow-right"></i>
+            &nbsp;
+            {props.exhibition.enddate}
+          </p>
+          <p className="lead">
+            Entrance:<b> {props.exhibition.fees} Rwf</b>
+          </p>
+        </p>
+        <Link to={`/exhibition/${props.exhibition.id}`} className="join-btn">
+          <button className="btn btn-primary">Join</button>
+        </Link>
       </div>
-
-      <Link to={`/exhibition/${props.exhibition.id}`} className="join-btn">
-        <button className="btn btn-primary">Join</button>
-      </Link>
     </div>
   );
 }

@@ -7,11 +7,18 @@
   align-items: center;
 }
 .home {
-  background-color: #152331;
+  background: linear-gradient(
+    rgb(2, 2, 16),
+    rgb(54, 53, 53),
+    rgb(2, 2, 16),
+    rgb(26, 29, 31),
+    rgb(119, 119, 121),
+    rgb(30, 29, 29),
+    rgb(2, 2, 16)
+  );
 }
 .gallery-section {
-  background-color: white;
-  color: black;
+  color: white;
   height: auto;
 }
 
@@ -30,31 +37,20 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* justify-content: center; */
-  /* align-items: center; */
-  /* font-family: roboto-itallic; */
 }
 
 .exhibition-section {
-  /* background-color: #152331; */
-
-  height: 70vh;
+  height: 80vh;
+  /* background: url(/public/zoltan-tasi-sJGvoX_eVhw-unsplash.jpg); */
 }
 .home-main-container .exhibition-section header h1 {
   font-size: 3.5em;
   font-weight: 400;
   line-break: strict;
-  /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
   opacity: 0.6;
   line-break: anywhere;
-  /* line-height: 2em; */
 }
-/* .home-main-container header h1 { */
-/* font-size: 2.5em; */
-/* font-weight: 400; */
 
-/* font-family: roboto; */
-/* } */
 .home-main-container header p {
   font-size: 1.4em;
 }

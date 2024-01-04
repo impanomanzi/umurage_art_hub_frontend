@@ -10,7 +10,7 @@ function HomeNavBar() {
         </div>
 
         <Link to="/sign-in">
-          <button className="primary">
+          <button className="btn btn-outline-primary">
             <i className="fas fa-unlock"></i>
           </button>
         </Link>

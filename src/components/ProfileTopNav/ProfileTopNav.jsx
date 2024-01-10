@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./ProfileTopNav.css";
-import { HiOutlineBars3 } from "react-icons/hi2";
 import settings from "../settings.json";
 import {
   Box,
@@ -40,7 +39,7 @@ function ProfileTopNav() {
   };
   return (
     <div className="profile-top-nav-container">
-      <h2>Umurage art hub</h2>
+      <h2 className="h2">Umurage art hub</h2>
       <Drawer
         className="user-profile-drawer"
         open={openMenu}

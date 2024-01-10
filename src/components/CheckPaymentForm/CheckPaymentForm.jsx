@@ -31,6 +31,7 @@ function CheckPaymentForm() {
           <span>Submit</span>
         );
         if (data.success) {
+          localStorage.setItem("clientId", customerId);
           navigate(`/exhibition_paintings/${data.id}`);
         } else {
           ReactDOM.createRoot(document.querySelector(".message")).render(

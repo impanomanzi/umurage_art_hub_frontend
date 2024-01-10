@@ -32,10 +32,24 @@ function App() {
           <Route
             path="/sign-in"
             Component={() => {
-              return <LoginForm onClientLoggedIn={() => setLogin(true)} />;
+              return (
+                <LoginForm
+                  onClientLoggedIn={setLogin}
+                  onAdminLoggedIn={setAdminLogged}
+                />
+              );
             }}
           />
-          <Route path="/profile/:id" Component={Profile} />
+          <Route
+            path="/profile"
+            element={
+              adminLoggedin ? (
+                <Profile onLogout={setAdminLogged} />
+              ) : (
+                <Navigate to={"/sign-in"} replace={true} />
+              )
+            }
+          />
           <Route path="/check_payment/:id" Component={CheckPaymentForm} />
 
           <Route path="/payment/:id" Component={PayementRegistrationForm} />

@@ -7,14 +7,23 @@ import ExhibtionPaintingCard from "../ExhibtionPaintingCard/ExhibtionPaintingCar
 import { useParams } from "react-router-dom";
 function ExhibitionPaintings() {
   let id = useParams().id;
-  fetch(`${settings.server_domain}/get_exhibition_paintings/${id}`)
+  fetch(`${settings.server_domain}/get_exhibition_paintings/${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("session")}`,
+      clientId: localStorage.getItem("clientId"),
+      exId: id,
+    },
+  })
     .then((response) => response.json())
     .then((data) => {
       let paintings = data;
       let paintingsEl = (
         <div className="inner-exhibition-paintings-container">
           {paintings.map((item, index) => {
-            return <ExhibtionPaintingCard item={item} key={index} />;
+            return (
+              <ExhibtionPaintingCard item={item} key={index} exhibition={id} />
+            );
           })}
         </div>
       );

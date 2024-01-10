@@ -1,10 +1,57 @@
 import React from "react";
+import { useState } from "react";
 import "./GalleryCard.css";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import settings from "../settings.json";
 
 function GalleryCard(props) {
+  const [liked, setLiked] = useState(false);
+  const [likes, setLikes] = useState(props.likes);
+  const [likeBtnText, setLikeBtnText] = useState("Like");
+  const like = () => {
+    let temp = Number.parseInt(likes);
+    setLikes(temp + 1);
+    fetch(`${settings.server_domain}/like/${props.gallery.id}`, {
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setLiked(true);
+          setLikes(data.likes);
+        } else {
+          setLikes(temp - 1);
+          setLikeBtnText("Like");
+          console.log("failed");
+        }
+      })
+      .catch((error) => {
+        setLikes(temp - 1);
+        console.log(error);
+      });
+  };
+  const dislike = () => {
+    let temp = Number.parseInt(likes);
+    setLikes(temp > 0 ? temp - 1 : 0);
+    fetch(`${settings.server_domain}/dislike/${props.gallery.id}`, {
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setLiked(false);
+          setLikes(data.likes);
+        } else {
+          setLikes(temp + 1);
+          console.log("failed");
+        }
+      })
+      .catch((error) => {
+        setLikes(temp + 1);
+        console.log(error);
+      });
+  };
   return (
     <div className="gallery-card card">
       <img
@@ -16,13 +63,44 @@ function GalleryCard(props) {
         loading="lazy"
         alt={`exbhition-${props.gallery.name}`}
       />
-      <div className="card-body gallery-card-body">
-        <Link
-          to={`https://wa.me/${props.gallery.phone}`.trim()}
-          className="btn btn-primary"
+      <div className="credit">
+        <p class="badge badge-success lead">{props.gallery.name}</p>
+        <p className="lead">
+          <i className="fas fa-copyright"></i>&nbsp;
+          {props.gallery.owner}
+        </p>
+      </div>
+      <div className="card-body gallery-card-link">
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="button group for filtering and sorting gallery painting"
         >
-          Buy now
-        </Link>
+          <Link
+            to={`https://wa.me/${props.gallery.phone}`.trim()}
+            className="btn btn-primary"
+          >
+            <i className="fas fa-cart-arrow-down"></i>&nbsp; Buy now
+          </Link>
+          <button className="btn btn-secondary">
+            <i className="fas fa-share"></i> &nbsp; Share
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={(event) => {
+              if (!liked) {
+                like();
+              } else {
+                dislike();
+              }
+            }}
+          >
+            <i className="fas fa-heart"></i> &nbsp; {likeBtnText} &nbsp;
+            <span className="badge badge-light" style={{ color: "black" }}>
+              {likes}
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   );

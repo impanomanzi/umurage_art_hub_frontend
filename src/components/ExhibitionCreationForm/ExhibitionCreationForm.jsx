@@ -26,17 +26,17 @@ function ExhibitionCreationForm() {
     formData.append("end_date", enddate);
     formData.append("entrace_fees", fees);
     formData.append("banner", banner);
-    let request = {
-      method: "PUT",
-      Headers: {
-        encType: "multipart/form-data",
-      },
-      body: formData,
-    };
 
     // make request
 
-    fetch(`${settings.server_domain}/add_new_exhibition`, request)
+    fetch(`${settings.server_domain}/add_new_exhibition`, {
+      method: "PUT",
+      headers: {
+        encType: "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("session")}`,
+      },
+      body: formData,
+    })
       .then((response) => response.json())
       .then((data) => {
         ReactDOM.createRoot(document.querySelector(".submit-btn")).render(

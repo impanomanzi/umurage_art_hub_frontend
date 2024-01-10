@@ -18,36 +18,37 @@ import {
 import Dashboard from "../Dashboard/Dashboard";
 function Profile() {
   let navigate = useNavigate();
-  let userId = useParams().id;
-  const validateUser = () => {
-    fetch(`${settings.server_domain}/api/authorize/${userId}`)
+  const logout = () => {
+    fetch(`${settings.server_domain}/custom-admin-logout`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("session")}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          let content = (
-            <div className="profile-container">
-              <div>
-                <NavBar username="Rafiki" />
-              </div>
-              <div className="profile-main">
-                <Dashboard />
-              </div>
-            </div>
-          );
-          let container = document.querySelector(".dashboard-container");
-          ReactDOM.createRoot(container).render(content);
-        } else {
-          navigate("/");
+          navigate("/sign-in");
+          localStorage.removeItem("authKey");
+          localStorage.removeItem("session");
+          localStorage.removeItem("userId");
+          localStorage.removeItem("username");
+          props.onLogout(false);
         }
-      })
-      .catch((error) => {
-        navigate("/");
       });
   };
-  validateUser();
+  let userId = useParams().id;
+
   return (
     <div className="dashboard-container">
-      <p className="alert alert-warning">Authenticating please wait ...</p>
+      <div className="profile-container">
+        <div>
+          <NavBar username="Rafiki" logout={logout} />
+        </div>
+        <div className="profile-main">
+          <Dashboard />
+        </div>
+      </div>
     </div>
   );
 }

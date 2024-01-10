@@ -9,6 +9,7 @@ function ProfileBottomNav(props) {
     <div className="profile-bottom-nav-container">
       <div className="home-area">
         <button
+          className="btn btn-primary"
           onClick={() => {
             ReactDOM.createRoot(document.querySelector(".user")).render(
               <div className="user user-main">
@@ -27,6 +28,7 @@ function ProfileBottomNav(props) {
       </div>
       <div className="add-area">
         <button
+          className="btn btn-primary"
           onClick={(event) => {
             console.log(document.querySelector(".user"));
             ReactDOM.createRoot(document.querySelector(".user")).render(
@@ -38,7 +40,7 @@ function ProfileBottomNav(props) {
         </button>
       </div>
       <div className="contact-area">
-        <button>
+        <button className="btn btn-primary">
           <i className="fas fa-user-circle"></i>
         </button>
       </div>

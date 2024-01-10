@@ -5,20 +5,13 @@ import "../FormTemplate/FormTemplate.css";
 import settings from "../settings.json";
 function PaintingCreationForm() {
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Potrait");
   const [painting, setPainting] = useState("");
   let formData = new FormData();
   formData.append("name", name);
   formData.append("category", category);
   formData.append("painting", painting);
   formData.append("owner", localStorage.getItem("userId"));
-  let options = {
-    method: "PUT",
-    headers: {
-      encType: "multipart/form-data",
-    },
-    body: formData,
-  };
   const handleOnSubmit = (event) => {
     event.preventDefault();
     ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
@@ -28,7 +21,14 @@ function PaintingCreationForm() {
         </div>
       </center>
     );
-    fetch(`${settings.server_domain}/add_new_painting`, options)
+    fetch(`${settings.server_domain}/add_new_painting`, {
+      method: "PUT",
+      headers: {
+        encType: "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("session")}`,
+      },
+      body: formData,
+    })
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
@@ -106,7 +106,9 @@ function PaintingCreationForm() {
               setCategory(event.target.value);
             }}
           >
-            <option value="Potrait">Potrait</option>
+            <option value="Potrait" selected>
+              Potrait
+            </option>
             <option value="Art work">Art Work</option>
           </select>
         </div>

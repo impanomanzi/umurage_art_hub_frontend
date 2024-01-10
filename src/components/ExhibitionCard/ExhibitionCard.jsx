@@ -20,7 +20,6 @@ function ExhibitionCard(props) {
       <div className="exhibition-meta">
         <h5 className="h5"> {props.exhibition.name}</h5>
         <p className="lead">
-          <i className="fas fa-calendar"></i>
           <p className="lead">
             {props.exhibition.startdate}
             &nbsp;

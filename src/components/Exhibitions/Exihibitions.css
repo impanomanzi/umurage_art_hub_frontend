@@ -1,7 +1,3 @@
-/* @font-face {
-  font-family: roboto;
-  src: url("/src/assets/fonts/Roboto-Black.ttf");
-} */
 .exhibitions-container {
   display: flex;
   margin-left: 1rem;
@@ -9,8 +5,7 @@
   overflow-x: scroll;
 }
 .exhibitions-outer-container {
-  height: 50vh;
-  /* font-family: roboto; */
+  height: auto;
 }
 
 .exhibition-outer-container {

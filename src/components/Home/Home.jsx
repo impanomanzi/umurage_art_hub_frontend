@@ -7,7 +7,7 @@ import HomeProjectsSlider from "../HomeProjectsSlider/HomeProjectsSlider.jsx";
 import ExhibitionsNavbar from "../ExhibitionsNavbar/ExhibitionsNavbar.jsx";
 import Gallery from "../Gallery/Gallery.jsx";
 import Exhibitions from "../Exhibitions/Exhibitions.jsx";
-import settings from "../settings.json";
+
 import { useNavigate } from "react-router-dom";
 function Home() {
   let navigate = useNavigate();
@@ -29,24 +29,18 @@ function Home() {
     }
     return clearArray;
   };
-  let fetched = false;
-  useEffect(() => {
-    fetch(`${settings.server_domain}/get_exhibitions`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("session")}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message != false) {
-          fetched = true;
-          setExhibitions(data);
-        } else {
-          navigate("/sign-in");
-        }
-      });
-  }, []);
+
+  const loading = () => {
+    ReactDOM.createRoot(document.querySelector(".profile-main")).render(
+      <div className="exhibition-paintings-container">
+        <center>
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </center>
+      </div>
+    );
+  };
 
   return (
     <div className="home">
@@ -62,7 +56,7 @@ function Home() {
           <header>
             <h1 className="h1">Galleries</h1>
           </header>
-          <Gallery exhibitions={exhibitions} />
+          <Gallery />
         </div>
       </div>
     </div>

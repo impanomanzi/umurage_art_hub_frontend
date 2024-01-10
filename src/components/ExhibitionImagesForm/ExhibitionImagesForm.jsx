@@ -14,7 +14,12 @@ function ExhibitionImagesForm() {
     .then((data) => {
       exhibitionNames = data;
 
-      fetch(`${settings.server_domain}/get_painters`)
+      fetch(`${settings.server_domain}/get_painters`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("session")}`,
+        },
+      })
         .then((response) => response.json())
         .then((data) => {
           painters = data;
@@ -38,6 +43,7 @@ function ExhibitionImagesForm() {
               method: "POST",
               headers: {
                 encType: "multipart/form-data",
+                Authorization: `Bearer ${localStorage.getItem("session")}`,
               },
               body: formData,
             };

@@ -1,13 +1,18 @@
 .footer {
-  background-color: #0a0b0c;
   color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-family: roboto-itallic;
 }
+/* .footer-outer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} */
 .footer-container {
   margin-top: 2rem;
+  background-color: #0a0b0c;
 }
 .footer-container .back-top {
   display: flex;
@@ -38,8 +43,5 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
-  .socials {
-    flex-direction: column;
   }
 }

@@ -7,23 +7,9 @@ import HomeProjectsSlider from "../HomeProjectsSlider/HomeProjectsSlider";
 import { Link } from "react-router-dom";
 import settings from "../settings.json";
 function Gallery(props) {
+  const [fixedGalleryOwner, setFixedGalleryOnwer] = useState([]);
+  const [galleryOwner, setGalleryOwner] = useState([]);
   const [galleries, setGalleries] = useState([]);
-  // gettings galleries from server
-  useEffect(() => {
-    let request = {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("session")}`,
-      },
-    };
-    fetch(`${settings.server_domain}/get_paintings`, request)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) setGalleries(data.data);
-        else {
-        }
-      });
-  }, []);
   // function to remove dupplication from an array
   const removeDuplication = (array) => {
     // console.log(array);
@@ -42,13 +28,54 @@ function Gallery(props) {
     }
     return clearArray;
   };
-  let galleryOwners = galleries.map((item, index) => {
-    return item.owner;
-  });
-  let galleryOwner = removeDuplication(galleryOwners);
+  // gettings galleries from server
+  useEffect(() => {
+    let request = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("session")}`,
+      },
+    };
+    fetch(`${settings.server_domain}/get_paintings`, request)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setGalleries(data.data);
+          let galleryOwners = data.data.map((item, index) => {
+            return item.owner;
+          });
+          setGalleryOwner(removeDuplication(galleryOwners));
+          setFixedGalleryOnwer(removeDuplication(galleryOwners));
+        } else {
+        }
+      });
+  }, []);
+
+  // let galleryOwner = removeDuplication(galleryOwners);
 
   return (
     <div className="gallery-outer-container">
+      <div
+        class="btn-group"
+        role="group"
+        aria-label="button group for filtering and sorting exhibitions"
+      >
+        <input
+          type="text"
+          placeholder="Search by gallery name"
+          onChange={(event) => {
+            let searchResult = fixedGalleryOwner.filter((item) => {
+              return item.toLowerCase().startsWith(event.target.value);
+            });
+            setGalleryOwner(searchResult);
+            // console.log(searchResult);
+          }}
+        />
+        <button className="btn btn-outline-primary">
+          {" "}
+          <i className="fas fa-search"></i>
+        </button>
+      </div>
       <div className="skeletons">
         <div className="gallery-loading" style={{ color: "black" }}>
           <center>

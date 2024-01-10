@@ -1,6 +1,5 @@
 import "./NavBar.css";
 import React, { useState, useEffect } from "react";
-import { HiOutlineBars3 } from "react-icons/hi2";
 import ReactDOM from "react-dom/client";
 import ExhibitionCreationForm from "../ExhibitionCreationForm/ExhibitionCreationForm";
 import PainterCreationForm from "../PainterCreationForm/PainterCreationForm";
@@ -23,16 +22,13 @@ import {
 } from "@mui/material";
 function NavBar(props) {
   let items = [];
-
-  const loading = () => {
+  let loading = () => {
     ReactDOM.createRoot(document.querySelector(".profile-main")).render(
-      <div className="exhibition-paintings-container">
-        <center>
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </center>
-      </div>
+      <center>
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </center>
     );
   };
   let navBaritems = [
@@ -87,6 +83,11 @@ function NavBar(props) {
                     `${settings.server_domain}/delete_exhibition/${item.id}`,
                     {
                       method: "DELETE",
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "session"
+                        )}`,
+                      },
                     }
                   )
                     .then((response) => response.json())
@@ -173,10 +174,18 @@ function NavBar(props) {
                 callBack: (event, painter) => {
                   fetch(
                     `${settings.server_domain}/delete_painter/${painter.id}`,
-                    { method: "DELETE" }
+                    {
+                      method: "DELETE",
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "session"
+                        )}`,
+                      },
+                    }
                   )
                     .then((response) => response.json())
                     .then((data) => {
+                      console.log(data);
                       if (data.success) {
                         // if painter has deleted from database update UI
 
@@ -212,7 +221,12 @@ function NavBar(props) {
                 icon: "fas fa-trash",
               },
             ];
-            fetch(`${settings.server_domain}/get_painters`)
+            fetch(`${settings.server_domain}/get_painters`, {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("session")}`,
+              },
+            })
               .then((response) => response.json())
               .then((data) => {
                 ReactDOM.createRoot(
@@ -258,11 +272,15 @@ function NavBar(props) {
               {
                 text: "Delete",
                 callBack: (blog) => {
-                  console.log(blog.Id);
                   fetch(
                     `${settings.server_domain}/api/blog/delete_blog/${blog.Id}`,
                     {
                       method: "DELETE",
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "session"
+                        )}`,
+                      },
                     }
                   )
                     .then((response) => response.json())
@@ -317,7 +335,14 @@ function NavBar(props) {
                 callBack: (event, painting) => {
                   fetch(
                     `${settings.server_domain}/delete_painting/${painting.id}`,
-                    { method: "DELETE" }
+                    {
+                      method: "DELETE",
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "session"
+                        )}`,
+                      },
+                    }
                   )
                     .then((response) => response.json())
                     .then((data) => {
@@ -338,7 +363,7 @@ function NavBar(props) {
                           document.querySelector(".message")
                         ).render(
                           <div className="alert alert-danger">
-                            <center>Failed to delete that Painter</center>
+                            <center>Failed to delete that Painting</center>
                           </div>
                         );
                       }
@@ -421,9 +446,11 @@ function NavBar(props) {
                         formData.append("customer_id", customer.id);
                         fetch(`${settings.server_domain}/delete_customer`, {
                           method: "DELETE",
-                          Authorization: `Bearer ${localStorage.getItem(
-                            "session"
-                          )}`,
+                          headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                              "session"
+                            )}`,
+                          },
                           body: formData,
                         })
                           .then((response) => response.json())
@@ -637,10 +664,15 @@ function NavBar(props) {
           </div>
 
           <div>
-            <button>
+            <button className="btn btn-outline-primary">
               <i className="fas fa-cog"></i>
             </button>
-            <button>
+            <button
+              className="btn btn-outline-primary"
+              onClick={() => {
+                props.logout();
+              }}
+            >
               <i className="fas fa-sign-out-alt "></i> &nbsp;
             </button>
           </div>
@@ -716,23 +748,8 @@ function NavBar(props) {
               <ListItem>
                 <ListItemButton
                   onClick={() => {
-                    const navigate = useNavigate();
-                    fetch(`${settings.server_domain}/custom-logout`, {
-                      method: "GET",
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                          "session"
-                        )}`,
-                      },
-                    })
-                      .then((response) => response.json())
-                      .then((data) => {
-                        if (data.success) {
-                          localStorage.removeItem("session");
-                          localStorage.removeItem("userId");
-                          navigate("/");
-                        }
-                      });
+                    props.logout();
+                    setOpenMenu(false);
                   }}
                 >
                   <ListItemText>

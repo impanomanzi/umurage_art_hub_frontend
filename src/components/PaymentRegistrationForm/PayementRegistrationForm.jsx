@@ -11,6 +11,7 @@ function PayementRegistrationForm() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [alertVisible, setAlertVisible] = useState(true);
 
   useEffect(() => {
     fetch(`${settings.server_domain}/get_exhibitions`)
@@ -89,12 +90,13 @@ function PayementRegistrationForm() {
         };
         let form = (
           <div className="container">
-            <div className="alert alert-warning alert-dismissible">
+            <div className="alert alert-success alert-dismissible">
               <p className="h3">
                 You're going to pay {wantedExhibition[0].fees} for{" "}
                 {wantedExhibition[0].name}
               </p>
             </div>
+
             <form
               onSubmit={handleOnSubmit}
               className="row justify-content-center col-md-6 payment-form"
@@ -150,9 +152,15 @@ function PayementRegistrationForm() {
                   className="form-control"
                 />
               </div>
-              <button type="submit" className="btn btn-primary submit-btn">
-                <p className="h4">continue</p>
-              </button>
+              <div className="form-group">
+                {" "}
+                <button
+                  type="submit"
+                  className="btn btn-primary submit-btn form-control"
+                >
+                  <p className="h4">continue</p>
+                </button>
+              </div>
             </form>
           </div>
         );
@@ -170,7 +178,11 @@ function PayementRegistrationForm() {
     <div>
       <FormNavbar />
       <div className="payment-form-container container">
-        <h5>Getting exhibition info...</h5>
+        <center>
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </center>
       </div>
     </div>
   );

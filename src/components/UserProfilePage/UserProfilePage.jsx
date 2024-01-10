@@ -37,6 +37,9 @@ function UserProfilePage(props) {
                 `${settings.server_domain}/delete_painting/${painting.id}`,
                 {
                   method: "DELETE",
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("session")}`,
+                  },
                 }
               )
                 .then((response) => response.json())

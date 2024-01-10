@@ -1,6 +1,6 @@
 .exhibition-card {
   width: fit-content;
-  max-height: 15%;
+  height: fit-content;
   border-radius: 15px;
   margin: 0.5rem;
   color: rgba(0, 0, 0, 0.196);
@@ -40,7 +40,7 @@
 }
 .exhibition-image img,
 .exhibition-image {
-  height: 34vh;
+  height: 30vh;
   width: 250px;
   border-top-right-radius: 15px;
   border-top-left-radius: 15px;

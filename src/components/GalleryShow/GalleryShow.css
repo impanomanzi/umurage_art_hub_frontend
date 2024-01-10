@@ -1,8 +1,7 @@
 .galleries-container {
-  display: grid;
-  grid-template-columns: 24% 24% 24% 24%;
-  flex-wrap: wrap;
-  gap: 1rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: left;
 }
 .gallery-shw {
   background-color: #152331;
@@ -11,6 +10,10 @@
   /* font-family: roboto; */
   color: white;
   opacity: 75%;
+}
+.useful {
+  display: flex;
+  flex-direction: column;
 }
 .gallery-show-header {
   background-color: #152331;

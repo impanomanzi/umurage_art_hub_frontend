@@ -15,15 +15,15 @@ function ExhibitionPaintingShow(props) {
             <h3 className="h3">Name</h3>
             <p className="lead">
               {query.get("name")} <br />
-              {/* Painter:{query.get("painter")} <br /> */}
-              {/* Exhibition: {query.get("exhibition")} */}
             </p>
           </center>
         </span>
         <div className="exhibition-painting-show-container">
           <div className="exhibition-painting-img">
             <img
-              src={`${query.get("i")}`.replace(
+              src={`${query.get("i")}?clientId=${localStorage.getItem(
+                "clientId"
+              )}&exId=${query.get("eid")}`.replace(
                 "http://localhost:5000",
                 `${settings.server_domain}`
               )}
@@ -31,7 +31,9 @@ function ExhibitionPaintingShow(props) {
             />
           </div>
           <audio
-            src={`${query.get("a")}`.replace(
+            src={`${query.get("a")}?clientId=${localStorage.getItem(
+              "clientId"
+            )}&exId=${query.get("eid")}`.replace(
               "http://localhost:5000",
               `${settings.server_domain}`
             )}

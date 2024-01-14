@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
 import "./Gallery.css";
 import "../ExhibitionCard/ExhibitionCard.css";
 import "bootstrap/dist/css/bootstrap.css";
@@ -10,6 +9,7 @@ function Gallery(props) {
   const [fixedGalleryOwner, setFixedGalleryOnwer] = useState([]);
   const [galleryOwner, setGalleryOwner] = useState([]);
   const [galleries, setGalleries] = useState([]);
+
   // function to remove dupplication from an array
   const removeDuplication = (array) => {
     // console.log(array);
@@ -30,13 +30,13 @@ function Gallery(props) {
   };
   // gettings galleries from server
   useEffect(() => {
-    let request = {
+    fetch(`${settings.server_domain}/get_paintings`, {
+      cache: "force-cache",
       method: "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("session")}`,
       },
-    };
-    fetch(`${settings.server_domain}/get_paintings`, request)
+    })
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
@@ -50,8 +50,6 @@ function Gallery(props) {
         }
       });
   }, []);
-
-  // let galleryOwner = removeDuplication(galleryOwners);
 
   return (
     <div className="gallery-outer-container">
@@ -68,11 +66,9 @@ function Gallery(props) {
               return item.toLowerCase().startsWith(event.target.value);
             });
             setGalleryOwner(searchResult);
-            // console.log(searchResult);
           }}
         />
         <button className="btn btn-outline-primary">
-          {" "}
           <i className="fas fa-search"></i>
         </button>
       </div>

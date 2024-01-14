@@ -1,5 +1,4 @@
 import React from "react";
-// import galleries from "../db/galleries.json";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import GalleryCard from "../GalleryCard/GalleryCard";
@@ -12,6 +11,21 @@ function GalleryShow(props) {
   const galleryOwner = useParams().name;
   const [dropdownText, setDropdownText] = useState("Sort by");
   const [filterDropdownText, setFilterDropdownText] = useState("Filter");
+  const [observing, setObserving] = useState(true);
+  const imageOptions = {};
+  const imageObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      let image = entry.target;
+      image.classList.remove("skeleton");
+
+      image.innerHTML = `<img src=${image.getAttribute(
+        "data-src"
+      )} class="card-img-top gallery-image" style="border-radius:1em"/>`;
+      observer.unobserve(image);
+    });
+  }, {});
+  const images = [];
   const closeExDropdown = () => {
     if (document.querySelector(".g-dropdown-menu").style.display === "none") {
       document.querySelector(".g-dropdown-menu").style.display = "block";
@@ -124,6 +138,7 @@ function GalleryShow(props) {
                 });
                 setFilterDropdownText("Art works");
                 setGalleries(filteredArray);
+                setObserving(false);
               }}
             >
               Art works
@@ -136,6 +151,7 @@ function GalleryShow(props) {
                 });
                 setFilterDropdownText("Potraits");
                 setGalleries(filteredArray);
+                setObserving(false);
               }}
             >
               Potraits
@@ -145,6 +161,7 @@ function GalleryShow(props) {
               onClick={(event) => {
                 setFilterDropdownText("All");
                 setGalleries(fixedGalleries);
+                setObserving(false);
               }}
             >
               Default
@@ -155,7 +172,22 @@ function GalleryShow(props) {
 
       <div className="galleries-container">
         {galleries.map((item, index) => {
-          return <GalleryCard gallery={item} key={index} likes={item.likes} />;
+          return (
+            <>
+              <GalleryCard
+                gallery={item}
+                key={index}
+                likes={item.likes}
+                observing={observing}
+              />
+              {document.querySelector(`#card-img-top${item.id}`)
+                ? images.push(document.querySelector(`#card-img-top${item.id}`))
+                : null}
+              {images.forEach((image) => {
+                imageObserver.observe(image);
+              })}
+            </>
+          );
         })}
       </div>
     </div>

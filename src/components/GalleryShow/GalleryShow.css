@@ -2,6 +2,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: left;
+  background-color: #0f172a;
 }
 .gallery-shw {
   background-color: #152331;

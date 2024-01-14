@@ -54,11 +54,12 @@ function PayementRegistrationForm() {
                   document.querySelector(".payment-form-container")
                 ).render(
                   <CheckoutForm
-                    id={exhibitionId}
-                    firstName={firstName}
-                    lastName={lastName}
-                    email={email}
-                    phoneNumber={phoneNumber}
+                    c_id={data.data[0].id}
+                    id={data.data[0].exId}
+                    firstName={data.data[0].firstName}
+                    lastName={data.data[0].lastName}
+                    email={data.data[0].email}
+                    phoneNumber={data.data[0].phone}
                     exhibitionName={wantedExhibition[0].name}
                     amount={wantedExhibition[0].fees}
                   />

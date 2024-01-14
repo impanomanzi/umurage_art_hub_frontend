@@ -7,15 +7,7 @@
   align-items: center;
 }
 .home {
-  background: linear-gradient(
-    rgb(2, 2, 16),
-    rgb(54, 53, 53),
-    rgb(2, 2, 16),
-    rgb(26, 29, 31),
-    rgb(119, 119, 121),
-    rgb(30, 29, 29),
-    rgb(2, 2, 16)
-  );
+  background: linear-gradient(#3f3f46, #09090b, #020617, #030712);
 }
 .gallery-section {
   color: white;
@@ -61,11 +53,6 @@
   justify-content: center;
   align-items: flex-start;
   height: 25%;
-}
-
-.primary-switch {
-  background-color: rgb(9, 55, 9);
-  color: white;
 }
 
 @media screen and (max-device-width: 576px) {

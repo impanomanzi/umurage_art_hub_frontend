@@ -39,7 +39,8 @@
   margin-right: 0.85em;
 }
 .exhibition-image img,
-.exhibition-image {
+.exhibition-image,
+.exhibition-image .skeleton {
   height: 30vh;
   width: 250px;
   border-top-right-radius: 15px;

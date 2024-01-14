@@ -9,11 +9,23 @@ function Exhibitions(props) {
   const [fixedExhibitions, setFixedExhibitions] = useState([]);
   const [dropdownText, setDropdownText] = useState("Sort by");
   const [exhibitions, setExhibitions] = useState(props.exhibitions);
-  const [searchResult, setSearchResult] = useState("");
+  const [observing, setObserving] = useState(true);
   let customArray = [];
+  const imageObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      let image = entry.target;
+      image.classList.remove("skeleton");
+      let url = image.getAttribute("data-src");
+      console.log(url);
+      image.innerHTML = "<img src='" + url + "'/>";
+      observer.unobserve(image);
+    });
+  }, {});
+  let images = [];
   const navigate = useNavigate();
   useEffect(() => {
     fetch(`${settings.server_domain}/get_exhibitions`, {
+      cache: "force-cache",
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("session")}`,
@@ -42,125 +54,151 @@ function Exhibitions(props) {
     }
   };
   return (
-    <div className="exhibitions-outer-container">
-      <div className="header">
-        <center>
-          <h1 className="h1" style={{ color: "white" }}>
-            Exhibitions
-          </h1>
-        </center>
-        <div
-          class="btn-group"
-          role="group"
-          aria-label="button group for filtering and sorting exhibitions"
-        >
-          <div class="dropdown">
+    <>
+      <div className="exhibitions-outer-container">
+        <div className="header">
+          <center>
+            <h1 className="h1" style={{ color: "white" }}>
+              Exhibitions
+            </h1>
+          </center>
+          <div
+            class="btn-group"
+            role="group"
+            aria-label="button group for filtering and sorting exhibitions"
+          >
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenu1"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                onClick={closeExDropdown}
+                onMouseEnter={closeExDropdown}
+              >
+                <i className="fas fa-sort-amount-down"></i>&nbsp; {dropdownText}
+              </button>
+              <div
+                class="dropdown-menu ex-dropdown-menu"
+                aria-labelledby="dropdownMenu1"
+                onMouseLeave={() => {
+                  document.querySelector(".ex-dropdown-menu").style.display =
+                    "none";
+                }}
+              >
+                <button
+                  class="dropdown-item"
+                  onClick={() => {
+                    setObserving(false);
+                    closeExDropdown();
+                    setDropdownText("Name");
+                    let FilteredExhibitionsbynames = exhibitions.sort(
+                      (a, b) => a.name > b.name
+                    );
+                    setExhibitions(FilteredExhibitionsbynames);
+                  }}
+                >
+                  <i className="fas fa-sort-alpha-down"></i> &nbsp; Name
+                </button>
+                <button
+                  class="dropdown-item"
+                  onClick={() => {
+                    setObserving(false);
+                    closeExDropdown();
+                    setDropdownText("Date");
+                    let FilteredExhibitionsbynames = exhibitions.sort(
+                      (a, b) => {
+                        a = Date.parse(`${a.startdate}`);
+                        b = Date.parse(`${b.startdate}`);
+                        return a - b;
+                      }
+                    );
+
+                    setExhibitions(FilteredExhibitionsbynames);
+                  }}
+                >
+                  <i className="fas fa-sort-numeric-down"></i> &nbsp;start Date
+                </button>
+                <button
+                  class="dropdown-item"
+                  onClick={() => {
+                    setObserving(false);
+                    closeExDropdown();
+                    setDropdownText("Price");
+                    let FilteredExhibitions = exhibitions.sort(
+                      (a, b) => a.fees - b.fees
+                    );
+
+                    setExhibitions(FilteredExhibitions);
+                  }}
+                >
+                  <i className="fas fa-sort-numeric-down"></i> &nbsp;Price
+                </button>
+              </div>
+            </div>
+            <input
+              type="text"
+              className="form-control exh-search"
+              placeholder="Search by Exh. name"
+              onChange={(event) => {
+                let searchResult = fixedExhibitions.filter((item) => {
+                  return item.name.toLowerCase().startsWith(event.target.value);
+                });
+                setExhibitions(searchResult);
+                setObserving(false);
+              }}
+            />
             <button
-              class="btn btn-secondary dropdown-toggle"
               type="button"
-              id="dropdownMenu1"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-              onClick={closeExDropdown}
-              onMouseEnter={closeExDropdown}
-            >
-              <i className="fas fa-sort-amount-down"></i>&nbsp; {dropdownText}
-            </button>
-            <div
-              class="dropdown-menu ex-dropdown-menu"
-              aria-labelledby="dropdownMenu1"
-              onMouseLeave={() => {
-                document.querySelector(".ex-dropdown-menu").style.display =
-                  "none";
+              class="btn btn-outline-secondary"
+              onClick={(event) => {
+                setObserving(false);
+                let searchEl = document.querySelector(".exh-search");
+                let searchResult = fixedExhibitions.filter((item) => {
+                  return item.name.toLowerCase().startsWith(searchEl.value);
+                });
+                setExhibitions(searchResult);
               }}
             >
-              <button
-                class="dropdown-item"
-                onClick={() => {
-                  closeExDropdown();
-                  setDropdownText("Name");
-                  let FilteredExhibitionsbynames = exhibitions.sort(
-                    (a, b) => a.name > b.name
-                  );
-                  setExhibitions(FilteredExhibitionsbynames);
-                }}
-              >
-                <i className="fas fa-sort-alpha-down"></i> &nbsp; Name
-              </button>
-              <button
-                class="dropdown-item"
-                onClick={() => {
-                  closeExDropdown();
-                  setDropdownText("Date");
-                  let FilteredExhibitionsbynames = exhibitions.sort((a, b) => {
-                    a = Date.parse(`${a.startdate}`);
-                    b = Date.parse(`${b.startdate}`);
-                    return a - b;
-                  });
-
-                  setExhibitions(FilteredExhibitionsbynames);
-                }}
-              >
-                <i className="fas fa-sort-numeric-down"></i> &nbsp;start Date
-              </button>
-              <button
-                class="dropdown-item"
-                onClick={() => {
-                  closeExDropdown();
-                  setDropdownText("Price");
-                  let FilteredExhibitions = exhibitions.sort(
-                    (a, b) => a.fees - b.fees
-                  );
-
-                  setExhibitions(FilteredExhibitions);
-                }}
-              >
-                <i className="fas fa-sort-numeric-down"></i> &nbsp;Price
-              </button>
-            </div>
+              <i className="fas fa-search"></i>
+            </button>
           </div>
-          <input
-            type="text"
-            className="form-control exh-search"
-            placeholder="Search by Exh. name"
-            onChange={(event) => {
-              let searchResult = fixedExhibitions.filter((item) => {
-                return item.name.toLowerCase().startsWith(event.target.value);
-              });
-              setExhibitions(searchResult);
-            }}
-          />
-          <button
-            type="button"
-            class="btn btn-outline-secondary"
-            onClick={(event) => {
-              let searchEl = document.querySelector(".exh-search");
-              let searchResult = fixedExhibitions.filter((item) => {
-                return item.name.toLowerCase().startsWith(searchEl.value);
-              });
-              setExhibitions(searchResult);
-            }}
-          >
-            <i className="fas fa-search"></i>
-          </button>
+        </div>
+        <div className="exhibitions-loading" style={{ color: "white" }}>
+          <center style={{ marginTop: "25%" }}>
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+              <p className="lead">Loading exhibitions</p>
+            </div>
+          </center>
+        </div>
+        <div className="exhibitions-container" id="exhibitions-container">
+          {exhibitions.map((exhibition, index) => {
+            removeSkeletons();
+            return (
+              <>
+                <ExhibitionCard
+                  exhibition={exhibition}
+                  key={index}
+                  observing={observing}
+                />
+                ;
+                {document.querySelector(`#exh-img-top${exhibition.id}`)
+                  ? images.push(
+                      document.querySelector(`#exh-img-top${exhibition.id}`)
+                    )
+                  : null}
+                {images.forEach((image) => {
+                  imageObserver.observe(image);
+                })}
+              </>
+            );
+          })}
         </div>
       </div>
-      <div className="exhibitions-loading" style={{ color: "white" }}>
-        <center style={{ marginTop: "25%" }}>
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-            <p className="lead">Loading exhibitions</p>
-          </div>
-        </center>
-      </div>
-      <div className="exhibitions-container" id="exhibitions-container">
-        {exhibitions.map((exhibition, index) => {
-          removeSkeletons();
-          return <ExhibitionCard exhibition={exhibition} key={index} />;
-        })}
-      </div>
-    </div>
+    </>
   );
 }
 

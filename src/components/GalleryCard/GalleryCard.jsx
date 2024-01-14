@@ -54,15 +54,25 @@ function GalleryCard(props) {
   };
   return (
     <div className="gallery-card card">
-      <img
-        src={props.gallery.image.replace(
-          "http://localhost:5000",
-          `${settings.server_domain}`
-        )}
-        className="card-img-top gallery-image"
-        loading="lazy"
-        alt={`exbhition-${props.gallery.name}`}
-      />
+      {props.observing ? (
+        <div
+          className="skeleton"
+          id={`card-img-top${props.gallery.id}`}
+          data-src={props.gallery.image.replace(
+            "http://localhost:5000",
+            `${settings.server_domain}`
+          )}
+        ></div>
+      ) : (
+        <img
+          src={props.gallery.image.replace(
+            "http://localhost:5000",
+            `${settings.server_domain}`
+          )}
+          className="card-img-top gallery-image"
+        />
+      )}
+
       <div className="credit">
         <p class="badge badge-success lead">{props.gallery.name}</p>
         <p className="lead">
@@ -82,7 +92,24 @@ function GalleryCard(props) {
           >
             <i className="fas fa-cart-arrow-down"></i>&nbsp; Buy now
           </Link>
-          <button className="btn btn-secondary">
+          <button
+            className="btn btn-secondary"
+            onClick={(event) => {
+              if (navigator.share) {
+                navigator
+                  .share({
+                    title: "Umurage art hub",
+                    text: `${props.gallery.name} by \n ${props.gallery.owner}`,
+                    url: props.gallery.image.replace(
+                      "http://localhost:5000",
+                      `${settings.server_domain}`
+                    ),
+                  })
+                  .then(() => console.log("Successful share"))
+                  .catch((error) => console.log("Error sharing", error));
+              }
+            }}
+          >
             <i className="fas fa-share"></i> &nbsp; Share
           </button>
           <button

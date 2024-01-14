@@ -39,6 +39,7 @@ function UserProfilePage(props) {
                   method: "DELETE",
                   headers: {
                     Authorization: `Bearer ${localStorage.getItem("session")}`,
+                    userId: localStorage.getItem("userId"),
                   },
                 }
               )
@@ -49,13 +50,12 @@ function UserProfilePage(props) {
                   }
                   if (data.success) {
                     // if painting has deleted from database update UI
-                    let wantedData = data.data.filter((item, index) => {
-                      return item.owner == localStorage.getItem("username");
-                    });
+                    let wantedData = data.data;
                     ReactDOM.createRoot(document.querySelector(".user")).render(
                       <ListView
                         items={wantedData}
                         title="List of paintings"
+                        keyword="name"
                         options={options}
                       />
                     );
@@ -87,6 +87,7 @@ function UserProfilePage(props) {
           <ListView
             items={wantedData}
             title="Your paintings"
+            keyword="name"
             options={options}
           />
         );

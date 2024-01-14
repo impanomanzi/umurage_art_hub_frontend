@@ -1,23 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import settings from "../settings.json";
 function ListView(props) {
-  // extracting keys from an object to be use as table headers
-  let headers = Object.keys(props.items[0]);
-  let number = headers.length;
+  const [fixedItems, setFixedItems] = useState([]);
+  const [items, setItems] = useState([]);
+  const [headers, setHeaders] = useState([]);
+  let keyword = props.keyword;
+
+  useEffect(() => {
+    setFixedItems(props.items);
+    setItems(props.items);
+    setHeaders(Object.keys(props.items[0]));
+  }, []);
   return (
     // creating table headers
-    <center>
-      {" "}
+    <div className="row justify-content-center m-l-1 m-r-1">
+      <div
+        class="btn-group"
+        role="group"
+        aria-label="button group for filtering and sorting exhibitions"
+      >
+        <input
+          type="text"
+          placeholder={`Search by ${keyword.toLowerCase()}`}
+          onChange={(event) => {
+            let searchResult = fixedItems.filter((item) => {
+              return item[keyword]
+                .toLowerCase()
+                .startsWith(event.target.value.toLowerCase());
+            });
+            setItems(searchResult);
+          }}
+        />
+      </div>
       <div
         className="list-group  row justify-content-center col-md-6 payment-form"
         style={{ margin: "1rem 0.8rem 1rem 0.8rem", alignContent: "left" }}
       >
         <div className="list-group-item active">
-          <h4 className="h4">{props.title}</h4>
+          <h4 className="h3">{props.title}</h4>
+          <span className="badge badge-light" style={{ color: "black" }}>
+            {items.length}
+          </span>
         </div>
         <div className="message"></div>
-        {props.items.map((item, index) => {
+
+        {items.map((item, index) => {
           return (
             <div
               className="list-group-item card"
@@ -55,13 +83,40 @@ function ListView(props) {
                             style={{ borderRadius: "1em" }}
                           />
                         </div>
+                      ) : headers[innerIndex] === "status" ? (
+                        <table className="table">
+                          <tr>
+                            <td scope="col">
+                              {" "}
+                              <b className="text-uppercase card-text">
+                                {headers[innerIndex]} &nbsp;
+                              </b>
+                            </td>
+                            <td scope="col">
+                              {item[innerItem] === "active" ? (
+                                <span className="badge badge-success">
+                                  {item[innerItem]}
+                                </span>
+                              ) : (
+                                <span className="badge badge-warning">
+                                  {item[innerItem]}
+                                </span>
+                              )}
+                            </td>
+                          </tr>
+                        </table>
                       ) : (
-                        <div>
-                          <b className="text-uppercase card-text">
-                            {headers[innerIndex]}: &nbsp;
-                          </b>
-                          {item[innerItem]}
-                        </div>
+                        <table className="table">
+                          <tr>
+                            <td scope="col">
+                              {" "}
+                              <b className="text-uppercase card-text">
+                                {headers[innerIndex]} &nbsp;
+                              </b>
+                            </td>
+                            <td scope="col">{item[innerItem]}</td>
+                          </tr>
+                        </table>
                       )}
                     </p>
                   </div>
@@ -91,7 +146,7 @@ function ListView(props) {
           );
         })}
       </div>
-    </center>
+    </div>
   );
 }
 

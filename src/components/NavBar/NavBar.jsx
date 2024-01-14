@@ -101,6 +101,7 @@ function NavBar(props) {
                           <ListView
                             items={data.data}
                             title="List of Exhibtions"
+                            keyword="name"
                             options={options}
                           />
                         );
@@ -138,6 +139,7 @@ function NavBar(props) {
                   <ListView
                     items={data}
                     title="List of Exhibtions"
+                    keyword="name"
                     options={options}
                   />
                 );
@@ -187,14 +189,13 @@ function NavBar(props) {
                     .then((data) => {
                       console.log(data);
                       if (data.success) {
-                        // if painter has deleted from database update UI
-
                         ReactDOM.createRoot(
                           document.querySelector(".profile-main")
                         ).render(
                           <ListView
                             items={data.data}
                             title="List of all registered painters"
+                            keyword="username"
                             options={options}
                           />
                         );
@@ -235,6 +236,7 @@ function NavBar(props) {
                   <ListView
                     items={data}
                     options={options}
+                    keyword="username"
                     title="List of all registered painters"
                   />
                 );
@@ -355,6 +357,7 @@ function NavBar(props) {
                           <ListView
                             items={data.data}
                             title="List of paintings"
+                            keyword="name"
                             options={options}
                           />
                         );
@@ -391,6 +394,7 @@ function NavBar(props) {
                     <ListView
                       items={data.data}
                       title="List of List of paintings"
+                      keyword="name"
                       options={options}
                     />
                   );
@@ -462,6 +466,7 @@ function NavBar(props) {
                                 <ListView
                                   items={data.data}
                                   title="List of customers"
+                                  keyword="firstName"
                                   options={options}
                                 />
                               );
@@ -511,6 +516,7 @@ function NavBar(props) {
                         )
                           .then((response) => response.json())
                           .then((data) => {
+                            console.log(data);
                             if (data.success) {
                               document.querySelector(".message").innerHTML = "";
                               ReactDOM.createRoot(
@@ -519,6 +525,7 @@ function NavBar(props) {
                                 <ListView
                                   items={data.data}
                                   title="List of customers"
+                                  keyword="firstName"
                                   options={options}
                                 />
                               );
@@ -555,6 +562,7 @@ function NavBar(props) {
                     <ListView
                       items={data.data}
                       title="List of customers"
+                      keyword="firstName"
                       options={options}
                     />
                   );

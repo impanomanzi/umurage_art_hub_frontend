@@ -7,14 +7,23 @@ function ExhibitionCard(props) {
   return (
     <div className="exhibition-card">
       <div className="exhibition-image">
-        <img
-          src={`${props.exhibition.image.replace(
-            "http://localhost:5000",
-            `${settings.server_domain}`
-          )}`}
-          loading="lazy"
-          alt={`exbhition-${props.exhibition.name}`}
-        />
+        {props.observing ? (
+          <div
+            className="skeleton"
+            id={`exh-img-top${props.exhibition.id}`}
+            data-src={`${props.exhibition.image.replace(
+              "http://localhost:5000",
+              `${settings.server_domain}`
+            )}`}
+          ></div>
+        ) : (
+          <img
+            src={`${props.exhibition.image.replace(
+              "http://localhost:5000",
+              `${settings.server_domain}`
+            )}`}
+          />
+        )}
       </div>
 
       <div className="exhibition-meta">

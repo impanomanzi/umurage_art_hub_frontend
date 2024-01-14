@@ -11,6 +11,7 @@ function CheckoutForm(props) {
 
   return (
     <div>
+      <div className="checkout-message"></div>
       <h2>CHECKOUT</h2>
       <hr />
 
@@ -24,6 +25,7 @@ function CheckoutForm(props) {
             value={props.firstName}
             disabled
             className="form-control-plaintext"
+            style={{ fontWeight: "900", fontSize: "1.2em" }}
           />
         </div>
         <div className="form-group">
@@ -34,6 +36,7 @@ function CheckoutForm(props) {
             value={props.lastName}
             disabled
             className="form-control-plaintext"
+            style={{ fontWeight: "900", fontSize: "1.2em" }}
           />
         </div>
         <div className="form-group">
@@ -44,6 +47,7 @@ function CheckoutForm(props) {
             value={props.email}
             disabled
             className="form-control-plaintext"
+            style={{ fontWeight: "900", fontSize: "1.2em" }}
           />
         </div>
         <div className="form-group">
@@ -54,6 +58,7 @@ function CheckoutForm(props) {
             value={props.exhibitionName}
             disabled
             className="form-control-plaintext"
+            style={{ fontWeight: "900", fontSize: "1.2em" }}
           />
         </div>
 
@@ -62,8 +67,10 @@ function CheckoutForm(props) {
           <input
             name="exhibitionName"
             type="text"
+            disabled
             value={props.phoneNumber}
-            className="form-control"
+            className="form-control-plaintext"
+            style={{ fontWeight: "900", fontSize: "1.2em" }}
           />
         </div>
         <div className="form-group">
@@ -74,34 +81,27 @@ function CheckoutForm(props) {
             value={props.amount}
             disabled
             className="form-control-plaintext"
+            style={{ fontWeight: "900", fontSize: "1.2em" }}
           />
         </div>
         <div className="row justify-content-center" role="group">
-          <a
-            href={`/exhibition_paintings/${props.id}`}
-            className="mtn btn btn-secondary"
-          >
+          <a href={`tel:*182*8*1*56568#`} className="mtn btn btn-secondary">
             Pay With MTN MOMO
-            {/* <button className="momo-pay-button">Pay With MTN MOMO</button> */}
           </a>
-          <a
-            href={`/exhibition_paintings/${props.id}`}
-            className="airtel btn btn-secondary"
-          >
+          <a href={"#"} className="airtel btn btn-secondary">
             Pay With Airtel Money
-            {/* <button className="momo-pay-button">Pay With MTN MOMO</button> */}
           </a>
 
           <PaypalButton
             productInfo={{
+              c_id: props.c_id,
+              exId: props.id,
+              phone: props.phoneNumber,
               name: productName,
               quantity: productQuantity,
               price: productPrice,
             }}
           />
-
-          {/* <button>Cancel</button> */}
-          {/* {createPaypalOrder().render("#paypal-button-container")} */}
         </div>
       </form>
     </div>

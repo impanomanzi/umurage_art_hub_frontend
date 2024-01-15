@@ -163,7 +163,6 @@ function Exhibitions(props) {
           <center style={{ marginTop: "25%" }}>
             <div class="spinner-border" role="status">
               <span class="sr-only">Loading...</span>
-              <p className="lead">Loading exhibitions</p>
             </div>
           </center>
         </div>

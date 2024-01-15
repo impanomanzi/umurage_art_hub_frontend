@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Switcher from "../Switcher/Switcher.jsx";
 import "./Home.css";
 import NavBar from "../NavBar/HomeNavBar.jsx";
-import ProjectCard from "../ProjectCard/ProjectCard.jsx";
-import HomeProjectsSlider from "../HomeProjectsSlider/HomeProjectsSlider.jsx";
-import ExhibitionsNavbar from "../ExhibitionsNavbar/ExhibitionsNavbar.jsx";
 import Gallery from "../Gallery/Gallery.jsx";
 import Exhibitions from "../Exhibitions/Exhibitions.jsx";
 

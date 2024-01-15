@@ -77,7 +77,6 @@ function Gallery(props) {
           <center>
             <div class="spinner-border" role="status">
               <span class="sr-only">Loading...</span>
-              <p className="lead">Loading Galleries</p>
             </div>
           </center>
         </div>

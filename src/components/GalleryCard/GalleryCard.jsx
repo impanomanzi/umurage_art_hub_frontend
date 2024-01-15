@@ -54,24 +54,13 @@ function GalleryCard(props) {
   };
   return (
     <div className="gallery-card card">
-      {props.observing ? (
-        <div
-          className="skeleton"
-          id={`card-img-top${props.gallery.id}`}
-          data-src={props.gallery.image.replace(
-            "http://localhost:5000",
-            `${settings.server_domain}`
-          )}
-        ></div>
-      ) : (
-        <img
-          src={props.gallery.image.replace(
-            "http://localhost:5000",
-            `${settings.server_domain}`
-          )}
-          className="card-img-top gallery-image"
-        />
-      )}
+      <img
+        src={props.gallery.image.replace(
+          "http://localhost:5000",
+          `${settings.server_domain}`
+        )}
+        className="card-img-top gallery-image"
+      />
 
       <div className="credit">
         <p class="badge badge-success lead">{props.gallery.name}</p>

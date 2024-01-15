@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import ExhibitionCard from "../ExhibitionCard/ExhibitionCard";
 import { useState } from "react";
 import ReactDOM from "react-dom/client";
@@ -10,17 +10,9 @@ function Exhibitions(props) {
   const [dropdownText, setDropdownText] = useState("Sort by");
   const [exhibitions, setExhibitions] = useState(props.exhibitions);
   const [observing, setObserving] = useState(true);
+  const myRef = useRef();
   let customArray = [];
-  const imageObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach((entry) => {
-      let image = entry.target;
-      image.classList.remove("skeleton");
-      let url = image.getAttribute("data-src");
-      console.log(url);
-      image.innerHTML = "<img src='" + url + "'/>";
-      observer.unobserve(image);
-    });
-  }, {});
+
   let images = [];
   const navigate = useNavigate();
   useEffect(() => {
@@ -42,6 +34,7 @@ function Exhibitions(props) {
         }
       });
   }, []);
+  const [imageObserver, setObserver] = useState();
 
   const removeSkeletons = (index) => {
     document.querySelector(`.exhibitions-loading`).innerHTML = "";
@@ -175,7 +168,9 @@ function Exhibitions(props) {
           </center>
         </div>
         <div className="exhibitions-container" id="exhibitions-container">
+          {myRef["current"] && images.push(myRef["current"])}
           {exhibitions.map((exhibition, index) => {
+            images.forEach((image) => console.log(image));
             removeSkeletons();
             return (
               <>
@@ -183,16 +178,8 @@ function Exhibitions(props) {
                   exhibition={exhibition}
                   key={index}
                   observing={observing}
+                  mref={myRef}
                 />
-                ;
-                {document.querySelector(`#exh-img-top${exhibition.id}`)
-                  ? images.push(
-                      document.querySelector(`#exh-img-top${exhibition.id}`)
-                    )
-                  : null}
-                {images.forEach((image) => {
-                  imageObserver.observe(image);
-                })}
               </>
             );
           })}

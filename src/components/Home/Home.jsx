@@ -28,7 +28,10 @@ function Home() {
 
   const loading = () => {
     ReactDOM.createRoot(document.querySelector(".profile-main")).render(
-      <div className="exhibition-paintings-container">
+      <div
+        className="exhibition-paintings-container"
+        style={{ color: "white" }}
+      >
         <center>
           <div class="spinner-border" role="status">
             <span class="sr-only">Loading...</span>

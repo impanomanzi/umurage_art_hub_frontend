@@ -57,7 +57,7 @@ function ProfileTopNav() {
             <ListItem>
               <ListItemButton>
                 <ListItemIcon>
-                  <i className="fas fa-grip-vertical"></i>
+                  <i className="fas fa-grid-vertical"></i>
                 </ListItemIcon>
                 <ListItemText primary={"Gallery"} />
               </ListItemButton>
@@ -90,7 +90,7 @@ function ProfileTopNav() {
           </List>
         </Box>
       </Drawer>
-      <div className="menu-area">
+      {/* <div className="menu-area">
         <button>
           <b>Gallery</b>
         </button>
@@ -128,7 +128,7 @@ function ProfileTopNav() {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="navbar-menu">
         <button onClick={() => setOpenMenu(true)} className="menu-button-bars">
           <i className="fas fa-bars"></i>

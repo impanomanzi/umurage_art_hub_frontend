@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FormTemplate from "../FormTemplate/FormTemplate";
 import settings from "../settings.json";
 import CheckoutForm from "../CheckoutForm/CheckoutForm";
@@ -12,6 +12,7 @@ function PayementRegistrationForm() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [alertVisible, setAlertVisible] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`${settings.server_domain}/get_exhibitions`)
@@ -62,6 +63,7 @@ function PayementRegistrationForm() {
                     phoneNumber={data.data[0].phone}
                     exhibitionName={wantedExhibition[0].name}
                     amount={wantedExhibition[0].fees}
+                    navigate={navigate}
                   />
                 );
               } else {

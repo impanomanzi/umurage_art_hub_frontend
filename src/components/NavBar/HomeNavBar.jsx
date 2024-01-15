@@ -6,7 +6,7 @@ function HomeNavBar() {
     <>
       <div className="home-navbar" id="top">
         <div className="home-navbar__logo" id="NavBarLogo">
-          <h1 className="gallery-hor">Umurage Art Hub</h1>
+          <img src="/UMURAGE HEADER.png" alt="" />
         </div>
 
         <Link to="/sign-in">

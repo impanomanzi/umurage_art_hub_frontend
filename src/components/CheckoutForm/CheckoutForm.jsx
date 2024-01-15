@@ -101,6 +101,7 @@ function CheckoutForm(props) {
               quantity: productQuantity,
               price: productPrice,
             }}
+            navigate={props.navigate}
           />
         </div>
       </form>

@@ -6,7 +6,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useNavigate } from "react-router-dom";
 
 function PaypalButton(props) {
-  const navigate = useNavigate();
+  const navigate = props.navigate;
   const paypalInitialOptions = {
     "client-id":
       "ATXE7I-Cou4tO1E9__yFBYMxdsx_p4cuzWTLd58CCBCRCl8kCLfyf2aOPptkY1xodLyYaicBMtWPaDC2",
@@ -108,6 +108,13 @@ function PaypalButton(props) {
                 // (3) Successful transaction -> Show confirmation or thank you message
 
                 // Or go to another URL:  actions.redirect('thank_you.html');
+                let formData = new FormData();
+                formData.append("c_id", props.productInfo.c_id);
+                formData.append("exId", props.id);
+                formData.append("phone", props.phoneNumber);
+                formData.append("name", props.productInfo.name);
+                formData.append("quantity", props.productInfo.quantity);
+                formData.append("price", props.productInfo.price);
                 let response = await fetch(
                   `${settings.server_domain}/confirm_payment`,
                   { method: "POST", body: formData }

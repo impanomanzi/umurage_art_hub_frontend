@@ -7,7 +7,7 @@
   align-items: center;
 }
 .home {
-  background: linear-gradient(#3f3f46, #09090b, #020617, #030712);
+  background: linear-gradient(black, rgb(111, 109, 109), #020617, #030712);
 }
 .gallery-section {
   color: white;

@@ -610,7 +610,7 @@ function NavBar(props) {
   return (
     <div className="navbar">
       <div className="navbar__logo" id="NavBarLogo">
-        <h1>{settings.site_name}</h1>
+        <img src="/UMURAGE HEADER.png" alt="" width={""} />
       </div>
       <div
         className="pc-navbar"

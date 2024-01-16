@@ -17,7 +17,7 @@
   z-index: 2;
 }
 
-@media screen and (max-device-width: 576px) {
+@media screen and (max-device-width: 828px) {
   .home-navbar__logo h1 {
     font-size: 2.5rem;
   }

@@ -28,9 +28,9 @@
     width: 10cm;
   }
   .home-navbar {
-    display: flex;
-    align-items: center;
-    justify-content: none;
+    display: grid;
+    grid-template-columns: 60% 30%;
+    gap: 2rem;
     padding: 0;
     height: 20vh;
     background-color: #0a0b0c;

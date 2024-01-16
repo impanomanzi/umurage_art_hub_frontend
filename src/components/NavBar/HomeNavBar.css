@@ -30,7 +30,7 @@
   .home-navbar {
     display: grid;
     grid-template-columns: 60% 30%;
-    gap: 2rem;
+    gap: 5%;
     padding: 0;
     height: 20vh;
     background-color: #0a0b0c;

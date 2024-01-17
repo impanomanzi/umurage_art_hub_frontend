@@ -12,6 +12,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@blacklab/react-image-magnify": "^4.1.1",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.15.2",
@@ -21,7 +22,6 @@
     "react-bootstrap": "^2.9.2",
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
-    "react-image-magnify": "^2.7.4",
     "react-intersection-observer": "^9.5.3",
     "react-router-dom": "^6.21.1"
   },

@@ -3,8 +3,7 @@ import { useLocation } from "react-router-dom";
 import settings from "../settings.json";
 import "./ExhibitionPaintingShow.css";
 import FormNavbar from "../NavBar/FormNavbar";
-import ReactImageMagnify from "react-image-magnify";
-
+import ReactImageMagnify from "@blacklab/react-image-magnify";
 function ExhibitionPaintingShow(props) {
   let query = new URLSearchParams(useLocation().search);
   return (

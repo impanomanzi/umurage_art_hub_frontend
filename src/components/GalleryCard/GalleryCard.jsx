@@ -53,22 +53,15 @@ function GalleryCard(props) {
       });
   };
   return (
-    <div className="gallery-card card">
+    <div className="col-md-4 mt-3 col-lg-3 m-x-2">
       <img
         src={props.gallery.image.replace(
           "http://localhost:5000",
           `${settings.server_domain}`
         )}
-        className="card-img-top gallery-image"
+        className="w-100 shadow-1-strong rounded mb-4"
       />
 
-      <div className="credit">
-        <p class="badge badge-success lead">{props.gallery.name}</p>
-        <p className="lead">
-          <i className="fas fa-copyright"></i>&nbsp;
-          {props.gallery.owner}
-        </p>
-      </div>
       <div className="card-body gallery-card-link">
         <div
           class="btn-group"

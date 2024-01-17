@@ -16,6 +16,7 @@ function HomeProjectsSlider(props) {
           return (
             <Carousel.Item interval={1500}>
               <img
+                className="img-thumbnail"
                 src={project.image.replace(
                   "http://localhost:5000",
                   `${settings.server_domain}`

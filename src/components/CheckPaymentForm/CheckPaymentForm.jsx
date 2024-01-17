@@ -27,6 +27,7 @@ function CheckPaymentForm() {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
           <span>Submit</span>
         );

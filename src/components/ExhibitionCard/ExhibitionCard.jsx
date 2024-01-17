@@ -9,6 +9,7 @@ function ExhibitionCard(props) {
       <div className="exhibition-card">
         <div className="exhibition-image">
           <img
+            className="img-thumbnail"
             ref={props.mref}
             id={props.exhibition.id}
             src={`${props.exhibition.image.replace(

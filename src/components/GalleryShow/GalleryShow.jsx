@@ -170,7 +170,8 @@ function GalleryShow(props) {
         </div>
       </div>
 
-      <div className="galleries-container">
+      <div className="row">
+        {/* <div className="col-lg-4 col-md-12 mb-4 mb-lg-0"> */}
         {galleries.map((item, index) => {
           return (
             <>
@@ -191,6 +192,7 @@ function GalleryShow(props) {
         })}
       </div>
     </div>
+    // </div>
   );
 }
 

@@ -86,13 +86,13 @@ function CheckoutForm(props) {
         </div>
         <div className="row justify-content-center" role="group">
           <a href={`tel:*182*8*1*56568#`} className="mtn btn btn-secondary">
-            Pay With MTN MOMO
+            SEND MONEY HERE
           </a>
-          <a href={"#"} className="airtel btn btn-secondary">
+          {/* <a href={"#"} className="airtel btn btn-secondary">
             Pay With Airtel Money
-          </a>
+          </a> */}
 
-          <PaypalButton
+          {/* <PaypalButton
             productInfo={{
               c_id: props.c_id,
               exId: props.id,
@@ -102,7 +102,7 @@ function CheckoutForm(props) {
               price: productPrice,
             }}
             navigate={props.navigate}
-          />
+          /> */}
         </div>
       </form>
     </div>

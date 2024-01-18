@@ -14,7 +14,7 @@ function ExhibitionShowPage() {
       let wanted = data;
       let exhibitionPage = (
         <div className="exhibition-page-container">
-          <div>
+          <div className="m-3">
             <h1 className="h1" style={{ color: "white" }}>
               {wanted.name}
             </h1>
@@ -42,6 +42,7 @@ function ExhibitionShowPage() {
               `${settings.server_domain}`
             )}`}
             alt={wanted.name}
+            className="img-fluid img-thumbnail"
           />
 
           <div className="exhibition-continue">

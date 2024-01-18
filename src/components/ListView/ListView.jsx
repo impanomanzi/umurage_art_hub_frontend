@@ -14,7 +14,7 @@ function ListView(props) {
   }, []);
   return (
     // creating table headers
-    <div className="row justify-content-center m-l-1 m-r-1">
+    <div className="row justify-content-center m-1">
       <div
         class="btn-group"
         role="group"
@@ -22,6 +22,7 @@ function ListView(props) {
       >
         <input
           type="text"
+          className="form-control"
           placeholder={`Search by ${keyword.toLowerCase()}`}
           onChange={(event) => {
             let searchResult = fixedItems.filter((item) => {
@@ -32,6 +33,10 @@ function ListView(props) {
             setItems(searchResult);
           }}
         />
+        <button className="btn btn-light">
+          {" "}
+          <i className="fas fa-search"></i>
+        </button>
       </div>
       <div
         className="list-group  row justify-content-center col-md-6 payment-form"
@@ -52,7 +57,7 @@ function ListView(props) {
               key={index}
               style={{ marginBottom: "1em" }}
             >
-              <button
+              {/* <button
                 type="button"
                 class="btn btn-primary"
                 style={{ width: "4rem", height: "2rem" }}
@@ -60,7 +65,7 @@ function ListView(props) {
                 <h4>
                   <center>{index + 1}</center>
                 </h4>
-              </button>
+              </button> */}
               {headers.map((innerItem, innerIndex) => {
                 return (
                   <div
@@ -75,7 +80,7 @@ function ListView(props) {
                           </b>
                           <img
                             loading="lazy"
-                            className="card-img-top"
+                            className="img-thumbnail"
                             src={`${item[innerItem]}`.replace(
                               "http://localhost:5000",
                               `${settings.server_domain}`
@@ -127,7 +132,7 @@ function ListView(props) {
                   {props.options.map((optionItem, optionIndex) => {
                     return (
                       <button
-                        className={`btn btn-primary`}
+                        className={`btn btn-primary m-1`}
                         style={{ marginLeft: "1em" }}
                         value={optionItem.text}
                         key={optionIndex}

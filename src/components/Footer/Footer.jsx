@@ -11,8 +11,8 @@ function Footer() {
         href="#top"
         style={{
           position: "fixed",
-          bottom: "6%",
-          right: "3%",
+          bottom: "12%",
+          right: "2%",
           zIndex: "1",
           padding: "1em",
         }}

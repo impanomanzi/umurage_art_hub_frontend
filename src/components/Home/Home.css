@@ -23,7 +23,7 @@
 }
 .home-main-container .exhibition-section header {
   color: black;
-  background-color: white;
+  /* background-color: white; */
   text-align: center;
   display: flex;
   flex-direction: column;

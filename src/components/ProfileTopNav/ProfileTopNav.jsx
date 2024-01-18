@@ -38,8 +38,10 @@ function ProfileTopNav() {
       });
   };
   return (
-    <div className="profile-top-nav-container">
-      <h2 className="h2">Umurage art hub</h2>
+    <div className="profile-top-nav-container home-navbar">
+      <div className="home-navbar__logo" id="NavBarLogo">
+        <img src="/UMURAGE HEADER.png" alt="" />
+      </div>
       <Drawer
         className="user-profile-drawer"
         open={openMenu}

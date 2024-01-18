@@ -25,26 +25,34 @@ function BlogCreationForm() {
   };
 
   return (
-    <div className="payment-registration-form-container">
-      <h2>Create new Blog</h2>
+    <div className="payment-registration-form-container m-3">
+      <h2>CREATE NEW BLOG</h2>
       <hr />
 
       <form onSubmit={handleOnSubmit}>
-        <div className="form-inputs-container">
-          <label htmlFor="title">Title</label>
+        <div className="form-group">
+          <label htmlFor="title" className="col-sm-2 col-form-label">
+            Title
+          </label>
           <input
             type="text"
+            className="form-control"
             name="title"
+            required
             autoComplete="off"
             onChange={(event) => {
               setTitle(event.target.value);
             }}
           />
         </div>
-        <div className="form-inputs-container">
-          <label htmlFor="content">Content</label>
+        <div className="form-group">
+          <label htmlFor="content" className="col-sm-2 col-form-label">
+            Content
+          </label>
           <textarea
+            className="form-control"
             type="text"
+            required
             onChange={(event) => {
               setContent(event.target.value);
             }}
@@ -53,7 +61,9 @@ function BlogCreationForm() {
             rows={10}
           />
         </div>
-        <button type="submit">Post</button>
+        <button type="submit" className="btn btn-primary">
+          Post
+        </button>
       </form>
     </div>
   );

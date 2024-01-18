@@ -92,6 +92,16 @@ button:hover {
   width: 93%;
   margin-bottom: 1em;
 }
+
+.response-alert {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 1rem;
+  padding: 1em;
+  z-index: 1;
+}
+
 .airtel {
   background-color: rgb(221, 21, 21);
   /* color: white; */

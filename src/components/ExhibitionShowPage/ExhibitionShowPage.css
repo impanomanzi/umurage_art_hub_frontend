@@ -5,19 +5,14 @@
   padding-top: 1rem;
   padding-bottom: 1em;
   margin-top: 1px;
-  background-color: #0f172a;
+  background: linear-gradient(black, rgb(111, 109, 109), #020617, #030712);
 }
 .exhibition-page-banner {
   height: 71vh;
   border: 2px solid whitesmoke;
   border-radius: 10px;
 }
-.exhibition-page-container img {
-  width: 40%;
-  height: 70vh;
-  border-radius: inherit;
-  border-radius: 1em;
-}
+
 .exhibition-continue {
   flex: 0.25;
   color: rgb(209, 205, 205);

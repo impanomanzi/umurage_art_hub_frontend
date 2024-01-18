@@ -4,10 +4,9 @@
 }
 .home-navbar {
   display: flex;
+  margin-bottom: 1rem;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 10px 0 10px;
-  height: 20vh;
+  height: 15vh;
   background-color: #0a0b0c;
 }
 
@@ -28,7 +27,7 @@
   }
   .home-navbar {
     display: grid;
-    grid-template-columns: 60% 30%;
+    grid-template-columns: 70% 30%;
     grid-column-start: auto;
     grid-column-gap: 5%;
     padding: 0;

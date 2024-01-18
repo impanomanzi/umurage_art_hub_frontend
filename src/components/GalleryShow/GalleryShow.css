@@ -1,11 +1,15 @@
 .galleries-container {
   display: flex;
   align-items: flex-start;
-  justify-content: left;
-  background-color: #0f172a;
+  justify-content: center;
 }
 .gallery-shw {
-  background-color: #152331;
+  background: linear-gradient(
+    black,
+    rgb(111, 109, 109),
+    #020617,
+    rgb(111, 109, 109)
+  );
 }
 .gallery-shw #gsh {
   /* font-family: roboto; */
@@ -16,11 +20,7 @@
   display: flex;
   flex-direction: column;
 }
-.gallery-show-header {
-  background-color: #152331;
 
-  /* font-family: roboto-itallic; */
-}
 @media screen and (max-device-width: 576px) {
   .galleries-container {
     display: flex;

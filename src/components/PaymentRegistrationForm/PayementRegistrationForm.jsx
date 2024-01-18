@@ -1,17 +1,41 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { useNavigate, useParams } from "react-router-dom";
-import FormTemplate from "../FormTemplate/FormTemplate";
 import settings from "../settings.json";
 import CheckoutForm from "../CheckoutForm/CheckoutForm";
 import FormNavbar from "../NavBar/FormNavbar";
 function PayementRegistrationForm() {
   const exhibitionId = useParams().id;
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [alertVisible, setAlertVisible] = useState(true);
+  const closeAlert = (event) => {
+    document.querySelector(".response-alert").innerHTML = "";
+  };
+  const bigErrorAlert = (
+    <div className={`alert alert-danger alert-dismissible`}>
+      <center>
+        <p className="lead">erro happened while submiting your informations</p>
+      </center>
+
+      <button className="btn btn-close" onClick={closeAlert}></button>
+    </div>
+  );
+
+  const errorAlert = (
+    <div className={`alert alert-danger`}>
+      <center>
+        <p className="lead">failed to submit your request</p>
+      </center>
+      <button className="btn btn-close" onClick={closeAlert}></button>
+    </div>
+  );
+  const successAlert = (
+    <div className={`alert alert-success`}>
+      <center>
+        <p className="lead">success</p>
+      </center>
+      <button className="btn btn-close" onClick={closeAlert}></button>
+    </div>
+  );
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,7 +51,7 @@ function PayementRegistrationForm() {
         });
         const handleOnSubmit = (event) => {
           event.preventDefault();
-          document.querySelector(".message").innerHTML = "";
+          document.querySelector(".response-alert").innerHTML = "";
           ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
             <center>
               <div class="spinner-border" role="status">
@@ -67,25 +91,15 @@ function PayementRegistrationForm() {
                   />
                 );
               } else {
-                ReactDOM.createRoot(document.querySelector(".message")).render(
-                  <div className={`alert alert-danger`}>
-                    <center>
-                      <p className="lead">failed to submit your request</p>
-                    </center>
-                  </div>
-                );
+                ReactDOM.createRoot(
+                  document.querySelector(".response-alert")
+                ).render(errorAlert);
               }
             })
             .catch((error) => {
-              ReactDOM.createRoot(document.querySelector(".message")).render(
-                <div className={`alert alert-danger`}>
-                  <center>
-                    <p className="lead">
-                      erro happened while submiting your informations
-                    </p>
-                  </center>
-                </div>
-              );
+              ReactDOM.createRoot(
+                document.querySelector(".response-alert")
+              ).render(bigErrorAlert);
               ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
                 <span>continue</span>
               );

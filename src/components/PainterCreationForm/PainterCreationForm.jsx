@@ -3,26 +3,20 @@ import ReactDOM from "react-dom/client";
 import "../FormTemplate/FormTemplate.css";
 import settings from "../settings.json";
 function PainterCreationForm() {
-  let [fullname, setFullname] = useState("");
-  let [username, setUsername] = useState("");
-  let [password, setPassword] = useState("");
-  const generateSubmissionMessage = (message, type) => {
-    message = (
-      <div className={`alert alert-${type}`}>
-        <center>
-          <p className="lead">{message}</p>
-        </center>
-      </div>
-    );
-
-    return message;
+  const [fullname, setFullname] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const closeAlert = (event) => {
+    document.querySelector(".response-alert").innerHTML = "";
   };
   const displayMessage = (message, type) => {
-    ReactDOM.createRoot(document.querySelector(".message")).render(
-      <div className={`alert alert-${type}`}>
+    ReactDOM.createRoot(document.querySelector(".response-alert")).render(
+      <div className={`alert alert-${type} alert-dismissible`}>
         <center>
           <p className="lead">{message}</p>
         </center>
+
+        <button className="btn btn-close" onClick={closeAlert}></button>
       </div>
     );
     let btnText = (
@@ -81,16 +75,18 @@ function PainterCreationForm() {
   };
 
   return (
-    <div className="payment-registration-form-container">
-      <div className="message"></div>
+    <div className="payment-registration-form-container m-3">
       <h2>CREATE NEW PAINTER ACCOUNT</h2>
       <hr />
 
       <form onSubmit={handleOnSubmit} className="painter-form">
-        <div className="form-inputs-container">
-          <label htmlFor="username">FULL NAME</label>
+        <div className="form-group">
+          <label htmlFor="username" className="col-sm-2 col-form-label">
+            FULL NAME
+          </label>
           <input
             type="text"
+            className="form-control"
             required
             name="fullname"
             onChange={(event) => {
@@ -98,21 +94,28 @@ function PainterCreationForm() {
             }}
           />
         </div>
-        <div className="form-inputs-container">
-          <label htmlFor="username">USERNAME</label>
+        <div className="form-group">
+          <label htmlFor="username" className="col-sm-2 col-form-label">
+            USERNAME
+          </label>
           <input
             type="text"
             name="username"
+            className="form-control"
+            autoComplete="off"
             required
             onChange={(event) => {
               setUsername(event.target.value);
             }}
           />
         </div>
-        <div className="form-inputs-container">
-          <label htmlFor="phonenumber">PHONE NUMBER</label>
+        <div className="form-group">
+          <label htmlFor="phonenumber" className="col-sm-2 col-form-label">
+            PHONE NUMBER
+          </label>
           <input
             type="text"
+            className="form-control"
             required
             name="phonenumber"
             onChange={(event) => {
@@ -120,23 +123,30 @@ function PainterCreationForm() {
             }}
           />
         </div>
-        <div className="form-inputs-container">
-          <label htmlFor="password">PASSWORD</label>
+        <div className="form-group">
+          <label htmlFor="password" className="col-sm-2 col-form-label">
+            PASSWORD
+          </label>
           <input
             type="password"
             required
+            autoComplete="off"
+            className="form-control"
             name="password"
             onChange={(event) => {
               setPassword(event.target.value);
             }}
           />
         </div>
-        <div className="form-inputs-container">
-          <label htmlFor="profile">PROFILE PICTURE</label>
+        <div className="form-group">
+          <label htmlFor="profile" className="col-sm-2 col-form-label">
+            PROFILE PICTURE
+          </label>
           <input
             required
             type="file"
             name="profilepicture"
+            className="form-control-file"
             onChange={(event) => {
               setProfilePicture(event.target.files[0]);
             }}

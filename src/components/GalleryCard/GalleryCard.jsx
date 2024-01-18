@@ -53,7 +53,7 @@ function GalleryCard(props) {
       });
   };
   return (
-    <div className="col-md-4 mt-3 col-lg-3 m-x-2">
+    <div className="col-md-4 mt-2 col-lg-3">
       <img
         src={props.gallery.image.replace(
           "http://localhost:5000",

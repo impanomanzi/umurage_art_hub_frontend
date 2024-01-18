@@ -7,6 +7,35 @@ function PaintingCreationForm() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("Potrait");
   const [painting, setPainting] = useState("");
+  const closeAlert = (event) => {
+    document.querySelector(".response-alert").innerHTML = "";
+  };
+  const bigErrorAlert = (
+    <div className={`alert alert-danger alert-dismissible`}>
+      <center>
+        <p className="lead">Error happened while adding new painting</p>
+      </center>
+
+      <button className="btn btn-close" onClick={closeAlert}></button>
+    </div>
+  );
+
+  const errorAlert = (
+    <div className={`alert alert-danger`}>
+      <center>
+        <p className="lead">failed to add new painting</p>
+      </center>
+      <button className="btn btn-close" onClick={closeAlert}></button>
+    </div>
+  );
+  const successAlert = (
+    <div className={`alert alert-success`}>
+      <center>
+        <p className="lead">Painting added succesfully</p>
+      </center>
+      <button className="btn btn-close" onClick={closeAlert}></button>
+    </div>
+  );
   let formData = new FormData();
   formData.append("name", name);
   formData.append("category", category);
@@ -32,12 +61,8 @@ function PaintingCreationForm() {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          ReactDOM.createRoot(document.querySelector(".message")).render(
-            <div className={`alert alert-success`}>
-              <center>
-                <p className="lead">Painting added succesfully</p>
-              </center>
-            </div>
+          ReactDOM.createRoot(document.querySelector(".response-alert")).render(
+            successAlert
           );
           ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
             <span>
@@ -47,12 +72,8 @@ function PaintingCreationForm() {
           );
           document.querySelector(".painting-form").reset();
         } else {
-          ReactDOM.createRoot(document.querySelector(".message")).render(
-            <div className={`alert alert-danger`}>
-              <center>
-                <p className="lead">failed to add new painting</p>
-              </center>
-            </div>
+          ReactDOM.createRoot(document.querySelector(".response-alert")).render(
+            errorAlert
           );
           ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
             <span>
@@ -63,12 +84,8 @@ function PaintingCreationForm() {
         }
       })
       .catch((error) => {
-        ReactDOM.createRoot(document.querySelector(".message")).render(
-          <div className={`alert alert-danger`}>
-            <center>
-              <p className="lead">Error happened while adding new painting</p>
-            </center>
-          </div>
+        ReactDOM.createRoot(document.querySelector(".response-alert")).render(
+          bigErrorAlert
         );
         ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
           <span>
@@ -80,15 +97,17 @@ function PaintingCreationForm() {
   };
 
   return (
-    <div className="payment-registration-form-container">
-      <h2>Add new painitng</h2>
+    <div className="payment-registration-form-container m-3">
+      <h2>ADD NEW PAINTING</h2>
       <hr />
-      <div className="message"></div>
       <form onSubmit={handleOnSubmit} className="painting-form">
-        <div className="form-inputs-container">
-          <label htmlFor="name">Name</label>
+        <div className="form-group">
+          <label htmlFor="name" className="col-sm-2 col-form-label">
+            Name
+          </label>
           <input
             type="text"
+            className="form-control"
             name="name"
             required
             autoComplete="off"
@@ -97,9 +116,12 @@ function PaintingCreationForm() {
             }}
           />
         </div>
-        <div className="form-inputs-container">
-          <label htmlFor="category">Category</label>
+        <div className="form-group">
+          <label htmlFor="category" className="col-sm-2 col-form-label">
+            Category
+          </label>
           <select
+            className="form-control"
             name="category"
             required
             onChange={(event) => {
@@ -113,11 +135,14 @@ function PaintingCreationForm() {
           </select>
         </div>
 
-        <div className="form-inputs-container">
-          <label htmlFor="painting">Painting</label>
+        <div className="form-group">
+          <label htmlFor="painting" className="col-sm-2 col-form-label">
+            Painting
+          </label>
           <input
             name="painiting"
             required
+            className="form-control-file"
             type="file"
             onChange={(event) => {
               setPainting(event.target.files[0]);

@@ -4,7 +4,10 @@ import settings from "../settings.json";
 import "./ExhibitionPaintingShow.css";
 import FormNavbar from "../NavBar/FormNavbar";
 import ReactImageMagnify from "@blacklab/react-image-magnify";
+<<<<<<< HEAD
 
+=======
+>>>>>>> cded8eb1f4c48dd9a27f8731c88b1b8fc60c6357
 function ExhibitionPaintingShow(props) {
   let query = new URLSearchParams(useLocation().search);
   return (

@@ -3,6 +3,7 @@ import FormNavbar from "../NavBar/FormNavbar";
 import { Link } from "react-router-dom";
 import settings from "../settings.json";
 import PaypalButton from "../PaypalButton/PaypalButton";
+
 import { useState } from "react";
 function CheckoutForm(props) {
   const [productName, setProductName] = useState(props.exhibitionName);
@@ -85,8 +86,9 @@ function CheckoutForm(props) {
           />
         </div>
         <div className="row justify-content-center" role="group">
-          <a href={`tel:*182*8*1*56568#`} className="mtn btn btn-secondary">
-            SEND MONEY HERE
+          <a href={`tel:*182*8*1*798732#`} className="mtn btn btn-secondary">
+            SEND MONEY HERE <br />
+            *182*8*1*798732#
           </a>
           {/* <a href={"#"} className="airtel btn btn-secondary">
             Pay With Airtel Money

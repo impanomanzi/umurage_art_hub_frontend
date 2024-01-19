@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import "../FormTemplate/FormTemplate.css";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import settings from "../settings.json";
 function PainterCreationForm() {
   const [fullname, setFullname] = useState("");
@@ -113,8 +115,8 @@ function PainterCreationForm() {
           <label htmlFor="phonenumber" className="col-sm-2 col-form-label">
             PHONE NUMBER
           </label>
-          <input
-            type="text"
+          <PhoneInput
+            type="tel"
             className="form-control"
             required
             name="phonenumber"

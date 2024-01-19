@@ -5,9 +5,16 @@
 }
 .home-exhibition-container {
   align-items: center;
+  padding-top: 1.6rem;
 }
 .home {
-  background: linear-gradient(black, rgb(111, 109, 109), #020617, #030712);
+  background: linear-gradient(
+    white,
+    black,
+    rgb(111, 109, 109),
+    #020617,
+    #030712
+  );
 }
 .gallery-section {
   color: white;

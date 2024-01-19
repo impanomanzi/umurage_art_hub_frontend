@@ -43,6 +43,8 @@ function ExhibitionShowPage() {
             )}`}
             alt={wanted.name}
             className="img-fluid img-thumbnail"
+            width={"500px"}
+            height={"500px"}
           />
 
           <div className="exhibition-continue">

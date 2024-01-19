@@ -1,8 +1,12 @@
 import React from "react";
-import { BsTwitter } from "react-icons/bs";
+import { BsMailbox2Flag, BsTwitter } from "react-icons/bs";
 import { SiLinkedin } from "react-icons/si";
 import { BsYoutube } from "react-icons/bs";
 import { BsFacebook } from "react-icons/bs";
+import { BsInstagram } from "react-icons/bs";
+import { BsMailbox } from "react-icons/bs";
+import { BsMailbox2 } from "react-icons/bs";
+import { BsWhatsapp } from "react-icons/bs";
 import "./Footer.css";
 function Footer() {
   return (
@@ -29,16 +33,19 @@ function Footer() {
           </span>
           <div className="socials">
             <span>
-              <BsTwitter />
+              <a href="https://www.instagram.com/_isaiee_?gsh=MzRIODBiNWFIZA==">
+                <BsInstagram />
+              </a>
             </span>
             <span>
-              <SiLinkedin />
+              <a href="https://wa.me/+8615619381006">
+                <BsWhatsapp />
+              </a>
             </span>
             <span>
-              <BsYoutube />
-            </span>
-            <span>
-              <BsFacebook />
+              <a href="mailto:rukundoprince04@gmail.com">
+                <BsMailbox2 />
+              </a>
             </span>
           </div>
         </div>

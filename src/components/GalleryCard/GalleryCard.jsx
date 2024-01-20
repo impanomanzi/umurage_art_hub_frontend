@@ -69,7 +69,7 @@ function GalleryCard(props) {
           aria-label="button group for filtering and sorting gallery painting"
         >
           <Link
-            to={`https://wa.me/${props.gallery.phone}`.trim()}
+            to={`https://api.whatsapp.com/send?phone=${props.gallery.phone}`.trim()}
             className="btn btn-primary"
           >
             <i className="fas fa-cart-arrow-down"></i>&nbsp; Buy now

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Home.css";
-import NavBar from "../NavBar/HomeNavBar.jsx";
+import HomeNavBar from "../NavBar/HomeNavBar.jsx";
 import Gallery from "../Gallery/Gallery.jsx";
 import Exhibitions from "../Exhibitions/Exhibitions.jsx";
 
@@ -43,7 +43,7 @@ function Home() {
 
   return (
     <div className="home">
-      <NavBar />
+      <HomeNavBar />
 
       <div className="home-main-container">
         <div className="exhibition-section">

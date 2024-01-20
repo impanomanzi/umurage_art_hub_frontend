@@ -7,7 +7,7 @@
   margin-bottom: 1rem;
   align-items: center;
   height: 15vh;
-  background-color: #0a0b0c;
+  background-color: #cbcfd4;
 }
 
 .home-navbar__logo img {
@@ -32,6 +32,6 @@
     grid-column-gap: 5%;
     padding: 0;
     height: 17vh;
-    background-color: #0a0b0c;
+    background-color: #cbcfd4;
   }
 }

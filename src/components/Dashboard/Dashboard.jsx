@@ -5,20 +5,24 @@ function Dashboard() {
   return (
     <div className="dashboard-container">
       <div className="dashboard-exhibition-card">
-        <span>Total Exhibitions</span>
-        <span>56</span>
+        <span>Exhibitions</span>
+        <span className="badge badge-warning">
+          {localStorage.getItem("exhibitions")}{" "}
+        </span>
       </div>
       <div className="dashboard-gallery-card">
-        <span>Total Galleries</span>
-        <span>256</span>
+        <span>Paintings</span>
+        <span className="badge badge-warning">
+          {localStorage.getItem("paintings")}
+        </span>
       </div>
       <div className="dashboard-painter-card">
-        <span>Total painters</span>
-        <span>546</span>
+        <span>painters</span>
+        <span className="badge badge-warning">{null}</span>
       </div>
       <div className="dashboard-analytics-card">
-        <span>Total Analytics</span>
-        <span>256</span>
+        <span>Analytics</span>
+        <span className="badge badge-warning">{null}</span>
       </div>
     </div>
   );

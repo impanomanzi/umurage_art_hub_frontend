@@ -1,10 +1,16 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
-import PaintingCreationForm from "../PaintingCreationForm/PaintingCreationForm";
+import { useState } from "react";
+
+import PaintingCreationForm from "../Forms/PaintingCreationForm/PaintingCreationForm";
 import "./ProfileBottomNav.css";
-import { render } from "react-dom";
 
 function ProfileBottomNav(props) {
+  const { home, options, exhibitions, paintings } = props;
+  const [MyPaintings, setMyPaintings] = useState(paintings);
+  const addNewPainting = (items) => {
+    setMyPaintings(items);
+  };
+
   return (
     <div className="profile-bottom-nav-container">
       <div className="home-area">
@@ -32,7 +38,10 @@ function ProfileBottomNav(props) {
           onClick={(event) => {
             console.log(document.querySelector(".user"));
             ReactDOM.createRoot(document.querySelector(".user")).render(
-              <PaintingCreationForm />
+              <PaintingCreationForm
+                paintings={paintings}
+                addNewPainting={addNewPainting}
+              />
             );
           }}
         >

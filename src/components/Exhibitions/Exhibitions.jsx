@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import ExhibitionCard from "../ExhibitionCard/ExhibitionCard";
 import { useState } from "react";
-import ReactDOM from "react-dom/client";
 import settings from "../settings.json";
 import "./Exihibitions.css";
 import { useNavigate } from "react-router-dom";
+
 function Exhibitions(props) {
   const [fixedExhibitions, setFixedExhibitions] = useState([]);
   const [dropdownText, setDropdownText] = useState("Sort by");
@@ -16,29 +16,10 @@ function Exhibitions(props) {
   let images = [];
   const navigate = useNavigate();
   useEffect(() => {
-    fetch(`${settings.server_domain}/get_exhibitions`, {
-      cache: "force-cache",
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("session")}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message != false) {
-          setFixedExhibitions(data);
-          setExhibitions(data);
-          customArray = data;
-        } else {
-          navigate("/sign-in");
-        }
-      });
+    setFixedExhibitions(exhibitions);
+    customArray = exhibitions;
   }, []);
-  const [imageObserver, setObserver] = useState();
 
-  const removeSkeletons = (index) => {
-    document.querySelector(`.exhibitions-loading`).innerHTML = "";
-  };
   const closeExDropdown = () => {
     if (document.querySelector(".ex-dropdown-menu").style.display === "block") {
       document.querySelector(".ex-dropdown-menu").style.display = "none";
@@ -51,9 +32,7 @@ function Exhibitions(props) {
       <div className="exhibitions-outer-container">
         <div className="header">
           <center>
-            <h1 className="h1" style={{ color: "white" }}>
-              Exhibitions
-            </h1>
+            <h2>EXHIBITIONS</h2>
           </center>
           <div
             class="btn-group"
@@ -145,7 +124,7 @@ function Exhibitions(props) {
             />
             <button
               type="button"
-              class="btn btn-outline-secondary"
+              class="btn btn-outline-primary"
               onClick={(event) => {
                 setObserving(false);
                 let searchEl = document.querySelector(".exh-search");
@@ -159,18 +138,10 @@ function Exhibitions(props) {
             </button>
           </div>
         </div>
-        <div className="exhibitions-loading" style={{ color: "white" }}>
-          <center style={{ marginTop: "25%" }}>
-            <div class="spinner-border" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
-          </center>
-        </div>
+
         <div className="exhibitions-container" id="exhibitions-container">
           {myRef["current"] && images.push(myRef["current"])}
           {exhibitions.map((exhibition, index) => {
-            images.forEach((image) => console.log(image));
-            removeSkeletons();
             return (
               <>
                 <ExhibitionCard

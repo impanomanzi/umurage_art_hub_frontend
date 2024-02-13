@@ -5,7 +5,7 @@
   padding-top: 1rem;
   padding-bottom: 1em;
   margin-top: 1px;
-  background: linear-gradient(black, rgb(111, 109, 109), #020617, #030712);
+  /* background: linear-gradient(black, rgb(111, 109, 109), #020617, #030712); */
 }
 .exhibition-page-banner {
   height: 71vh;
@@ -15,14 +15,12 @@
 
 .exhibition-continue {
   flex: 0.25;
-  color: rgb(209, 205, 205);
   padding-left: 1rem;
   padding-bottom: 2rem;
 }
 .exhibition-description {
   flex: 0.5;
   padding-right: 1rem;
-  color: rgb(209, 205, 205);
   text-overflow: ellipsis;
 }
 .exhibition-page-container button {

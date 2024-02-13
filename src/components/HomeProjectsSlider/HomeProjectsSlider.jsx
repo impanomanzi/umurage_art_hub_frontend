@@ -22,13 +22,6 @@ function HomeProjectsSlider(props) {
                   `${settings.server_domain}`
                 )}
               />
-              {/* <Carousel.Caption>
-                <div className="slider-meta-container">
-                  <Link to={`/payment/${project.id}`}>
-                    <button>Join</button>
-                  </Link>
-                </div>
-              </Carousel.Caption> */}
             </Carousel.Item>
           );
         })}

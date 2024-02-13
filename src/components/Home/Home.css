@@ -5,19 +5,14 @@
 }
 .home-exhibition-container {
   align-items: center;
-  padding-top: 1.6rem;
+  /* padding-top: 1.6rem; */
+  background: url("background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-.home {
-  background: linear-gradient(
-    white,
-    black,
-    rgb(111, 109, 109),
-    #020617,
-    #030712
-  );
-}
+ 
 .gallery-section {
-  color: white;
+  color: rgb(255, 255, 255);
   height: auto;
 }
 
@@ -39,7 +34,7 @@
 }
 
 .exhibition-section {
-  height: 85vh;
+  height: 83vh;
   /* background: url(/public/zoltan-tasi-sJGvoX_eVhw-unsplash.jpg); */
 }
 .home-main-container .exhibition-section header h1 {

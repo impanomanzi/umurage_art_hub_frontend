@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./ProfileTopNav.css";
 import settings from "../settings.json";
+import ReactDOM from "react-dom/client";
+import PainterCreationForm from "../Forms/PainterCreationForm/PainterCreationForm";
 import {
   Box,
   Drawer,
@@ -54,16 +56,10 @@ function ProfileTopNav() {
           onclick={() => setOpenMenu(false)}
           onKeyDown={() => setOpenMenu(false)}
         >
-          <h2>{localStorage.getItem("username")}</h2>
+          <center>
+            <h1 className="h4">Menu</h1>
+          </center>
           <List className="drawer">
-            <ListItem>
-              <ListItemButton>
-                <ListItemIcon>
-                  <i className="fas fa-grid-vertical"></i>
-                </ListItemIcon>
-                <ListItemText primary={"Gallery"} />
-              </ListItemButton>
-            </ListItem>
             <ListItem>
               <ListItemButton onClick={logout}>
                 <ListItemIcon>
@@ -82,6 +78,22 @@ function ProfileTopNav() {
             </ListItem>
 
             <ListItem>
+              <ListItemButton
+                onClick={(event) => {
+                  ReactDOM.createRoot(document.querySelector(".user")).render(
+                    <PainterCreationForm />
+                  );
+                  setOpenMenu(false);
+                }}
+              >
+                <ListItemIcon>
+                  <i className="fas fa-user "></i>
+                </ListItemIcon>
+                <ListItemText primary="Profile" />
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem>
               <ListItemButton onClick={logout}>
                 <ListItemIcon>
                   <i className="fas fa-sign-out-alt "></i>
@@ -92,47 +104,19 @@ function ProfileTopNav() {
           </List>
         </Box>
       </Drawer>
-      {/* <div className="menu-area">
-        <button>
-          <b>Gallery</b>
-        </button>
-
-        <button>
-          <b>Blogs</b>
-        </button>
-
-        <button>
-          <b>Exhibitions</b>
-        </button>
-        <div className="dropdown">
-          <button
-            className="btn btn-secondary dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            onClick={handleOpenDropDown}
-            onMouseEnter={handleOpenDropDown}
-          >
-            <i className="fas fa-user-circle"></i> &nbsp;
-            {localStorage.getItem("username")}
-          </button>
-          <div
-            className={`dropdown-menu nav-dropdown`}
-            aria-labelledby="dropdownMenuButton"
-            onMouseLeave={() => {
-              document.querySelector(".nav-dropdown").style.display = "none";
-            }}
-          >
-            <button className="dropdown-item" onClick={logout}>
-              <i className="fas fa-sign-out-alt "></i>&nbsp;Logout
-            </button>
-          </div>
-        </div>
-      </div> */}
+      <span>
+        <h5 className="h5">
+          {" "}
+          <i className="fas fa-shield-alt"></i>&nbsp;PAINTER DASHBOARD
+        </h5>
+        &nbsp;|&nbsp; <i>{localStorage.getItem("username")}</i>
+      </span>
       <div className="navbar-menu">
-        <button onClick={() => setOpenMenu(true)} className="menu-button-bars">
+        <button
+          onClick={() => setOpenMenu(true)}
+          className="menu-button-bars btn btn-outline-secondary"
+          style={{ color: "black" }}
+        >
           <i className="fas fa-bars"></i>
         </button>
       </div>

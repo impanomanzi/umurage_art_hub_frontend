@@ -6,13 +6,13 @@ import HomeProjectsSlider from "../HomeProjectsSlider/HomeProjectsSlider";
 import { Link } from "react-router-dom";
 import settings from "../settings.json";
 function Gallery(props) {
+  const { paintings } = props;
   const [fixedGalleryOwner, setFixedGalleryOnwer] = useState([]);
   const [galleryOwner, setGalleryOwner] = useState([]);
-  const [galleries, setGalleries] = useState([]);
+  const [galleries, setGalleries] = useState(paintings.data);
 
   // function to remove dupplication from an array
   const removeDuplication = (array) => {
-    // console.log(array);
     let clearArray = [];
 
     for (let i = 0; i < array.length; i++) {
@@ -30,25 +30,11 @@ function Gallery(props) {
   };
   // gettings galleries from server
   useEffect(() => {
-    fetch(`${settings.server_domain}/get_paintings`, {
-      cache: "force-cache",
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("session")}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          setGalleries(data.data);
-          let galleryOwners = data.data.map((item, index) => {
-            return item.owner;
-          });
-          setGalleryOwner(removeDuplication(galleryOwners));
-          setFixedGalleryOnwer(removeDuplication(galleryOwners));
-        } else {
-        }
-      });
+    let galleryOwners = galleries.map((item, index) => {
+      return item.owner;
+    });
+    setGalleryOwner(removeDuplication(galleryOwners));
+    setFixedGalleryOnwer(removeDuplication(galleryOwners));
   }, []);
 
   return (
@@ -86,8 +72,12 @@ function Gallery(props) {
         {galleryOwner.map((item, index) => {
           document.querySelector(`.gallery-loading`).innerHTML = "";
           return (
-            <div key={index} className="gallery-home-card">
-              <h3 style={{ color: "inherit" }}>{item}</h3>
+            <div
+              key={index}
+              className="gallery-home-card"
+              style={{ borderColor: "#cbcfd4", borderWidth: "20px" }}
+            >
+              <h3 style={{ color: "black" }}>{item}</h3>
               <Link to={`/gallery/${item}`}>
                 <HomeProjectsSlider
                   projects={galleries.filter((innerItem) => {

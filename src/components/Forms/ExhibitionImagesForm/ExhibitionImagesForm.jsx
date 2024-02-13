@@ -3,40 +3,12 @@ import "../FormTemplate/FormTemplate.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "./ExhibitionImagesForm.css";
 import ReactDOM from "react-dom/client";
-import settings from "../settings.json";
-
+import settings from "../../settings.json";
+import { AlertError, AlertSuccess } from "../../Alerts/Alert";
+import { loading } from "../../ButtonEffects/ButtonEffects";
 function ExhibitionImagesForm() {
   let exhibitionNames;
   let painters;
-  const closeAlert = (event) => {
-    document.querySelector(".response-alert").innerHTML = "";
-  };
-  const bigErrorAlert = (
-    <div className={`alert alert-danger alert-dismissible`}>
-      <center>
-        <p className="lead">Error happened while adding Exhibition</p>
-      </center>
-
-      <button className="btn btn-close" onClick={closeAlert}></button>
-    </div>
-  );
-
-  const errorAlert = (
-    <div className={`alert alert-danger`}>
-      <center>
-        <p className="lead">Adding new painting failed</p>
-      </center>
-      <button className="btn btn-close" onClick={closeAlert}></button>
-    </div>
-  );
-  const successAlert = (
-    <div className={`alert alert-success`}>
-      <center>
-        <p className="lead">Painting added successfully</p>
-      </center>
-      <button className="btn btn-close" onClick={closeAlert}></button>
-    </div>
-  );
 
   fetch(`${settings.server_domain}/get_exhibitions`)
     .then((response) => response.json())
@@ -59,8 +31,10 @@ function ExhibitionImagesForm() {
           let paintingAudio;
           let paintingOwner;
           let painter;
+
           const handleOnSubmit = (event) => {
             event.preventDefault();
+            loading(".submit-btn");
             let formData = new FormData();
             formData.append("name", paintingName);
             formData.append("description", paintingDescription);
@@ -82,22 +56,22 @@ function ExhibitionImagesForm() {
               .then((data) => {
                 document.querySelector(
                   ".submit-btn"
-                ).innerHTML = `<i className="fas fa-plus"></i> add`;
+                ).innerHTML = ` &plus;&nbsp;&nbsp;Add Painting`;
                 document.querySelector(".painting-form").reset();
                 if (data.success) {
                   ReactDOM.createRoot(
                     document.querySelector(".response-alert")
-                  ).render(successAlert);
+                  ).render(AlertSuccess("Painting added successfully"));
                 } else {
                   ReactDOM.createRoot(
                     document.querySelector(".response-alert")
-                  ).render(errorAlert);
+                  ).render(AlertError("Adding new painting failed"));
                 }
               })
               .catch((error) => {
                 ReactDOM.createRoot(
                   document.querySelector(".response-alert")
-                ).render(bigErrorAlert);
+                ).render(AlertError("Error happened while adding Exhibition"));
                 document.querySelector(
                   ".submit-btn"
                 ).innerHTML = `&plus; &nbsp; add`;
@@ -106,10 +80,8 @@ function ExhibitionImagesForm() {
 
           let form = (
             <div className="payment-registration-form-container m-3">
-              <div className="message"></div>
               <form onSubmit={handleOnSubmit} className="painting-form">
                 <h2>ADD EXHIBITION'S PAINTINGS</h2>
-                <hr />
                 <div className="form-group">
                   <select name="painter" required className="form-control">
                     <option value="" selected disabled>
@@ -154,31 +126,50 @@ function ExhibitionImagesForm() {
                 </div>
                 <div className="painting-image-container">
                   <div className="form-group">
-                    <label
-                      htmlFor="painting"
-                      className="col-sm-2 col-form-label"
-                    >
-                      <i className="fas fa-image"></i>
+                    <label htmlFor="painting" className="col-form-label">
+                      <b>Painting image</b>
                     </label>
+                    <div className="previewImage"></div>
+
                     <input
                       type="file"
                       className="form-control-file"
                       required
                       onChange={(event) => {
                         painting = event.target.files[0];
+
+                        let el = `<img src="${URL.createObjectURL(
+                          painting
+                        )}" alt=""  width="200px "  style="border-radius: 10px;"/>`;
+
+                        event.target.parentElement.querySelector(
+                          ".previewImage"
+                        ).innerHTML = el;
                       }}
                     />
                   </div>
                   <div className="form-group">
                     <label htmlFor="painting-sound" className="col-form-label">
-                      <i className="fas fa-volume-up"></i>
+                      <b>Painting Sound</b>
                     </label>
+                    <div className="soundPreview"></div>
                     <input
                       type="file"
                       className="form-control-file"
                       required
                       onChange={(event) => {
                         paintingAudio = event.target.files[0];
+                        let el = `<audio src="${URL.createObjectURL(
+                          paintingAudio
+                        )}" 
+                        controls="controls"
+                        preload="auto"
+                        autoPlay
+                        loop> </audio>`;
+
+                        event.target.parentElement.querySelector(
+                          ".soundPreview"
+                        ).innerHTML = el;
                       }}
                     />
                   </div>
@@ -215,7 +206,7 @@ function ExhibitionImagesForm() {
                     />
                   </div>
                   <button type="submit" className="btn btn-primary submit-btn">
-                    <i className="fas fa-plus"></i> add
+                    <i className="fas fa-plus"></i> &nbsp;&nbsp; Add Painting
                   </button>
                 </div>
               </form>
@@ -228,13 +219,15 @@ function ExhibitionImagesForm() {
     });
 
   return (
-    <div className="exhibition-paintings-container">
-      <center>
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </center>
-    </div>
+    <>
+      <div className="exhibition-paintings-container">
+        <center>
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </center>
+      </div>
+    </>
   );
 }
 

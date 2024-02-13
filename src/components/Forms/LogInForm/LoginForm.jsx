@@ -2,43 +2,18 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import { Link, useNavigate } from "react-router-dom";
 import FormTemplate from "../FormTemplate/FormTemplate";
-import FormNavbar from "../NavBar/FormNavbar";
-import settings from "../settings.json";
+import FormNavbar from "../../NavBar/FormNavbar";
+import settings from "../../settings.json";
+import { AlertError } from "../../Alerts/Alert";
+import { loading } from "../../ButtonEffects/ButtonEffects";
 function LoginForm(props) {
-  let navigate = useNavigate();
-  const closeAlert = (event) => {
-    document.querySelector(".response-alert").innerHTML = "";
-  };
-  const bigErrorAlert = (
-    <div className={`alert alert-danger alert-dismissible`}>
-      <center>
-        <p className="lead">Username or password is incorrect.</p>
-      </center>
-
-      <button className="btn btn-close" onClick={closeAlert}></button>
-    </div>
-  );
-  const err = (
-    <div className={`alert alert-danger alert-dismissible`}>
-      <center>
-        <p className="lead">Error occured try again</p>
-      </center>
-
-      <button className="btn btn-close" onClick={closeAlert}></button>
-    </div>
-  );
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const handleOnSubmit = (event) => {
     event.preventDefault();
     document.querySelector(".submit-btn").removeAttribute("disabled");
-    ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
-      <center>
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </center>
-    );
+    loading(".submit-btn");
     let formData = new FormData();
     formData.append("username", username);
     formData.append("password", password);
@@ -51,9 +26,10 @@ function LoginForm(props) {
       .then((data) => {
         if (data.message) {
           localStorage.setItem("session", data.session);
-          localStorage.setItem("userId", data.userId);
+          localStorage.setItem("userId", data.id);
           localStorage.setItem("username", data.username);
           localStorage.setItem("authKey", data.session);
+          localStorage.setItem("user", data);
 
           if (data.role === "admin") {
             props.onAdminLoggedIn(true);
@@ -71,7 +47,7 @@ function LoginForm(props) {
             </span>
           );
           ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            bigErrorAlert
+            AlertError("Username or password is incorrect.")
           );
         }
       })
@@ -84,7 +60,7 @@ function LoginForm(props) {
           </span>
         );
         ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-          err
+          AlertError("Error occured try again")
         );
       });
   };

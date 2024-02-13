@@ -1,15 +1,21 @@
 import "./NavBar.css";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
-import ExhibitionCreationForm from "../ExhibitionCreationForm/ExhibitionCreationForm";
-import PainterCreationForm from "../PainterCreationForm/PainterCreationForm";
-import BlogCreationForm from "../BlogCreationForm/BlogCreationForm";
-import PaintingCreationForm from "../PaintingCreationForm/PaintingCreationForm";
+import ExhibitionCreationForm from "../Forms/ExhibitionCreationForm/ExhibitionCreationForm";
+import PainterCreationForm from "../Forms/PainterCreationForm/PainterCreationForm";
+import BlogCreationForm from "../Forms/BlogCreationForm/BlogCreationForm";
+import PaintingCreationForm from "../Forms/PaintingCreationForm/PaintingCreationForm";
 import Dashboard from "../Dashboard/Dashboard";
 import ListView from "../ListView/ListView";
 import settings from "../settings.json";
-import ExhibitionImagesForm from "../ExhibitionImagesForm/ExhibitionImagesForm";
+import ExhibitionImagesForm from "../Forms/ExhibitionImagesForm/ExhibitionImagesForm";
 import "bootstrap/dist/css/bootstrap.css";
+import {
+  exhibitionKeywords,
+  painterKeywords,
+  paintingKeywords,
+  customerKeywords,
+} from "../KeyWords/Keywords";
 import {
   Box,
   Drawer,
@@ -20,9 +26,19 @@ import {
   ListItemText,
 } from "@mui/material";
 function NavBar(props) {
-  let items = [];
+  const { username, logout, exhibitions, paintings } = props;
+  const [myFixedExhibitions, setMyFixedExhibitions] = useState(exhibitions);
+  const [myFixedPaintings, setMyFixedPaintings] = useState(paintings);
+  const [myExhibitions, setMyExhibitions] = useState(exhibitions);
+  const [MyPaintings, setMyPaintings] = useState(paintings);
   const closeAlert = (event) => {
     document.querySelector(".response-alert").innerHTML = "";
+  };
+  const addNewExhibition = (items) => {
+    setMyExhibitions(items);
+  };
+  const addNewPainting = (items) => {
+    setMyPaintings(items);
   };
   let loading = () => {
     ReactDOM.createRoot(document.querySelector(".profile-main")).render(
@@ -36,6 +52,7 @@ function NavBar(props) {
   let navBaritems = [
     {
       text: "Dashboard",
+      counts: null,
       subHeadings: [
         {
           subText: "View",
@@ -51,13 +68,17 @@ function NavBar(props) {
 
     {
       text: "Exhibition",
+      counts: exhibitions.length,
       subHeadings: [
         {
           subText: "Create exhibition",
           icon: "fas fa-plus",
           callBack: () => {
             ReactDOM.createRoot(document.querySelector(".profile-main")).render(
-              <ExhibitionCreationForm />
+              <ExhibitionCreationForm
+                exhibitions={exhibitions}
+                addNewExhibition={addNewExhibition}
+              />
             );
           },
         },
@@ -77,12 +98,20 @@ function NavBar(props) {
           callBack: () => {
             loading();
             let options = [
-              { text: "Edit", callBack: null, icon: "fas fa-pen" },
+              {
+                text: "Edit",
+                callBack: (params) => {
+                  ReactDOM.createRoot(
+                    document.querySelector(".profile-main")
+                  ).render(<ExhibitionCreationForm data={params.item} />);
+                },
+                icon: "fas fa-pen",
+              },
               {
                 text: "Delete",
-                callBack: (event, item) => {
+                callBack: (params) => {
                   fetch(
-                    `${settings.server_domain}/delete_exhibition/${item.id}`,
+                    `${settings.server_domain}/delete_exhibition/${params.item.id}/${params.item.name}`,
                     {
                       method: "DELETE",
                       headers: {
@@ -95,18 +124,7 @@ function NavBar(props) {
                     .then((response) => response.json())
                     .then((data) => {
                       if (data.success) {
-                        // if exhibition has deleted from database update UI
-
-                        ReactDOM.createRoot(
-                          document.querySelector(".profile-main")
-                        ).render(
-                          <ListView
-                            items={data.data}
-                            title="List of Exhibtions"
-                            keyword="name"
-                            options={options}
-                          />
-                        );
+                        params.delete();
                       } else {
                         ReactDOM.createRoot(
                           document.querySelector(".response-alert")
@@ -122,11 +140,12 @@ function NavBar(props) {
                       }
                     })
                     .catch((error) => {
+                      console.error(error);
                       ReactDOM.createRoot(
                         document.querySelector(".response-alert")
                       ).render(
                         <div className="alert alert-danger">
-                          <center>Failed to delete that exhibitions</center>
+                          <center>{error.toString()}</center>
                           <button
                             className="btn btn-close"
                             onClick={closeAlert}
@@ -138,28 +157,22 @@ function NavBar(props) {
                 icon: "fas fa-trash",
               },
             ];
-            // fetching exhibition from server
-            fetch(`${settings.server_domain}/get_exhibitions`)
-              .then((response) => response.json())
-              .then((data) => {
-                items = data;
-                ReactDOM.createRoot(
-                  document.querySelector(".profile-main")
-                ).render(
-                  <ListView
-                    items={data}
-                    title="List of Exhibtions"
-                    keyword="name"
-                    options={options}
-                  />
-                );
-              });
+
+            ReactDOM.createRoot(document.querySelector(".profile-main")).render(
+              <ListView
+                items={exhibitions}
+                title="List of Exhibtions"
+                keyword={exhibitionKeywords}
+                options={options}
+              />
+            );
           },
         },
       ],
     },
     {
       text: "Painter",
+      counts: null,
       subHeadings: [
         {
           subText: "Add painter account",
@@ -177,15 +190,10 @@ function NavBar(props) {
             loading();
             let options = [
               {
-                text: "Edit",
-                callBack: null,
-                icon: "fas fa-pen",
-              },
-              {
                 text: "Delete",
-                callBack: (event, painter) => {
+                callBack: (params) => {
                   fetch(
-                    `${settings.server_domain}/delete_painter/${painter.id}`,
+                    `${settings.server_domain}/delete_painter/${params.item.id}`,
                     {
                       method: "DELETE",
                       headers: {
@@ -197,18 +205,8 @@ function NavBar(props) {
                   )
                     .then((response) => response.json())
                     .then((data) => {
-                      console.log(data);
                       if (data.success) {
-                        ReactDOM.createRoot(
-                          document.querySelector(".profile-main")
-                        ).render(
-                          <ListView
-                            items={data.data}
-                            title="List of all registered painters"
-                            keyword="username"
-                            options={options}
-                          />
-                        );
+                        params.delete();
                       } else {
                         ReactDOM.createRoot(
                           document.querySelector(".response-alert")
@@ -256,7 +254,7 @@ function NavBar(props) {
                   <ListView
                     items={data}
                     options={options}
-                    keyword="username"
+                    keyword={painterKeywords}
                     title="List of all registered painters"
                   />
                 );
@@ -280,6 +278,7 @@ function NavBar(props) {
     },
     {
       text: "Blogs",
+      counts: null,
       subHeadings: [
         {
           subText: "Add new Blog",
@@ -340,13 +339,17 @@ function NavBar(props) {
     },
     {
       text: "Paintings",
+      counts: paintings.data.length,
       subHeadings: [
         {
           subText: "Add new",
           icon: "fas fa-plus",
           callBack: () => {
             ReactDOM.createRoot(document.querySelector(".profile-main")).render(
-              <PaintingCreationForm />
+              <PaintingCreationForm
+                paintings={paintings}
+                addNewPainting={addNewPainting}
+              />
             );
           },
         },
@@ -355,14 +358,13 @@ function NavBar(props) {
           icon: "fas fa-table",
           callBack: () => {
             loading();
-            let paintings = [];
             let options = [
               { text: "Edit", callBack: null, icon: "fas fa-pen" },
               {
                 text: "Delete",
-                callBack: (event, painting) => {
+                callBack: (params) => {
                   fetch(
-                    `${settings.server_domain}/delete_painting/${painting.id}`,
+                    `${settings.server_domain}/delete_painting/${params.item.id}`,
                     {
                       method: "DELETE",
                       headers: {
@@ -378,16 +380,7 @@ function NavBar(props) {
                       if (data.success) {
                         // if painting has deleted from database update UI
 
-                        ReactDOM.createRoot(
-                          document.querySelector(".profile-main")
-                        ).render(
-                          <ListView
-                            items={data.data}
-                            title="List of paintings"
-                            keyword="name"
-                            options={options}
-                          />
-                        );
+                        params.delete();
                       } else {
                         ReactDOM.createRoot(
                           document.querySelector(".response-alert")
@@ -421,40 +414,22 @@ function NavBar(props) {
                 icon: "fas fa-trash",
               },
             ];
-            fetch(`${settings.server_domain}/get_paintings`)
-              .then((response) => response.json())
-              .then((data) => {
-                if (data.success) {
-                  ReactDOM.createRoot(
-                    document.querySelector(".profile-main")
-                  ).render(
-                    <ListView
-                      items={data.data}
-                      title="List of List of paintings"
-                      keyword="name"
-                      options={options}
-                    />
-                  );
-                } else {
-                  ReactDOM.createRoot(
-                    document.querySelector(".response-alert")
-                  ).render(
-                    <div className="alert alert-danger">
-                      <center>Failed to delete that painter</center>
-                      <button
-                        className="btn btn-close"
-                        onClick={closeAlert}
-                      ></button>
-                    </div>
-                  );
-                }
-              });
+
+            ReactDOM.createRoot(document.querySelector(".profile-main")).render(
+              <ListView
+                items={paintings.data}
+                title="List of paintings"
+                keyword={paintingKeywords}
+                options={options}
+              />
+            );
           },
         },
       ],
     },
     {
       text: "Customer",
+      counts: null,
       subHeadings: [
         {
           subText: "List customers",
@@ -469,14 +444,12 @@ function NavBar(props) {
             })
               .then((response) => response.json())
               .then((data) => {
-                // console.log(data);
                 if (data.success) {
                   let options = [
-                    { text: "Edit", callBack: null, icon: "fas fa-pen" },
                     {
                       text: "Delete",
-                      callBack: (event, customer) => {
-                        let button = event.target;
+                      callBack: (params) => {
+                        let button = params.event.target;
                         button.setAttribute("disabled", true);
 
                         ReactDOM.createRoot(button).render(
@@ -488,7 +461,7 @@ function NavBar(props) {
                         );
 
                         let formData = new FormData();
-                        formData.append("customer_id", customer.id);
+                        formData.append("customer_id", params.item.id);
                         fetch(`${settings.server_domain}/delete_customer`, {
                           method: "DELETE",
                           headers: {
@@ -501,16 +474,7 @@ function NavBar(props) {
                           .then((response) => response.json())
                           .then((data) => {
                             if (data.success) {
-                              ReactDOM.createRoot(
-                                document.querySelector(".profile-main")
-                              ).render(
-                                <ListView
-                                  items={data.data}
-                                  title="List of customers"
-                                  keyword="firstName"
-                                  options={options}
-                                />
-                              );
+                              params.delete();
                             } else {
                               button.removeAttribute("disabled");
                               ReactDOM.createRoot(button).render(
@@ -559,21 +523,23 @@ function NavBar(props) {
                     },
                     {
                       text: "Change status",
-                      callBack: (event, customer) => {
+                      callBack: (params) => {
                         ReactDOM.createRoot(
                           document.querySelector(".response-alert")
                         ).render(
-                          <div className="exhibition-paintings-container">
+                          <div className="alert alert-success">
                             <center>
-                              <div class="spinner-border" role="status">
-                                <span class="sr-only">Loading...</span>
-                              </div>
+                              customer status changed successfully
                             </center>
+                            <button
+                              className="btn btn-close"
+                              onClick={closeAlert}
+                            ></button>
                           </div>
                         );
                         let formData = new FormData();
-                        formData.append("customer_id", customer.id);
-                        formData.append("current_status", customer.status);
+                        formData.append("customer_id", params.item.id);
+                        formData.append("current_status", params.item.status);
                         fetch(
                           `${settings.server_domain}/update_customer_status`,
                           {
@@ -588,7 +554,6 @@ function NavBar(props) {
                         )
                           .then((response) => response.json())
                           .then((data) => {
-                            console.log(data);
                             if (data.success) {
                               ReactDOM.createRoot(
                                 document.querySelector(".profile-main")
@@ -641,7 +606,7 @@ function NavBar(props) {
                     <ListView
                       items={data.data}
                       title="List of customers"
-                      keyword="firstName"
+                      keyword={customerKeywords}
                       options={options}
                     />
                   );
@@ -667,122 +632,47 @@ function NavBar(props) {
   ];
   const [openMenu, setOpenMenu] = useState(false);
 
-  const btnLoading = (root) => {
-    ReactDOM.createRoot(document.querySelector(`${root}`)).render(
-      <center>
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </center>
-    );
-  };
-  let currentOpen = "";
-  let currentBtn = "";
-  const handleOpenDropDwon = (index) => {
-    if (
-      document.querySelector(".dropdown-menu-" + index).style.display ===
-      "block"
-    ) {
-      document.querySelector(".dropdown-menu-" + index).style.display = "none";
-    } else {
-      if (currentOpen)
-        document.querySelector(currentOpen).style.display = "none";
-      document.querySelector(".dropdown-menu-" + index).style.display = "block";
-      currentOpen = ".dropdown-menu-" + index;
-    }
-  };
-
   return (
-    <div className="profile-top-nav-container home-navbar">
-      <div className="home-navbar__logo" id="NavBarLogo">
+    <div className="profile-top-nav-container home-navbar bg-light">
+      <div className="home-navbar__logo " id="NavBarLogo">
         <img src="/UMURAGE HEADER.png" alt="" />
       </div>
-      {/* <div
-        className="pc-navbar"
-        onMouseLeave={() => {
-          if (currentOpen)
-            document.querySelector(currentOpen).style.display = "none";
-        }}
-      >
-        <div className="nav-item-container">
-          <div className="dropdown-container">
-            {navBaritems.map((item, index) => {
-              return (
-                <div
-                  className={`drop-down`}
-                  key={index}
-                  onClick={item.callBack}
-                >
-                  <button
-                    className={`btn btn-secondary dropdown-toggle drop-down-btn-${index}`}
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    onMouseEnter={() => {
-                      handleOpenDropDwon(index);
-                    }}
-                    onClick={() => {
-                      handleOpenDropDwon(index);
-                    }}
-                  >
-                    {item.text}
-                  </button>
-                  <div
-                    className={`dropdown-menu dropdown-menu-${index}`}
-                    onMouseLeave={() => {
-                      document.querySelector(
-                        ".dropdown-menu-" + index
-                      ).style.display = "none";
-                    }}
-                    aria-labelledby="dropdownMenuButton"
-                  >
-                    {item.subHeadings.map((innerItem, innerIndex) => {
-                      return (
-                        <button
-                          className="dropdown-item"
-                          key={innerIndex}
-                          onClick={innerItem.callBack}
-                        >
-                          <i className={innerItem.icon}></i>
-                          {innerItem.subText}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          <div>
-            <button className="btn btn-outline-primary">
-              <i className="fas fa-cog"></i>
-            </button>
-            <button
-              className="btn btn-outline-primary"
-              onClick={() => {
-                props.logout();
-              }}
-            >
-              <i className="fas fa-sign-out-alt "></i> &nbsp;
-            </button>
-          </div>
-        </div>
-      </div> */}
-
-      <button
-        onClick={() => setOpenMenu(true)}
-        className="menu-button-bars btn btn-outline-secondary "
+      <span>
+        <h5 className="h5">
+          {" "}
+          <i className="fas fa-shield-alt"></i>&nbsp;ADMIN DASHBOARD
+        </h5>
+        &nbsp;|&nbsp; <i>{localStorage.getItem("username")}</i>
+      </span>
+      <span
         style={{
-          marginRight: "0.5rem",
-          backgroundColor: "transparent",
-          color: "white",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "right",
+          justifyItems: "right",
+          alignItems: "right",
         }}
       >
-        <i className="fas fa-bars"></i>
-      </button>
+        {exhibitions.length != 0 && (
+          <span
+            className="badge badge-success"
+            style={{ width: "5px", height: "7px", borderEndEndRadius: "2.5px" }}
+          >
+            &nbsp;
+          </span>
+        )}
+        <button
+          onClick={() => setOpenMenu(true)}
+          className="menu-button-bars btn btn-outline-secondary "
+          style={{
+            marginRight: "0.5rem",
+            backgroundColor: "transparent",
+            color: "black",
+          }}
+        >
+          <i className="fas fa-bars"></i>
+        </button>
+      </span>
 
       <Drawer
         open={openMenu}
@@ -811,7 +701,10 @@ function NavBar(props) {
                     onClick={item.callBack}
                     style={{ padding: "0 1em 0 1em" }}
                   >
-                    <summary className="lead">{item.text}</summary>
+                    <summary className="lead">
+                      {item.text} &nbsp;
+                      <span className="badge badge-success">{item.counts}</span>
+                    </summary>
 
                     {item.subHeadings.map((innerItem, innerIndex) => {
                       return (
@@ -832,16 +725,7 @@ function NavBar(props) {
                 </ListItem>
               );
             })}
-            <ListItem>
-              <ListItemButton>
-                <ListItemText>
-                  <ListItemIcon>
-                    <i className="fas fa-cog"></i>
-                  </ListItemIcon>
-                  Settings
-                </ListItemText>
-              </ListItemButton>
-            </ListItem>
+
             <ListItem>
               <ListItemButton
                 onClick={() => {

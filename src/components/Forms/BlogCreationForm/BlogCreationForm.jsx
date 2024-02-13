@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import "../FormTemplate/FormTemplate.css";
-import settings from "../settings.json";
+import settings from "../../settings.json";
 function BlogCreationForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");

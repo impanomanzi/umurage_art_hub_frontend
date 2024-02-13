@@ -54,13 +54,26 @@ function GalleryCard(props) {
   };
   return (
     <div className="col-md-4 mt-2 col-lg-3">
-      <img
-        src={props.gallery.image.replace(
-          "http://localhost:5000",
-          `${settings.server_domain}`
-        )}
-        className="w-100 shadow-1-strong rounded mb-4"
-      />
+      <a
+        href=""
+        onClick={(event) => {
+          props.onImageClicked(
+            event,
+            props.gallery.image.replace(
+              "http://localhost:5000",
+              `${settings.server_domain}`
+            )
+          );
+        }}
+      >
+        <img
+          src={props.gallery.image.replace(
+            "http://localhost:5000",
+            `${settings.server_domain}`
+          )}
+          className="w-100 shadow-1-strong rounded mb-4"
+        />
+      </a>
 
       <div className="card-body gallery-card-link">
         <div
@@ -103,6 +116,7 @@ function GalleryCard(props) {
                 dislike();
               }
             }}
+            style={{ backgroundColor: "#ed9b1f" }}
           >
             <i className="fas fa-heart"></i> &nbsp; {likeBtnText} &nbsp;
             <span className="badge badge-light" style={{ color: "black" }}>

@@ -19,9 +19,4 @@
   margin-top: 0.5rem;
   box-shadow: 2px 2px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54);
 }
-@media screen and (max-device-width: 576px) {
-  /* .exhibitions-container {
-    flex-direction: column;
-    align-items: center;
-  } */
-}
+ 

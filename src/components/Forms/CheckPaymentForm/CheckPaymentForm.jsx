@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
-import FormNavbar from "../NavBar/FormNavbar";
+import FormNavbar from "../../NavBar/FormNavbar";
 import { useNavigate, useParams } from "react-router-dom";
-import settings from "../settings.json";
+import settings from "../../settings.json";
+import { AlertError } from "../../Alerts/Alert";
 
 function CheckPaymentForm() {
   const id = useParams().id;
@@ -75,7 +76,7 @@ function CheckPaymentForm() {
         onSubmit={handleOnSubmit}
       >
         <div className="message"></div>
-        <h1 className="h1">Customer Entry</h1>
+        <h2>CUSTOMER ENTRY</h2>
         <div className="form-group">
           <label>Enter your Id</label>
           <input

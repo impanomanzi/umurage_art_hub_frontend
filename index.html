@@ -5,9 +5,10 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2693129329929167"
      crossorigin="anonymous"></script>
+     
     <link
       rel="stylesheet"
-      href="/src/components/plugins/fontawesome-free-6.4.2-web/css/all.css"
+      href="/src/components/plugins/fontawesome-free-6.4.2-web/css/all.css" l
     />
     <link rel="stylesheet" href="src/assets/bootstrap/css/bootstrap.min.css">
     <link rel="script" href="/src/assets/bootstrap/js/bootstrap.bundle.min.js">
@@ -31,12 +32,16 @@
   <body>
     <div id="root" class="main-app">
       <div class="main">
-        <center>
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+      
+        <center style="margin: 35%; margin-bottom: 40%;">
+          <p class="lead"> Loading ...</p>
+          <div class="progress" >
+          
+          <div class="progress-bar progress-bar-striped progress-bar-animated"
+          role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+          style="width: 100%"></div>
           </div>
-        </center>
-      </div>
+      </div></center>
     </div>
     <div class="response-alert"></div>
     <script type="module" src="/src/main.jsx"></script>

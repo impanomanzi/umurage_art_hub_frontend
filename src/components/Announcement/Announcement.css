@@ -1,0 +1,64 @@
+
+ 
+.scroller-container ul{
+    list-style: none;
+}
+.scroller-container li{
+    background-color: #ed9b1f;
+    border-radius: 5px;
+    padding-block: 7px;
+    padding-left: 1em;
+    padding-right: 1em;
+    width: 100%;
+
+}
+.scroller-container .scroller{
+    max-width:600px;
+     
+    
+}
+.scroller-container{
+    display: flex;
+    justify-content: center;
+    
+}
+.scroller-container .inner-scroller{
+    display: flex;
+    gap: 0.5em;
+    flex-wrap: wrap;
+
+}
+
+.scroller-container .scroller[data-animated=true]{
+    overflow: hidden;
+    -webkit-mask: 
+    linear-gradient(90deg, transparent, white 20%, white 80%, transparent );
+    mask: 
+    linear-gradient(90deg,transparent, white 20%, white 80%, transparent);
+}
+
+.scroller-container .scroller[data-animated=true] .inner-scroller{
+    flex-wrap: nowrap;
+    width: max-content;
+    animation: scroll var(--_animation-duration, 20s)  var(--_animation-direction, forwards) linear infinite;
+
+}
+
+.scroller-container .scroller[data-direction="right"]{
+    --_animation-direction:reverse ;
+}
+.scroller-container .scroller[data-direction="left"]{
+    --_animation-direction:forwards
+}
+.scroller-container .scroller[data-speed="slow"]{
+    --_animation-duration:40s
+}
+.scroller-container .scroller[data-speed="fast"]{
+    --_animation-duration:15s
+}
+@keyframes scroll {
+    to{
+        transform: translate(calc(-50% - 0.25em));
+    }
+    
+}

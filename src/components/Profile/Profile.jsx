@@ -1,23 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import React, { useState } from "react";
 import NavBar from "../NavBar/NavBar";
 import "./Profile.css";
-import Home from "../Home/Home";
-import ProfileHome from "../ProfileHome/ProfileHome";
-import Exhibitions from "../Exhibitions/Exhibitions";
-import NotFound from "../NotFound/NotFound";
 import settings from "../settings.json";
-import {
-  Link,
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Dashboard from "../Dashboard/Dashboard";
-function Profile() {
-  let navigate = useNavigate();
+function Profile(props) {
+  const { onLogout, exhibitions, paintings } = props;
+  const navigate = useNavigate();
+
   const logout = () => {
     fetch(`${settings.server_domain}/custom-admin-logout`, {
       method: "GET",
@@ -37,13 +27,17 @@ function Profile() {
         }
       });
   };
-  let userId = useParams().id;
 
   return (
     <div className="dashboard-container">
       <div className="profile-container">
         <div>
-          <NavBar username="Rafiki" logout={logout} />
+          <NavBar
+            username="Rafiki"
+            logout={logout}
+            exhibitions={exhibitions}
+            paintings={paintings}
+          />
         </div>
         <div className="profile-main">
           <Dashboard />

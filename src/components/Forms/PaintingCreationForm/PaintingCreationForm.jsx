@@ -2,40 +2,22 @@ import React from "react";
 import { useState } from "react";
 import ReactDOM from "react-dom/client";
 import "../FormTemplate/FormTemplate.css";
-import settings from "../settings.json";
-function PaintingCreationForm() {
+import settings from "../../settings.json";
+import { AlertError, AlertSuccess } from "../../Alerts/Alert";
+import { loading } from "../../ButtonEffects/ButtonEffects";
+function PaintingCreationForm(props) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("Potrait");
   const [painting, setPainting] = useState("");
-  const closeAlert = (event) => {
-    document.querySelector(".response-alert").innerHTML = "";
+  const btnText = (
+    <span>
+      <i className="fas fa-plus "></i>
+      Add
+    </span>
+  );
+  const changebtnText = () => {
+    ReactDOM.createRoot(document.querySelector(".submit-btn")).render(btnText);
   };
-  const bigErrorAlert = (
-    <div className={`alert alert-danger alert-dismissible`}>
-      <center>
-        <p className="lead">Error happened while adding new painting</p>
-      </center>
-
-      <button className="btn btn-close" onClick={closeAlert}></button>
-    </div>
-  );
-
-  const errorAlert = (
-    <div className={`alert alert-danger`}>
-      <center>
-        <p className="lead">failed to add new painting</p>
-      </center>
-      <button className="btn btn-close" onClick={closeAlert}></button>
-    </div>
-  );
-  const successAlert = (
-    <div className={`alert alert-success`}>
-      <center>
-        <p className="lead">Painting added succesfully</p>
-      </center>
-      <button className="btn btn-close" onClick={closeAlert}></button>
-    </div>
-  );
   let formData = new FormData();
   formData.append("name", name);
   formData.append("category", category);
@@ -43,13 +25,7 @@ function PaintingCreationForm() {
   formData.append("owner", localStorage.getItem("userId"));
   const handleOnSubmit = (event) => {
     event.preventDefault();
-    ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
-      <center>
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </center>
-    );
+    loading(".submit-btn");
     fetch(`${settings.server_domain}/add_new_painting`, {
       method: "PUT",
       headers: {
@@ -61,45 +37,35 @@ function PaintingCreationForm() {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
+          23;
+          let inner = props.paintings.data;
+          inner.push(data.data[0]);
+          props.addNewPainting(inner);
           ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            successAlert
+            AlertSuccess("Painting added succesfully")
           );
-          ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
-            <span>
-              <i className="fas fa-plus "></i>
-              Add
-            </span>
-          );
+          changebtnText();
           document.querySelector(".painting-form").reset();
         } else {
           ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            errorAlert
+            AlertError("failed to add new painting")
           );
-          ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
-            <span>
-              <i className="fas fa-plus "></i>
-              Add
-            </span>
-          );
+          changebtnText();
         }
       })
       .catch((error) => {
+        console.log(error);
         ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-          bigErrorAlert
+          AlertError("Error happened while adding new painting")
         );
-        ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
-          <span>
-            <i className="fas fa-plus "></i>
-            Add
-          </span>
-        );
+        changebtnText();
       });
   };
 
   return (
     <div className="payment-registration-form-container m-3">
       <h2>ADD NEW PAINTING</h2>
-      <hr />
+
       <form onSubmit={handleOnSubmit} className="painting-form">
         <div className="form-group">
           <label htmlFor="name" className="col-sm-2 col-form-label">
@@ -139,18 +105,25 @@ function PaintingCreationForm() {
           <label htmlFor="painting" className="col-sm-2 col-form-label">
             Painting
           </label>
+
           <input
             name="painiting"
             required
             className="form-control-file"
             type="file"
             onChange={(event) => {
+              const url = URL.createObjectURL(event.target.files[0]);
+              const el = `<center><img src="${url}" width="135px" style="border-radius:10px"/></center>`;
+              event.target.parentElement.querySelector(
+                ".painting-preview"
+              ).innerHTML = el;
               setPainting(event.target.files[0]);
             }}
           />
+          <div className="painting-preview"></div>
         </div>
         <button type="submit" className="submit-btn btn btn-primary">
-          Add New
+          {btnText}
         </button>
       </form>
     </div>

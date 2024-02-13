@@ -1,0 +1,48 @@
+.multi-step-progressbar-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    margin-left: 2rem ;
+    
+}
+.circle-content{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.circle-description{
+    width: 15%;
+}
+.progress-circle-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.active-element{
+    background-color: green;
+}
+.progress-circle{
+    height: 3rem;
+    width: 3rem;
+    border-radius: 1.5rem;
+    border: 2px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+ 
+ 
+.progress-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.line-indicator{
+    width: 100%;
+    
+    height: 5px;
+    border-radius: 2px;
+    padding: 1px;
+}

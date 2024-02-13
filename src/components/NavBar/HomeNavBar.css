@@ -1,37 +1,10 @@
-@font-face {
-  font-family: roboto-itallic;
-  src: url(/src/assets/fonts/Roboto-Thin.ttf);
-}
-.home-navbar {
+.homenavbar-container {
   display: flex;
-  margin-bottom: 1rem;
+
   align-items: center;
-  height: 15vh;
+  justify-content: space-between;
+  height: 14vh;
   background-color: #cbcfd4;
 }
 
-.home-navbar__logo img {
-  padding-top: 1rem;
-  color: rgb(173, 168, 21);
-  z-index: 2;
-}
-
-@media screen and (max-device-width: 828px) {
-  .home-navbar__logo h1 {
-    font-size: 2.5rem;
-  }
-  .home-navbar__logo img {
-    color: rgb(173, 168, 21);
-    z-index: 1;
-    width: 100%;
-  }
-  .home-navbar {
-    display: grid;
-    grid-template-columns: 70% 30%;
-    grid-column-start: auto;
-    grid-column-gap: 5%;
-    padding: 0;
-    height: 17vh;
-    background-color: #cbcfd4;
-  }
-}
+ 

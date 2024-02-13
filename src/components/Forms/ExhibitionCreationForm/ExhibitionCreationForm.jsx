@@ -1,59 +1,17 @@
 import React, { useState } from "react";
 import FormTemplate from "../FormTemplate/FormTemplate";
-import settings from "../settings.json";
+import settings from "../../settings.json";
 import ReactDOM from "react-dom/client";
-function ExhibitionCreationForm() {
+import { AlertError, AlertSuccess } from "../../Alerts/Alert";
+import { loading } from "../../ButtonEffects/ButtonEffects";
+function ExhibitionCreationForm(props) {
   const [name, setName] = useState("");
   const [host, setHost] = useState("");
   const [startdate, setStartdate] = useState("");
   const [enddate, setEnddate] = useState("");
   const [fees, setFees] = useState("");
   const [banner, setExhibitionBanner] = useState("");
-  const closeAlert = (event) => {
-    document.querySelector(".response-alert").innerHTML = "";
-  };
-  const bigErrorAlert = (
-    <div className={`alert alert-danger alert-dismissible`}>
-      <center>
-        <p className="lead">Error happened while adding Exhibition</p>
-      </center>
-
-      <button className="btn btn-close" onClick={closeAlert}></button>
-    </div>
-  );
-
-  const errorAlert = (
-    <div className={`alert alert-danger`}>
-      <center>
-        <p className="lead">failed to add new Exhibition</p>
-      </center>
-      <button className="btn btn-close" onClick={closeAlert}></button>
-    </div>
-  );
-  const successAlert = (
-    <div className={`alert alert-success`}>
-      <center>
-        <p className="lead">Exhibition added succesfully</p>
-      </center>
-      <button className="btn btn-close" onClick={closeAlert}></button>
-    </div>
-  );
-  const alreadyError = (
-    <div className={`alert alert-danger`}>
-      <center>
-        <p className="lead">Exhibition Already Exists.</p>
-      </center>
-    </div>
-  );
-  const handleOnSubmit = (event) => {
-    event.preventDefault();
-    ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
-      <center>
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </center>
-    );
+  const getFormData = () => {
     let formData = new FormData();
     formData.append("name", name);
     formData.append("host", host);
@@ -61,10 +19,10 @@ function ExhibitionCreationForm() {
     formData.append("end_date", enddate);
     formData.append("entrace_fees", fees);
     formData.append("banner", banner);
-
-    // make request
-
-    fetch(`${settings.server_domain}/add_new_exhibition`, {
+    return formData;
+  };
+  const handleRequest = (url, formData) => {
+    fetch(`${settings.server_domain}/${url}`, {
       method: "PUT",
       headers: {
         encType: "multipart/form-data",
@@ -81,23 +39,26 @@ function ExhibitionCreationForm() {
           </span>
         );
         if (data.success) {
+          let inner = props.exhibitions;
+          inner.push(data.data[0]);
+          props.addNewExhibition(inner);
           ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            successAlert
+            AlertSuccess("Exhibition Added successfully.")
           );
           document.querySelector(".exhibition-form").reset();
         } else if (data.exhibitionExist) {
           ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            alreadyError
+            AlertError("Exhibition already exist.")
           );
         } else {
           ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            errorAlert
+            AlertError("Failed to add new exhibition")
           );
         }
       })
       .catch((error) => {
         ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-          bigErrorAlert
+          AlertError(error.toString())
         );
         ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
           <span>
@@ -107,12 +68,36 @@ function ExhibitionCreationForm() {
         );
       });
   };
+  const handleOnSubmit = (event) => {
+    event.preventDefault();
+    loading(".submit-btn");
+    let formData = getFormData();
+
+    // make request
+    handleRequest("add_new_exhibition", formData);
+  };
+  const handleUpdate = (event) => {
+    event.preventDefault();
+    loading();
+    let formData = getFormData();
+
+    // make request
+    handleRequest(
+      `update_exhibition/${props.data.id}/${props.data.name}`,
+      formData
+    );
+  };
   return (
     <div className="payment-registration-form-container m-3">
-      <h2>CREATE NEW EXHIBITION</h2>
-      <hr />
-
-      <form onSubmit={handleOnSubmit} className="exhibition-form">
+      <form
+        onSubmit={props.data ? handleUpdate : handleOnSubmit}
+        className="exhibition-form"
+      >
+        {props.data ? (
+          <h2>UPDATE EXHIBITION</h2>
+        ) : (
+          <h2>CREATE NEW EXHIBITION</h2>
+        )}
         <div className="form-group">
           <label htmlFor="name" className="col-sm-2 col-form-label">
             EXHIBITION NAME
@@ -122,6 +107,7 @@ function ExhibitionCreationForm() {
             name="name"
             className="form-control"
             required
+            placeholder={props.data ? props.data.name : null}
             onChange={(event) => {
               setName(event.target.value);
             }}
@@ -136,6 +122,7 @@ function ExhibitionCreationForm() {
             name="host"
             className="form-control"
             required
+            placeholder={props.data ? props.data.host : null}
             onChange={(event) => {
               setHost(event.target.value);
             }}
@@ -150,6 +137,7 @@ function ExhibitionCreationForm() {
             className="form-control"
             type="date"
             name="startdate"
+            placeholder={props.data ? props.data.name : null}
             onChange={(event) => {
               setStartdate(event.target.value);
             }}
@@ -164,6 +152,7 @@ function ExhibitionCreationForm() {
             name="enddate"
             className="form-control"
             required
+            placeholder={props.data ? props.data.enddate : null}
             onChange={(event) => {
               setEnddate(event.target.value);
             }}
@@ -178,6 +167,7 @@ function ExhibitionCreationForm() {
             name="fees"
             className="form-control"
             required
+            placeholder={props.data ? props.data.fees : null}
             onChange={(event) => {
               setFees(event.target.value);
             }}
@@ -187,19 +177,26 @@ function ExhibitionCreationForm() {
           <label htmlFor="banner" className="col-sm-2 col-form-label">
             EXHIBITION BANNER
           </label>
+          <div className="exhibition-preview"></div>
           <input
             type="file"
             required
             className="form-control-file"
             name="banner"
             onChange={(event) => {
+              const previewUrl = URL.createObjectURL(event.target.files[0]);
+              const el = `<img src="${previewUrl}" width="200px" style="border-radius:20px"/>`;
+              event.target.parentElement.querySelector(
+                ".exhibition-preview"
+              ).innerHTML = el;
               setExhibitionBanner(event.target.files[0]);
             }}
           />
         </div>
         <button type="submit" className="submit-btn btn btn-primary">
           <i className="fas fa-plus "></i>
-          Add Exhibition
+          &nbsp;
+          {props.data ? "Update Exhibition" : "Add Exhibition"}
         </button>
       </form>
     </div>

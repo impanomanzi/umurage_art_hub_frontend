@@ -1,33 +1,46 @@
 import { useState } from "react";
-
-import "./App.css";
-import Home from "./components/Home/Home.jsx";
-import Footer from "./components/Footer/Footer.jsx";
-import "bootstrap/dist/css/bootstrap.css";
-import { BrowserRouter, Navigate } from "react-router-dom";
 import { Route } from "react-router-dom";
 import { Routes } from "react-router-dom";
-
+import { useGetExhibitions } from "./hooks/useGetExhibitions.jsx";
+import { useGetPaintings } from "./hooks/useGetPaintings.jsx";
+import { BrowserRouter, Navigate } from "react-router-dom";
+import Home from "./components/Home/Home.jsx";
+import Footer from "./components/Footer/Footer.jsx";
 import Profile from "./components/Profile/Profile.jsx";
 import NotFound from "./components/NotFound/NotFound.jsx";
 import UserProfilePage from "./components/UserProfilePage/UserProfilePage.jsx";
-import LoginForm from "./components/LogInForm/LoginForm.jsx";
-import PayementRegistrationForm from "./components/PaymentRegistrationForm/PayementRegistrationForm.jsx";
+import LoginForm from "./components/Forms/LogInForm/LoginForm.jsx";
+import PayementRegistrationForm from "./components/Forms/PaymentRegistrationForm/PayementRegistrationForm.jsx";
 import GalleryShow from "./components/GalleryShow/GalleryShow.jsx";
 import ExhibitionPaintings from "./components/ExhibitionPaintings/ExhibitionPaintings.jsx";
 import ExhibitionShowPage from "./components/ExhibitionShowPage/ExhibitionShowPage.jsx";
 import ExhibitionPaintingShow from "./components/ExhibitionPaintingShow/ExhibitionPaintingShow.jsx";
-import CheckPaymentForm from "./components/CheckPaymentForm/CheckPaymentForm.jsx";
+import CheckPaymentForm from "./components/Forms/CheckPaymentForm/CheckPaymentForm.jsx";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.css";
+
 function App() {
   const [login, setLogin] = useState(false);
   const [adminLoggedin, setAdminLogged] = useState(false);
+  const [exhibitionLoading, exhibitions] = useGetExhibitions();
+  const [paintingLoading, paintings] = useGetPaintings();
 
-  return (
+  return exhibitionLoading || paintingLoading ? null : (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" Component={Home} />
-          <Route path="/exhibition/:id" Component={ExhibitionShowPage} />
+          <Route
+            path="/"
+            Component={() => (
+              <Home exhibitions={exhibitions} paintings={paintings} />
+            )}
+          />
+          <Route
+            path="/exhibition/:id"
+            Component={() => {
+              return <ExhibitionShowPage exhibitions={exhibitions} />;
+            }}
+          />
           <Route path="/view_painting/:id" Component={ExhibitionPaintingShow} />
           <Route
             path="/sign-in"
@@ -40,11 +53,17 @@ function App() {
               );
             }}
           />
+
+          <Route path="/:image" />
           <Route
             path="/profile"
             element={
               adminLoggedin ? (
-                <Profile onLogout={setAdminLogged} />
+                <Profile
+                  onLogout={setAdminLogged}
+                  exhibitions={exhibitions}
+                  paintings={paintings}
+                />
               ) : (
                 <Navigate to={"/sign-in"} replace={true} />
               )
@@ -52,8 +71,18 @@ function App() {
           />
           <Route path="/check_payment/:id" Component={CheckPaymentForm} />
 
-          <Route path="/payment/:id" Component={PayementRegistrationForm} />
-          <Route path="/gallery/:name" Component={GalleryShow} />
+          <Route
+            path="/payment/:id"
+            Component={() => {
+              return <PayementRegistrationForm exhibitions={exhibitions} />;
+            }}
+          />
+          <Route
+            path="/gallery/:name"
+            Component={() => {
+              return <GalleryShow paintings={paintings} />;
+            }}
+          />
           <Route
             path="/exhibition_paintings/:id"
             Component={ExhibitionPaintings}
@@ -72,7 +101,11 @@ function App() {
             path="/user-profile"
             element={
               login ? (
-                <UserProfilePage login={login} />
+                <UserProfilePage
+                  login={login}
+                  exhibitions={exhibitions}
+                  paintings={paintings}
+                />
               ) : (
                 <Navigate to={"/sign-in"} replace={true} />
               )

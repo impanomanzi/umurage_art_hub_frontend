@@ -6,7 +6,7 @@ import "./ExhibitionPaintings.css";
 import ExhibtionPaintingCard from "../ExhibtionPaintingCard/ExhibtionPaintingCard";
 import { useParams } from "react-router-dom";
 function ExhibitionPaintings() {
-  let id = useParams().id;
+  const id = useParams().id;
   fetch(`${settings.server_domain}/get_exhibition_paintings/${id}`, {
     method: "GET",
     headers: {

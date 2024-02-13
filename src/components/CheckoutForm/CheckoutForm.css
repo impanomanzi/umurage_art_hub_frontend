@@ -1,0 +1,10 @@
+.checkout-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+@media screen and (max-device-width: 576px) {
+    .checkout-container{
+         flex-direction: column;
+    }
+  }

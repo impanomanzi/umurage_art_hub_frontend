@@ -1,12 +1,18 @@
 import React from "react";
 import "./HomeNavBar.css";
+import settings from "../settings.json";
 function FormNavbar() {
   return (
     <>
-      <div className="home-navbar" id="top">
-        <div className="home-navbar__logo" id="NavBarLogo">
-          <img src="/UMURAGE HEADER.png" alt="" />
-        </div>
+      <div
+        className="homenavbar-container  navbar-expand-sml navbar-light bg-light"
+        id="top"
+      >
+        <img className="navbar-brand" src="/UMURAGE HEADER.png" alt="" />
+        <span>
+          <h5 className="h5">{settings.site_name.toUpperCase()}</h5>
+        </span>
+        <span>&nbsp;</span>
       </div>
     </>
   );

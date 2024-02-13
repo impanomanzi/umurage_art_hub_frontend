@@ -1,39 +1,49 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import ReactDOM from "react-dom/client";
-import { Link } from "react-router-dom";
 import settings from "../settings.json";
 import "./ExhibitionShowPage.css";
 import FormNavbar from "../NavBar/FormNavbar";
+import { ListItem } from "@mui/material";
 
-function ExhibitionShowPage() {
-  let exhibitionId = useParams().id;
-  fetch(`${settings.server_domain}/get_exhibition/${exhibitionId}`)
-    .then((response) => response.json())
-    .then((data) => {
-      let wanted = data;
-      let exhibitionPage = (
+function ExhibitionShowPage(props) {
+  const { exhibitions } = props;
+  const exhibitionId = useParams().id;
+  const wanted = exhibitions.filter((item, index) => {
+    return (item.id = exhibitionId);
+  })[0];
+
+  return (
+    <>
+      <FormNavbar />
+      <div className="exhibition-show-container">
         <div className="exhibition-page-container">
           <div className="m-3">
-            <h1 className="h1" style={{ color: "white" }}>
-              {wanted.name}
-            </h1>
+            <ListItem>
+              {" "}
+              <h1 className="h1" style={{ color: "white" }}>
+                {wanted.name}
+              </h1>
+            </ListItem>
             <p className="exhibition-description">
-              <p>
-                <i className="fas fa-user-alt"></i>&nbsp;
-                {wanted.host}
-              </p>
-              &nbsp;&nbsp; &nbsp;
-              <p>
-                <i className="fas fa-calendar"></i>
-                &nbsp; {wanted.startdate}
-              </p>
-              &nbsp; &nbsp;
-              <p>
-                <i className="fas fa-calendar"></i>
-                &nbsp; {wanted.enddate}
-              </p>
-              &nbsp;
+              <ListItem>
+                <p>
+                  <i className="fas fa-user-alt"></i>&nbsp;
+                  {wanted.host}
+                </p>
+              </ListItem>
+              <ListItem>
+                {" "}
+                <p>
+                  <i className="fas fa-calendar"></i>
+                  &nbsp; {wanted.startdate}
+                </p>
+              </ListItem>
+              <ListItem>
+                <p>
+                  <i className="fas fa-calendar"></i>
+                  &nbsp; {wanted.enddate}
+                </p>
+              </ListItem>
             </p>
           </div>
           <img
@@ -66,15 +76,7 @@ function ExhibitionShowPage() {
             </a>
           </div>
         </div>
-      );
-      ReactDOM.createRoot(
-        document.querySelector(".exhibition-show-container")
-      ).render(exhibitionPage);
-    });
-  return (
-    <>
-      <FormNavbar />
-      <div className="exhibition-show-container"></div>
+      </div>
     </>
   );
 }

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import ExhibitionCard from "../ExhibitionCard/ExhibitionCard";
 import { useState } from "react";
-import settings from "../settings.json";
 import "./Exihibitions.css";
 import { useNavigate } from "react-router-dom";
 
@@ -34,11 +33,41 @@ function Exhibitions(props) {
           <center>
             <h2>EXHIBITIONS</h2>
           </center>
-          <div
-            class="btn-group"
-            role="group"
-            aria-label="button group for filtering and sorting exhibitions"
-          >
+          <div className="my-btn-group">
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="button group for filtering and sorting exhibitions"
+            >
+              <input
+                type="text"
+                className="form-control exh-search"
+                placeholder="Search by Exh. name"
+                onChange={(event) => {
+                  let searchResult = fixedExhibitions.filter((item) => {
+                    return item.name
+                      .toLowerCase()
+                      .startsWith(event.target.value);
+                  });
+                  setExhibitions(searchResult);
+                  setObserving(false);
+                }}
+              />
+              <button
+                type="button"
+                class="btn btn-primary"
+                onClick={(event) => {
+                  setObserving(false);
+                  let searchEl = document.querySelector(".exh-search");
+                  let searchResult = fixedExhibitions.filter((item) => {
+                    return item.name.toLowerCase().startsWith(searchEl.value);
+                  });
+                  setExhibitions(searchResult);
+                }}
+              >
+                <i className="fas fa-search"></i>
+              </button>
+            </div>
             <div class="dropdown">
               <button
                 class="btn btn-secondary dropdown-toggle"
@@ -110,32 +139,6 @@ function Exhibitions(props) {
                 </button>
               </div>
             </div>
-            <input
-              type="text"
-              className="form-control exh-search"
-              placeholder="Search by Exh. name"
-              onChange={(event) => {
-                let searchResult = fixedExhibitions.filter((item) => {
-                  return item.name.toLowerCase().startsWith(event.target.value);
-                });
-                setExhibitions(searchResult);
-                setObserving(false);
-              }}
-            />
-            <button
-              type="button"
-              class="btn btn-outline-primary"
-              onClick={(event) => {
-                setObserving(false);
-                let searchEl = document.querySelector(".exh-search");
-                let searchResult = fixedExhibitions.filter((item) => {
-                  return item.name.toLowerCase().startsWith(searchEl.value);
-                });
-                setExhibitions(searchResult);
-              }}
-            >
-              <i className="fas fa-search"></i>
-            </button>
           </div>
         </div>
 

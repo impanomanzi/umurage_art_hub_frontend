@@ -23,7 +23,7 @@ function ExhibtionPaintingCard(props) {
           href={`/view_painting/${props.item.id}?i=${props.item.image}&a=${props.item.audio}&name=${props.item.name}&des=${props.item.description}&painter=${props.item.painter}&exhibition=${props.item.owner}&eid=${props.exhibition}&b=/exhibition_paintings/${props.exhibition}`}
           className="btn btn-primary"
         >
-          <i className="fas fa-eye"></i>
+          <i className="fas fa-eye"></i>&nbsp; view painiting
         </a>
       </div>
     </div>

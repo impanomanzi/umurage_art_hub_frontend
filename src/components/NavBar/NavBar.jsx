@@ -561,7 +561,7 @@ function NavBar(props) {
                                 <ListView
                                   items={data.data}
                                   title="List of customers"
-                                  keyword="firstName"
+                                  keyword={customerKeywords}
                                   options={options}
                                 />
                               );

@@ -54,7 +54,7 @@ function Gallery(props) {
             setGalleryOwner(searchResult);
           }}
         />
-        <button className="btn btn-outline-primary">
+        <button className="btn btn-primary">
           <i className="fas fa-search"></i>
         </button>
       </div>

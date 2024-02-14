@@ -15,24 +15,21 @@ function ExhibitionShowPage(props) {
   return (
     <>
       <FormNavbar />
+      <center>
+        <h2>{wanted.name.toUpperCase()}</h2>
+      </center>
       <div className="exhibition-show-container">
         <div className="exhibition-page-container">
-          <div className="m-3">
-            <ListItem>
-              {" "}
-              <h1 className="h1" style={{ color: "white" }}>
-                {wanted.name}
-              </h1>
-            </ListItem>
-            <p className="exhibition-description">
+          <div>
+            <div className="exhibition-description">
               <ListItem>
                 <p>
                   <i className="fas fa-user-alt"></i>&nbsp;
                   {wanted.host}
                 </p>
               </ListItem>
+
               <ListItem>
-                {" "}
                 <p>
                   <i className="fas fa-calendar"></i>
                   &nbsp; {wanted.startdate}
@@ -44,34 +41,37 @@ function ExhibitionShowPage(props) {
                   &nbsp; {wanted.enddate}
                 </p>
               </ListItem>
-            </p>
+            </div>
           </div>
+
           <img
             src={`${wanted.image.replace(
               "http://localhost:5000",
               `${settings.server_domain}`
             )}`}
             alt={wanted.name}
-            className="img-fluid img-thumbnail"
+            className="img-thumbnail"
             width={"500px"}
-            height={"500px"}
           />
 
           <div className="exhibition-continue">
-            <h3 className="h3">Entrace:</h3>
-            <h1 className="h1">{wanted.fees} </h1>
-            <h4 className="h4"> Rwf</h4>
+            <h3 className="h3">Entrace:&nbsp;{wanted.fees} Rwf </h3>
+
             <a href={`/payment/${exhibitionId}`}>
               <button className="btn btn-primary">
-                Continue &nbsp; <i className="fas fa-arrow"></i>
+                Register &nbsp; <i className="fas fa-arrow-right"></i>
               </button>
             </a>
+            <br />
+            <center>
+              <span> Already paid? </span>
+            </center>
             <a href={`/check_payment/${exhibitionId}`}>
               <button
-                className="btn btn-secondary"
+                className="btn btn-outline-primary"
                 style={{ marginTop: "1em" }}
               >
-                Already paid? &nbsp; <i className="fas fa-arrow"></i>
+                Sign in
               </button>
             </a>
           </div>

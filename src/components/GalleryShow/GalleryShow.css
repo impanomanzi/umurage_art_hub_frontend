@@ -3,7 +3,10 @@
   align-items: flex-start;
   justify-content: center;
 }
-
+.gallery-shw{
+  padding-left: 0.2em;
+  padding-right: 0.1em;
+}
 .useful {
   display: flex;
   flex-direction: column;
@@ -15,10 +18,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
+  margin: none;
   position: fixed;
   top: 0%;
-  z-index: 3;
+  z-index: 5;
 
   background-color: rgba(29, 29, 28, 0.9);
 

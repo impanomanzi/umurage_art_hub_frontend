@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import GalleryCard from "../GalleryCard/GalleryCard";
 import "./GalleryShow.css";
-import settings from "../settings.json";
 import FormNavbar from "../NavBar/FormNavbar";
 function GalleryShow(props) {
   const { paintings } = props;
@@ -152,7 +151,6 @@ function GalleryShow(props) {
       </div>
 
       <div className="row">
-        {/* <div className="col-lg-4 col-md-12 mb-4 mb-lg-0"> */}
         {galleries.map((item, index) => {
           return (
             <>

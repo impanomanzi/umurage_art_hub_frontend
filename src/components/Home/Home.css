@@ -5,8 +5,7 @@
 }
 .home-exhibition-container {
   align-items: center;
-  /* padding-top: 1.6rem; */
-  background: url("background.png");
+  background: url("/background.png");
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -34,8 +33,7 @@
 }
 
 .exhibition-section {
-  height: 83vh;
-  /* background: url(/public/zoltan-tasi-sJGvoX_eVhw-unsplash.jpg); */
+  height: 89vh;
 }
 .home-main-container .exhibition-section header h1 {
   font-size: 3.5em;

@@ -88,79 +88,77 @@ function PayementRegistrationForm(props) {
   return (
     <div>
       <FormNavbar />
-      <MultiStepProgressBar activeElement={activeTab} options={options} />
+
       <div className="payment-form-container container">
-        <center>
-          <div>
-            <h2>CUSTOMER REGISTRATION FORM</h2>
+        <div>
+          <h2>CUSTOMER REGISTRATION FORM</h2>
+          <MultiStepProgressBar activeElement={activeTab} options={options} />
+          <form
+            onSubmit={handleOnSubmit}
+            className="row  col-md-6 payment-form"
+          >
+            <div className="form-group"></div>
 
-            <form
-              onSubmit={handleOnSubmit}
-              className="row justify-content-center col-md-6 payment-form"
-            >
-              <div className="message"></div>
-              <div className="form-group">
-                <label htmlFor="first_name" className="col-sm-2 col-form-label">
-                  FIRST NAME
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  autoComplete="off"
-                  onChange={(event) => {
-                    setFirstName(event.target.value);
-                  }}
-                  className="form-control"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="last_name">LAST NAME</label>
-                <input
-                  type="text"
-                  name="last_name"
-                  required
-                  onChange={(event) => {
-                    setLastName(event.target.value);
-                  }}
-                  className="form-control"
-                />
-              </div>
+            <div className="form-group">
+              <label htmlFor="first_name" className="col-sm-2 col-form-label">
+                FIRST NAME
+              </label>
+              <input
+                type="text"
+                name="name"
+                required
+                autoComplete="off"
+                onChange={(event) => {
+                  setFirstName(event.target.value);
+                }}
+                className="form-control"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="last_name">LAST NAME</label>
+              <input
+                type="text"
+                name="last_name"
+                required
+                onChange={(event) => {
+                  setLastName(event.target.value);
+                }}
+                className="form-control"
+              />
+            </div>
 
-              <div className="form-group">
-                <label htmlFor="email">EMAIL</label>
-                <input
-                  name="email"
-                  type="email"
-                  required
-                  onChange={(event) => {
-                    setEmail(event.target.value);
-                  }}
-                  className="form-control"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="phone">PHONE</label>
-                <PhoneInput
-                  country={"rw"}
-                  value={phoneNumber}
-                  onChange={handleOnChange}
-                  inputProps={{ required: true }}
-                  className="form-control"
-                />
-              </div>
-              <div className="form-group">
-                {" "}
-                <button
-                  type="submit"
-                  className="btn btn-primary submit-btn form-control"
-                >
-                  <p className="h4">continue</p>
-                </button>
-              </div>
-            </form>
-          </div>
-        </center>
+            <div className="form-group">
+              <label htmlFor="email">EMAIL</label>
+              <input
+                name="email"
+                type="email"
+                required
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                }}
+                className="form-control"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="phone">PHONE</label>
+              <PhoneInput
+                country={"rw"}
+                value={phoneNumber}
+                onChange={handleOnChange}
+                inputProps={{ required: true }}
+                className="form-control"
+              />
+            </div>
+            <div className="form-group">
+              <button
+                type="submit"
+                className="btn btn-primary submit-btn form-control"
+              >
+                continue &nbsp; <i className="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

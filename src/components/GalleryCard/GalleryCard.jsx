@@ -53,7 +53,7 @@ function GalleryCard(props) {
       });
   };
   return (
-    <div className="col-md-4 mt-2 col-lg-3">
+    <div className="col-md-4 mt-2 col-lg-3 gallery-card">
       <a
         href=""
         onClick={(event) => {
@@ -71,7 +71,7 @@ function GalleryCard(props) {
             "http://localhost:5000",
             `${settings.server_domain}`
           )}
-          className="w-100 shadow-1-strong rounded mb-4"
+          className="w-100 shadow-1-strong rounded mb-1"
         />
       </a>
 
@@ -105,7 +105,7 @@ function GalleryCard(props) {
               }
             }}
           >
-            <i className="fas fa-share"></i> &nbsp; Share
+            <i className="fas fa-share"></i> &nbsp;share
           </button>
           <button
             className="btn btn-secondary"
@@ -118,7 +118,7 @@ function GalleryCard(props) {
             }}
             style={{ backgroundColor: "#ed9b1f" }}
           >
-            <i className="fas fa-heart"></i> &nbsp; {likeBtnText} &nbsp;
+            <i className="fas fa-heart"></i>&nbsp;
             <span className="badge badge-light" style={{ color: "black" }}>
               {likes}
             </span>

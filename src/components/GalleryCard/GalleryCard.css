@@ -1,3 +1,14 @@
+.gallery-card-link{
+  max-width: 100%;
+}
+.gallery-card{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
 /* .gallery-card {
   width: 30%;
   border-radius: 15px;

@@ -8,6 +8,7 @@ import ListView from "../ListView/ListView";
 import ReactDOM from "react-dom/client";
 import settings from "../settings.json";
 import "./UserProfilePage.css";
+import { AlertError } from "../Alerts/Alert";
 
 function UserProfilePage(props) {
   const { login, exhibitions, paintings } = props;
@@ -94,6 +95,7 @@ function UserProfilePage(props) {
               )
                 .then((response) => response.json())
                 .then((data) => {
+                  console.log(data);
                   if (data.unauthorized) {
                     navigate("/sigin-in");
                   }
@@ -135,10 +137,8 @@ function UserProfilePage(props) {
         );
 
         if (!data.authorized) {
-          console.log(data);
+          AlertError("You are not authorized to do this operation");
         } else {
-          console.log(data);
-
           setGalleries(data.data);
         }
       });

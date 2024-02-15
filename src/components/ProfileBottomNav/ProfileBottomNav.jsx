@@ -36,7 +36,6 @@ function ProfileBottomNav(props) {
         <button
           className="btn btn-primary"
           onClick={(event) => {
-            console.log(document.querySelector(".user"));
             ReactDOM.createRoot(document.querySelector(".user")).render(
               <PaintingCreationForm
                 paintings={paintings}

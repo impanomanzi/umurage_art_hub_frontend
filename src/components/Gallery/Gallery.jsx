@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
 import "./Gallery.css";
 import "../ExhibitionCard/ExhibitionCard.css";
 import "bootstrap/dist/css/bootstrap.css";
 import HomeProjectsSlider from "../HomeProjectsSlider/HomeProjectsSlider";
 import { Link } from "react-router-dom";
-import settings from "../settings.json";
+import React, { useEffect, useState } from "react";
 function Gallery(props) {
   const { paintings } = props;
   const [fixedGalleryOwner, setFixedGalleryOnwer] = useState([]);

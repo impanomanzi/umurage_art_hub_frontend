@@ -26,19 +26,24 @@ function ListView(props) {
   );
 
   const deleteItem = (element, value, item) => {
-    let temp = items;
-    let arr = temp.filter((value, index) => {
-      return value.id != item.id;
-    });
+    console.log("delete executed succesffuly");
+    try {
+      let temp = items;
+      let arr = temp.filter((value, index) => {
+        return value.id != item.id;
+      });
 
-    temp.splice(items.indexOf(item), 1);
-    document.querySelector(element).innerHTML = value;
-    if (!arr) setItems([]);
+      temp.splice(items.indexOf(item), 1);
+      document.querySelector(element).innerHTML = value;
+      if (!arr) setItems([]);
 
-    setItems(arr);
-    ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-      AlertSuccess("Item Deleted successfully.")
-    );
+      setItems(arr);
+      ReactDOM.createRoot(document.querySelector(".response-alert")).render(
+        AlertSuccess("Item Deleted successfully.")
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const closeDropdown = () => {

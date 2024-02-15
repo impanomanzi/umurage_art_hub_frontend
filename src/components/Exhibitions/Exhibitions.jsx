@@ -1,8 +1,7 @@
+import "./Exihibitions.css";
 import React, { useEffect, useRef } from "react";
 import ExhibitionCard from "../ExhibitionCard/ExhibitionCard";
 import { useState } from "react";
-import "./Exihibitions.css";
-import { useNavigate } from "react-router-dom";
 
 function Exhibitions(props) {
   const [fixedExhibitions, setFixedExhibitions] = useState([]);
@@ -13,7 +12,7 @@ function Exhibitions(props) {
   let customArray = [];
 
   let images = [];
-  const navigate = useNavigate();
+
   useEffect(() => {
     setFixedExhibitions(exhibitions);
     customArray = exhibitions;
@@ -30,9 +29,6 @@ function Exhibitions(props) {
     <>
       <div className="exhibitions-outer-container">
         <div className="header">
-          <center>
-            <h2>EXHIBITIONS</h2>
-          </center>
           <div className="my-btn-group">
             <div
               class="btn-group"

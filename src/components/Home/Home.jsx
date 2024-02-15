@@ -1,98 +1,73 @@
-import React, { useState, useEffect } from "react";
 import "./Home.css";
-import HomeNavBar from "../NavBar/HomeNavBar.jsx";
-import Gallery from "../Gallery/Gallery.jsx";
-import Exhibitions from "../Exhibitions/Exhibitions.jsx";
 import Announcement from "../Announcement/Announcement.jsx";
-import { useNavigate } from "react-router-dom";
+import Exhibitions from "../Exhibitions/Exhibitions.jsx";
+import Gallery from "../Gallery/Gallery.jsx";
+import HomeNavBar from "../NavBar/HomeNavBar.jsx";
+import Moto from "../Moto/Moto.jsx";
+import React from "react";
 function Home(props) {
-  let navigate = useNavigate();
   const { exhibitions, paintings } = props;
-  const removeDuplication = (array) => {
-    let clearArray = [];
-
-    for (let i = 0; i < array.length; i++) {
-      let found = false;
-      for (let j = 0; j < clearArray.length; j++) {
-        if (array[i] === clearArray[j]) {
-          found = true;
-        }
-      }
-      if (found === false) {
-        clearArray.push(array[i]);
-      }
-    }
-    return clearArray;
+  const renderExhibitions = () => {
+    return exhibitions.length == 0 ? (
+      <div style={styles.centeredContainer}>
+        <i className="fas fa-trash-alt"></i>
+        <center style={{ color: "dodgerBlue" }}>No Data</center>
+      </div>
+    ) : (
+      <Exhibitions exhibitions={exhibitions} />
+    );
+  };
+  const renderGallery = () => {
+    return paintings.length == 0 ? (
+      <div style={styles.centeredContainer}>
+        <i className="fas fa-trash-alt"></i>
+        <center style={{ color: "dodgerBlue" }}>No Data</center>
+      </div>
+    ) : (
+      <Gallery paintings={paintings} />
+    );
   };
 
-  const loading = () => {
-    ReactDOM.createRoot(document.querySelector(".profile-main")).render(
-      <div
-        className="exhibition-paintings-container"
-        style={{ color: "white" }}
-      >
-        <center>
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </center>
-      </div>
-    );
+  const renderMoto = () => {
+    return <Moto />;
   };
 
   return (
     <div className="home">
       <HomeNavBar />
-      <div className="announcement-container"></div>
       <Announcement />
 
       <div className="home-main-container">
         <div className="exhibition-section">
-          <div className="home-exhibition-container">
-            {exhibitions.length == 0 ? (
-              <div
-                style={{
-                  height: "20vh",
-                  fontSize: "4rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <i className="fas fa-trash-alt"></i>
-                <center style={{ color: "dodgerBlue" }}>No Data</center>
-              </div>
-            ) : (
-              <Exhibitions exhibitions={exhibitions} />
-            )}
-          </div>
+          <header>
+            <h2>EXHIBITIONS</h2>
+          </header>
+          <div className="home-exhibition-container">{renderExhibitions()}</div>
         </div>
         <div className="gallery-section">
           <header>
             <h2>GALLERIES</h2>
           </header>
-          {paintings.length == 0 ? (
-            <div
-              style={{
-                height: "100%",
-                fontSize: "4rem",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <i className="fas fa-trash-alt"></i>
-              <center style={{ color: "dodgerBlue" }}>No Data</center>
-            </div>
-          ) : (
-            <Gallery paintings={paintings} />
-          )}
+          {renderGallery()}
+        </div>
+        <div className="moto-section">
+          <header>
+            <h2>OUR GOALS</h2>
+          </header>
+          {renderMoto()}
         </div>
       </div>
     </div>
   );
 }
-
+const styles = {
+  centeredContainer: {
+    height: "100%",
+    fontSize: "4rem",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+};
 export default Home;

@@ -396,6 +396,7 @@ function NavBar(props) {
                       }
                     })
                     .catch((er) => {
+                      console.log(err);
                       ReactDOM.createRoot(
                         document.querySelector(".response-alert")
                       ).render(

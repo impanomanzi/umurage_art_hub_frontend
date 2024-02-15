@@ -1,66 +1,24 @@
-.switcher {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+ 
 .home-exhibition-container {
-  align-items: center;
   background: url("/background.png");
   background-repeat: no-repeat;
   background-size: cover;
 }
- 
-.gallery-section {
-  color: rgb(255, 255, 255);
-  height: auto;
-}
-
-.gallery-section header {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.home-main-container .exhibition-section header {
-  color: black;
-  /* background-color: white; */
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .exhibition-section {
   height: 89vh;
 }
-.home-main-container .exhibition-section header h1 {
-  font-size: 3.5em;
-  font-weight: 400;
-  line-break: strict;
-  opacity: 0.6;
-  line-break: anywhere;
-}
-
-.home-main-container header p {
-  font-size: 1.4em;
-}
-.project-container {
+ 
+ header {
+  text-align: center;
   display: flex;
-  flex-wrap: wrap;
-  overflow: visible;
+  flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  height: 25%;
+  align-items: center;
 }
+ 
 
-@media screen and (max-device-width: 576px) {
-  .project-container {
-    align-items: center;
-    flex-direction: column;
-  }
-  .home-main-container .exhibition-section header h1 {
-    font-size: 2.7em;
-  }
-}
+ 
+
+ 
+ 
+ 

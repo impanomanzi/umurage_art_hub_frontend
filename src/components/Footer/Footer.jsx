@@ -1,10 +1,5 @@
 import React from "react";
-import { BsMailbox2Flag, BsTwitter } from "react-icons/bs";
-import { SiLinkedin } from "react-icons/si";
-import { BsYoutube } from "react-icons/bs";
-import { BsFacebook } from "react-icons/bs";
 import { BsInstagram } from "react-icons/bs";
-import { BsMailbox } from "react-icons/bs";
 import { BsMailbox2 } from "react-icons/bs";
 import { BsWhatsapp } from "react-icons/bs";
 import "./Footer.css";
@@ -46,6 +41,9 @@ function Footer() {
               <a href="mailto:rukundoprince04@gmail.com">
                 <BsMailbox2 />
               </a>
+            </span>
+            <span>
+              <a href="/privacy.html">Privacy policy</a>
             </span>
           </div>
         </div>

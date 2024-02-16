@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import { Link, useNavigate } from "react-router-dom";
-import FormTemplate from "../FormTemplate/FormTemplate";
+import "../FormTemplate/FormTemplate";
 import FormNavbar from "../../NavBar/FormNavbar";
 import settings from "../../settings.json";
 import { AlertError } from "../../Alerts/Alert";
@@ -69,7 +69,7 @@ function LoginForm(props) {
     <div>
       <FormNavbar />
       <div className="payment-registration-form-container m-3">
-        <h2>LOG IN TO UMURAGE ART HUB</h2>
+        <h2>SIGN IN </h2>
         <hr />
         <form onSubmit={handleOnSubmit}>
           <div className="form-group">

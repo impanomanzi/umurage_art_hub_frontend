@@ -1,0 +1,16 @@
+.moto-container{
+    background-color: rgb(2, 11, 20);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+    padding-block: 1em;
+    padding: 2rem;
+}
+.moto-container .inspire{
+    color: #ed9b1f;
+    font-size: 1.3rem;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

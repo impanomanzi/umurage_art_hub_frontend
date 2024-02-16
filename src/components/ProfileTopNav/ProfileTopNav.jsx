@@ -1,8 +1,8 @@
-import React, { useState } from "react";
 import "./ProfileTopNav.css";
-import settings from "../settings.json";
-import ReactDOM from "react-dom/client";
 import PainterCreationForm from "../Forms/PainterCreationForm/PainterCreationForm";
+import React, { useState } from "react";
+import ReactDOM from "react-dom/client";
+import settings from "../settings.json";
 import {
   Box,
   Drawer,
@@ -61,7 +61,7 @@ function ProfileTopNav() {
           </center>
           <List className="drawer">
             <ListItem>
-              <ListItemButton onClick={logout}>
+              <ListItemButton>
                 <ListItemIcon>
                   <i className="fas fa-newspaper"></i>
                 </ListItemIcon>
@@ -78,14 +78,7 @@ function ProfileTopNav() {
             </ListItem>
 
             <ListItem>
-              <ListItemButton
-                onClick={(event) => {
-                  ReactDOM.createRoot(document.querySelector(".user")).render(
-                    <PainterCreationForm />
-                  );
-                  setOpenMenu(false);
-                }}
-              >
+              <ListItemButton>
                 <ListItemIcon>
                   <i className="fas fa-user "></i>
                 </ListItemIcon>

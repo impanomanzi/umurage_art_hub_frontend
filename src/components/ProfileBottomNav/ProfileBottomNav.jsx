@@ -1,8 +1,7 @@
-import ReactDOM from "react-dom/client";
-import { useState } from "react";
-
-import PaintingCreationForm from "../Forms/PaintingCreationForm/PaintingCreationForm";
 import "./ProfileBottomNav.css";
+import ReactDOM from "react-dom/client";
+import PaintingCreationForm from "../Forms/PaintingCreationForm/PaintingCreationForm";
+import { useState } from "react";
 
 function ProfileBottomNav(props) {
   const { home, options, exhibitions, paintings } = props;

@@ -11,7 +11,7 @@ function HomeNavBar() {
       >
         <img className="navbar-brand" src="/UMURAGE HEADER.png" alt="" />
         <span>
-          <h5 className="h5">{settings.site_name.toUpperCase()}</h5>
+          <h5 className="nav-header">{settings.site_name.toUpperCase()}</h5>
         </span>
 
         <Link

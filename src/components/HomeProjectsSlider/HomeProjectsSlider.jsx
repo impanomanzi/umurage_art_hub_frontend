@@ -14,7 +14,7 @@ function HomeProjectsSlider(props) {
       <Carousel variant="dark" className="carousel" slide={false} fade>
         {props.projects.map((project, index) => {
           return (
-            <Carousel.Item interval={1500}>
+            <Carousel.Item interval={1500} a>
               <img
                 className="img-thumbnail"
                 src={project.image.replace(

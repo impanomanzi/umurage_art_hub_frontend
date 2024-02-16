@@ -12,6 +12,7 @@ import NotFound from "./components/NotFound/NotFound.jsx";
 import PayementRegistrationForm from "./components/Forms/PaymentRegistrationForm/PayementRegistrationForm.jsx";
 import Profile from "./components/Profile/Profile.jsx";
 import UserProfilePage from "./components/UserProfilePage/UserProfilePage.jsx";
+import { AnimatePresence } from "framer-motion";
 import { BrowserRouter, Navigate } from "react-router-dom";
 import { Route } from "react-router-dom";
 import { Routes } from "react-router-dom";
@@ -35,7 +36,7 @@ function App() {
       </center>
     </div>
   ) : (
-    <>
+    <AnimatePresence>
       <BrowserRouter>
         <Routes>
           <Route
@@ -125,7 +126,7 @@ function App() {
         </Routes>
         <Footer />
       </BrowserRouter>
-    </>
+    </AnimatePresence>
   );
 }
 

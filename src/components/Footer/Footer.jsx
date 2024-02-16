@@ -7,16 +7,19 @@ function Footer() {
   return (
     <div className="footer-outer gutters">
       <a
-        href="#top"
+        href="#"
         style={{
           position: "fixed",
           bottom: "12%",
-          right: "2%",
+          right: "1vw",
+
           zIndex: "1",
-          padding: "1em",
         }}
       >
-        <button className="btn btn-primary rounded-circle">
+        <button
+          className="btn btn-primary rounded-circle"
+          style={{ width: "50px", height: "50px" }}
+        >
           <i className="fas fa-arrow-up"></i>
         </button>
       </a>

@@ -15,6 +15,9 @@
   justify-content: center;
   align-items: center;
 }
+.gallery-section{
+  transition: all 60s ease-in-out;
+}
  
 
  

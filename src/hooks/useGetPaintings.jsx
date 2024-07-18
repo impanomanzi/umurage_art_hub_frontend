@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from "react";
-import settings from "../components/settings.json";
-
+import { useEffect, useState } from "react";
+import { API } from "../API/serverRequest";
+import toast from "react-hot-toast";
 export const useGetPaintings = () => {
   const [paintings, setPaintings] = useState([]);
   const [paintingLoading, setPaintingLoading] = useState(true);
 
   const getPaintings = async () => {
     try {
-      const res = await fetch(`${settings.server_domain}/get_paintings`);
-      const data = await res.json();
+      let data;
+      try {
+        data = await API.getPaintings();
+      } catch (error) {
+        throw new Error(error);
+      }
       setPaintingLoading(false);
       setPaintings(data);
-      localStorage.setItem("paintings", data.data.length);
-    } catch (er) {
-      console.log(er);
+    } catch (error) {
+      toast.error(String(error));
     }
   };
   useEffect(() => {
-    (async () => {
-      await getPaintings();
-    })();
+    getPaintings();
   }, []);
 
   return [paintingLoading, paintings];

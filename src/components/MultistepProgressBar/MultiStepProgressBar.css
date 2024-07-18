@@ -1,9 +1,8 @@
 .multi-step-progressbar-container{
     display: flex;
-    justify-content: center;
+    justify-items: center;
     align-items: center;
     align-content: center;
-    margin-left: 2rem ;
     
 }
 .circle-content{

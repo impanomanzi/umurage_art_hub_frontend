@@ -1,4 +1,3 @@
-import React from "react";
 import "./HomeNavBar.css";
 import settings from "../settings.json";
 function FormNavbar() {

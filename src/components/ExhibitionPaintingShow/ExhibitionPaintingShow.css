@@ -18,6 +18,10 @@
   width: 500px;
 }
 
+.painting-show img{
+  pointer-events: none
+}
+
 @media screen and (max-device-width: 576px) {
   .exhibition-painting-img {
     width: auto;

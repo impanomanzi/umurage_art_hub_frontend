@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import settings from "../components/settings.json";
+import { useEffect, useState } from "react";
+import { API } from "../API/serverRequest";
+import { toast } from "react-hot-toast";
 
 export const useGetExhibitions = () => {
   const [exhibitions, setExhibitions] = useState([]);
@@ -7,24 +8,25 @@ export const useGetExhibitions = () => {
 
   const get_exhibitions = async () => {
     try {
-      const res = await fetch(`${settings.server_domain}/get_exhibitions`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("session")}`,
-        },
-      });
-      const data = await res.json();
-      setLoading(false);
-      setExhibitions(data);
-      localStorage.setItem("exhibitions", data.length);
-    } catch (err) {
-      console.log(err);
+      let data;
+      try {
+        data = await API.getExhibitions();
+      } catch (error) {
+        throw new Error(error);
+      }
+      if (data.success) {
+        setLoading(false);
+        setExhibitions(data.data);
+        localStorage.setItem("exhibitions", data.data.length);
+      } else {
+        throw new Error("Network error");
+      }
+    } catch (error) {
+      toast.error(String(error));
     }
   };
   useEffect(() => {
-    (async () => {
-      await get_exhibitions();
-    })();
+    get_exhibitions();
   }, []);
 
   return [exhibitionLoading, exhibitions];

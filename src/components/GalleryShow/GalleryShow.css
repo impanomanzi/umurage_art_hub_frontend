@@ -2,44 +2,71 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  align-items: center;
+  
 }
 .gallery-shw{
-  padding-left: 0.2em;
-  padding-right: 0.1em;
+  margin-right: 3%;
+  margin-left: 3%;
 }
+.my-image-viewer .painting-description{
+  background-color: white;
+}
+ 
 .useful {
   display: flex;
   flex-direction: column;
 }
 
+.inner-image-viewer{
+  height: 100%;
+ 
+  overflow-y:scroll
+}
+.my-image-viewer .painting-description{
+  background-color: white;
+  width: 310px;
+  padding: 1em;
+}
+.my-image-viewer .painting-description .desc-data{
+  border-bottom: 1px solid  rgba(171, 216, 248, 1);
+  border-top: 1px solid  rgba(171, 216, 248, 1);
+  justify-content: space-between;
+  display: flex;
+}
 .my-image-viewer {
   display: flex;
-
-  flex-direction: column;
+  /* flex-direction: column; */
   align-items: center;
-  justify-content: center;
-  margin: none;
+  justify-content: space-between;
   position: fixed;
+  
   top: 0%;
-  z-index: 5;
+  z-index: 90;
 
   background-color: rgba(29, 29, 28, 0.9);
-
+  padding: 2rem;
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
 }
-.my-image-viewer div img {
-  width: 500px;
+.my-image-viewer button{
+  position: absolute;
+  right: 1%;
+  top: 0%;
 }
+ 
 @media screen and (max-device-width: 576px) {
   .galleries-container {
     display: flex;
-    /* grid-template-columns: 45% 45%; */
     flex-direction: column;
-    /* grid-column-gap: 1em; */
   }
   .my-image-viewer div img {
-    width: 100%;
-    height: auto;
+    width: 310px;
+    /* height: 250px; */
+  }
+  .my-image-viewer{
+    flex-direction: column;
+    gap: 2rem;
   }
 }

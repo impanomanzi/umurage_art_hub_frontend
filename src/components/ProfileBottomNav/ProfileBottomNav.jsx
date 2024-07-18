@@ -1,13 +1,14 @@
 import "./ProfileBottomNav.css";
-import ReactDOM from "react-dom/client";
-import PaintingCreationForm from "../Forms/PaintingCreationForm/PaintingCreationForm";
-import { useState } from "react";
 
 function ProfileBottomNav(props) {
-  const { home, options, exhibitions, paintings } = props;
-  const [MyPaintings, setMyPaintings] = useState(paintings);
-  const addNewPainting = (items) => {
-    setMyPaintings(items);
+  function timeout(delay) {
+    return new Promise((res) => setTimeout(res, delay));
+  }
+  const renderProfilePage = () => {
+    props.onChangeComponent("profile");
+  };
+  const renderPaintingCreationForm = () => {
+    props.onChangeComponent("paintingCreationForm");
   };
 
   return (
@@ -15,16 +16,9 @@ function ProfileBottomNav(props) {
       <div className="home-area">
         <button
           className="btn btn-primary"
-          onClick={() => {
-            ReactDOM.createRoot(document.querySelector(".user")).render(
-              <div className="user user-main">
-                <center>
-                  <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
-                </center>
-              </div>
-            );
+          onClick={async () => {
+            props.onChangeComponent("profile");
+            await timeout(3);
             props.home();
           }}
         >
@@ -34,20 +28,13 @@ function ProfileBottomNav(props) {
       <div className="add-area">
         <button
           className="btn btn-primary"
-          onClick={(event) => {
-            ReactDOM.createRoot(document.querySelector(".user")).render(
-              <PaintingCreationForm
-                paintings={paintings}
-                addNewPainting={addNewPainting}
-              />
-            );
-          }}
+          onClick={renderPaintingCreationForm}
         >
           <i className="fas fa-plus"></i>
         </button>
       </div>
       <div className="contact-area">
-        <button className="btn btn-primary">
+        <button className="btn btn-primary" onClick={renderProfilePage}>
           <i className="fas fa-user-circle"></i>
         </button>
       </div>

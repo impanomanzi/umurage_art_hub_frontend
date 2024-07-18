@@ -1,7 +1,50 @@
 .my-list-item:hover{
-    background-color: rgba(171, 216, 248, 0.3);
+    background-color: rgba(171, 216, 248, 0.2);
      
 } 
+.my-list-item{
+    box-shadow:5px 5px 5px #7055034d,-5px -5px 5px #4949054d;
+}
+.list-view-container table{
+    width: 100%;
+}
+.list-view-container table td{
+    width: 50%;
+    word-break: break-all;
+}
  
+.list-items-container{
+    display: flex;
+}
+.list-view-container .list-items-container{
+    font-size: 0.9em;
+}
+.list-view-container textarea{
+    border: none;
+    width: 100%;
+
+}
+ 
+.list-items-container{
+    border-bottom: 1px solid  rgba(171, 216, 248, 1);
+    padding-bottom: 1em;
+    display: flex;
+    
+}
+ 
+
+@media screen and (max-device-width: 676px) {
+    .list-items-container{
+        display: flex;
+        flex-direction: column;
+    }
+    .list-view-container table td{
+        width: 100%;
+        word-break: break-all;
+    }
+
+}
+
+
  
   

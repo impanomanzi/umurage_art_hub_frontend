@@ -1,9 +1,7 @@
-import React, { useState } from "react";
-import FormTemplate from "../FormTemplate/FormTemplate";
+import { useState } from "react";
 import settings from "../../settings.json";
-import ReactDOM from "react-dom/client";
-import { AlertError, AlertSuccess } from "../../Alerts/Alert";
-import { loading } from "../../ButtonEffects/ButtonEffects";
+import { toast } from "react-hot-toast";
+import CustomLoadingButton from "../../FormButton/FormButton";
 function ExhibitionCreationForm(props) {
   const [name, setName] = useState("");
   const [host, setHost] = useState("");
@@ -11,6 +9,8 @@ function ExhibitionCreationForm(props) {
   const [enddate, setEnddate] = useState("");
   const [fees, setFees] = useState("");
   const [banner, setExhibitionBanner] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const getFormData = () => {
     let formData = new FormData();
     formData.append("name", name);
@@ -21,56 +21,36 @@ function ExhibitionCreationForm(props) {
     formData.append("banner", banner);
     return formData;
   };
-  const handleRequest = (url, formData) => {
-    fetch(`${settings.server_domain}/${url}`, {
-      method: "PUT",
-      headers: {
-        encType: "multipart/form-data",
-        Authorization: `Bearer ${localStorage.getItem("session")}`,
-      },
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
-          <span>
-            <i className="fas fa-plus "></i>
-            Add
-          </span>
-        );
-        if (data.success) {
-          let inner = props.exhibitions;
-          inner.push(data.data[0]);
-          props.addNewExhibition(inner);
-          ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            AlertSuccess("Exhibition Added successfully.")
-          );
-          document.querySelector(".exhibition-form").reset();
-        } else if (data.exhibitionExist) {
-          ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            AlertError("Exhibition already exist.")
-          );
-        } else {
-          ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            AlertError("Failed to add new exhibition")
-          );
-        }
-      })
-      .catch((error) => {
-        ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-          AlertError(error.toString())
-        );
-        ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
-          <span>
-            <i className="fas fa-plus "></i>
-            Add
-          </span>
-        );
+  const handleRequest = async (url, formData) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${settings.server_domain}/${url}`, {
+        method: "PUT",
+        headers: {
+          encType: "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData,
       });
+      const data = await response.json();
+
+      if (data.success) {
+        let inner = props.exhibitions;
+        inner.push(data.data[0]);
+        props.addNewExhibition(inner);
+        document.querySelector(".exhibition-form").reset();
+        toast.success("Exhibition Added successfully.");
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      toast.error(String(error));
+    } finally {
+      setIsLoading(false);
+    }
   };
   const handleOnSubmit = (event) => {
     event.preventDefault();
-    loading(".submit-btn");
     let formData = getFormData();
 
     // make request
@@ -78,7 +58,6 @@ function ExhibitionCreationForm(props) {
   };
   const handleUpdate = (event) => {
     event.preventDefault();
-    loading();
     let formData = getFormData();
 
     // make request
@@ -193,11 +172,12 @@ function ExhibitionCreationForm(props) {
             }}
           />
         </div>
-        <button type="submit" className="submit-btn btn btn-primary">
-          <i className="fas fa-plus "></i>
-          &nbsp;
-          {props.data ? "Update Exhibition" : "Add Exhibition"}
-        </button>
+        <CustomLoadingButton
+          isLoading={isLoading}
+          onClick={null}
+          text="Add new exhibition"
+          buttonType="submit"
+        />
       </form>
     </div>
   );

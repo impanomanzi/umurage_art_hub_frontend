@@ -1,121 +1,114 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom/client";
-import { Link, useNavigate } from "react-router-dom";
-import "../FormTemplate/FormTemplate";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { toast } from "react-hot-toast";
+import { API } from "../../../API/serverRequest";
 import FormNavbar from "../../NavBar/FormNavbar";
-import settings from "../../settings.json";
-import { AlertError } from "../../Alerts/Alert";
-import { loading } from "../../ButtonEffects/ButtonEffects";
+import "./LoginForm.css";
+import CustomLoadingButton from "../../FormButton/FormButton";
 function LoginForm(props) {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const handleOnSubmit = (event) => {
-    event.preventDefault();
-    document.querySelector(".submit-btn").removeAttribute("disabled");
-    loading(".submit-btn");
-    let formData = new FormData();
-    formData.append("username", username);
-    formData.append("password", password);
-    let options = {
-      method: "POST",
-      body: formData,
-    };
-    fetch(`${settings.server_domain}/custom-login`, options)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message) {
-          localStorage.setItem("session", data.session);
-          localStorage.setItem("userId", data.id);
-          localStorage.setItem("username", data.username);
-          localStorage.setItem("authKey", data.session);
-          localStorage.setItem("user", data);
+  const [isLoading, setIsLoading] = useState(false);
 
-          if (data.role === "admin") {
-            props.onAdminLoggedIn(true);
-            navigate(`/profile`);
-          } else {
-            props.onClientLoggedIn(true);
-            navigate("/user-profile");
-          }
-        } else {
-          document.querySelector(".submit-btn").removeAttribute("disabled");
-          ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
-            <span>
-              {" "}
-              <i className="fas fa-unlock"></i> &nbsp; Sign in
-            </span>
-          );
-          ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            AlertError("Username or password is incorrect.")
-          );
+  const handleOnSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      setIsLoading(true);
+      const formData = new FormData();
+      formData.append("username", username);
+      formData.append("password", password);
+      const options = {
+        method: "POST",
+        body: formData,
+      };
+      const data = await API.login(options);
+
+      if (data.success) {
+        let user_info;
+        try {
+          user_info = jwtDecode(data.token);
+        } catch (error) {
+          throw new Error("your session expired");
         }
-      })
-      .catch((e) => {
-        document.querySelector(".submit-btn").removeAttribute("disabled");
-        ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
-          <span>
-            {" "}
-            <i className="fas fa-unlock"></i> &nbsp; Sign in
-          </span>
-        );
-        ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-          AlertError("Error occured try again")
-        );
-      });
+        localStorage.setItem("userLive", true);
+        localStorage.removeItem("token");
+        localStorage.setItem("token", data.token);
+        sessionStorage.setItem("token", data.token);
+        if (user_info.role === "admin") {
+          navigate(`/profile`);
+        } else {
+          navigate("/user-profile");
+        }
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      toast.error(String(error));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div>
+    <>
       <FormNavbar />
-      <div className="payment-registration-form-container m-3">
-        <h2>SIGN IN </h2>
-        <hr />
-        <form onSubmit={handleOnSubmit}>
-          <div className="form-group">
-            <label htmlFor="username" className="col-form-label">
-              USERNAME
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              name="username"
-              onChange={(event) => {
-                setUsername(event.target.value);
-              }}
-            />
+      <div className="form-outer-container">
+        <div className="form-inner-container">
+          <div className="login-form-header">
+            <h2>SIGN IN </h2>
           </div>
+          <form onSubmit={handleOnSubmit}>
+            <div className="form-group">
+              <label htmlFor="username" className="col-form-label">
+                USERNAME
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                name="username"
+                onChange={(event) => {
+                  setUsername(event.target.value);
+                }}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password" className="col-form-label">
+                PASSWORD
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                name="password"
+                required
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
+              />
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="password" className="col-form-label">
-              PASSWORD
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              name="password"
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
+            <CustomLoadingButton
+              isLoading={isLoading}
+              onClick={null}
+              text="Sign in"
+              buttonType="submit"
             />
-          </div>
-          {/* <Link to={"/user-profile"}> */}
-          <button type="submit" className="btn btn-primary submit-btn">
-            <i className="fas fa-unlock"></i> &nbsp; Sign in
-          </button>
-          {/* </Link> */}
-          {/* <center>
-            <p>or</p>
-          </center>
-          <center>
-            {" "}
-            <a href={`${settings.server_domain}/login`}>
-              <img src="/web_light_sq_SI.svg" />
-            </a>
-          </center> */}
-        </form>
+            {/* <div className="horizontal-line">
+              <span className="left-line">&nbsp;</span>
+              <span className="text">or</span>
+              <span className="right-line">&nbsp;</span>
+            </div>
+            <div className="social-login">
+              <a href={`https://localhost:55555/login`}>
+                <img src="/web_light_sq_SI.svg" />
+              </a>
+            </div> */}
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

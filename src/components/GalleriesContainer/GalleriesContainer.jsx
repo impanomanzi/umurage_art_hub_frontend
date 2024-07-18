@@ -1,4 +1,3 @@
-import React from "react";
 import GalleryCard from "../GalleryCard/GalleryCard";
 import "./GalleriesContainer.css";
 function GalleriesContainer(props) {

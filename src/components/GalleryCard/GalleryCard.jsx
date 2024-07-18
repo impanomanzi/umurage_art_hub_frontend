@@ -1,10 +1,10 @@
-import React from "react";
 import { useState } from "react";
 import "./GalleryCard.css";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import settings from "../settings.json";
-
+import { toast } from "react-hot-toast";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 function GalleryCard(props) {
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(props.likes);
@@ -23,12 +23,11 @@ function GalleryCard(props) {
         } else {
           setLikes(temp - 1);
           setLikeBtnText("Like");
-          console.log("failed");
         }
       })
       .catch((error) => {
         setLikes(temp - 1);
-        console.log(error);
+        toast.error(error.toString());
       });
   };
   const dislike = () => {
@@ -44,40 +43,39 @@ function GalleryCard(props) {
           setLikes(data.likes);
         } else {
           setLikes(temp + 1);
-          console.log("failed");
+          toast.error("failed");
         }
       })
       .catch((error) => {
         setLikes(temp + 1);
-        console.log(error);
       });
   };
+  let imageUrl = props.gallery.image;
+  let index1 = imageUrl.indexOf("upload/") + "upload/".length;
+  let newUrl =
+    imageUrl.substring(0, index1) +
+    "c_auto,g_auto,h_350,w_300/" +
+    imageUrl.substring(index1, imageUrl.length);
   return (
     <div className="col-md-4 mt-2 col-lg-3 gallery-card">
       <a
         href=""
         onClick={(event) => {
-          props.onImageClicked(
-            event,
-            props.gallery.image.replace(
-              "http://localhost:5000",
-              `${settings.server_domain}`
-            )
-          );
+          props.onImageClicked(event, props.gallery);
         }}
       >
-        <img
-          src={props.gallery.image.replace(
-            "http://localhost:5000",
-            `${settings.server_domain}`
-          )}
-          className="w-100 shadow-1-strong rounded mb-1"
+        <LazyLoadImage
+          src={newUrl}
+          effect="blur"
+          placeholderSrc="/placeholder.png"
+          width={"300px"}
+          height={"320px"}
         />
       </a>
 
       <div className="card-body gallery-card-link">
         <div
-          class="btn-group"
+          className="btn-group"
           role="group"
           aria-label="button group for filtering and sorting gallery painting"
         >
@@ -95,13 +93,10 @@ function GalleryCard(props) {
                   .share({
                     title: "Umurage art hub",
                     text: `${props.gallery.name} by \n ${props.gallery.owner}`,
-                    url: props.gallery.image.replace(
-                      "http://localhost:5000",
-                      `${settings.server_domain}`
-                    ),
+                    url: imageUrl,
                   })
-                  .then(() => console.log("Successful share"))
-                  .catch((error) => console.log("Error sharing", error));
+                  .then(() => toast.success("Successful share"))
+                  .catch((error) => toast.error("Error sharing", error));
               }
             }}
           >

@@ -1,5 +1,5 @@
 import "./Exihibitions.css";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import ExhibitionCard from "../ExhibitionCard/ExhibitionCard";
 import { useState } from "react";
 
@@ -10,9 +10,6 @@ function Exhibitions(props) {
   const [observing, setObserving] = useState(true);
   const myRef = useRef();
   let customArray = [];
-
-  let images = [];
-
   useEffect(() => {
     setFixedExhibitions(exhibitions);
     customArray = exhibitions;
@@ -31,7 +28,7 @@ function Exhibitions(props) {
         <div className="header">
           <div className="my-btn-group">
             <div
-              class="btn-group"
+              className="btn-group"
               role="group"
               aria-label="button group for filtering and sorting exhibitions"
             >
@@ -51,7 +48,7 @@ function Exhibitions(props) {
               />
               <button
                 type="button"
-                class="btn btn-primary"
+                className="btn btn-primary"
                 onClick={(event) => {
                   setObserving(false);
                   let searchEl = document.querySelector(".exh-search");
@@ -64,9 +61,9 @@ function Exhibitions(props) {
                 <i className="fas fa-search"></i>
               </button>
             </div>
-            <div class="dropdown">
+            <div className="dropdown">
               <button
-                class="btn btn-secondary dropdown-toggle"
+                className="btn btn-secondary dropdown-toggle"
                 type="button"
                 id="dropdownMenu1"
                 data-toggle="dropdown"
@@ -78,7 +75,7 @@ function Exhibitions(props) {
                 <i className="fas fa-sort-amount-down"></i>&nbsp; {dropdownText}
               </button>
               <div
-                class="dropdown-menu ex-dropdown-menu"
+                className="dropdown-menu ex-dropdown-menu"
                 aria-labelledby="dropdownMenu1"
                 onMouseLeave={() => {
                   document.querySelector(".ex-dropdown-menu").style.display =
@@ -86,7 +83,7 @@ function Exhibitions(props) {
                 }}
               >
                 <button
-                  class="dropdown-item"
+                  className="dropdown-item"
                   onClick={() => {
                     setObserving(false);
                     closeExDropdown();
@@ -100,7 +97,7 @@ function Exhibitions(props) {
                   <i className="fas fa-sort-alpha-down"></i> &nbsp; Name
                 </button>
                 <button
-                  class="dropdown-item"
+                  className="dropdown-item"
                   onClick={() => {
                     setObserving(false);
                     closeExDropdown();
@@ -119,7 +116,7 @@ function Exhibitions(props) {
                   <i className="fas fa-sort-numeric-down"></i> &nbsp;start Date
                 </button>
                 <button
-                  class="dropdown-item"
+                  className="dropdown-item"
                   onClick={() => {
                     setObserving(false);
                     closeExDropdown();

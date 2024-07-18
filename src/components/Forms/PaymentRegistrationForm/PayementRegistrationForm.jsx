@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import settings from "../../settings.json";
 import CheckoutForm from "../../CheckoutForm/CheckoutForm";
 import FormNavbar from "../../NavBar/FormNavbar";
+import "../FormTemplate/FormTemplate.css";
 import PhoneInput from "react-phone-input-2";
+import { isPossiblePhoneNumber } from "react-phone-number-input";
 import MultiStepProgressBar from "../../MultistepProgressBar/MultiStepProgressBar";
 import "react-phone-input-2/lib/style.css";
-import { AlertError } from "../../Alerts/Alert";
-import { loading } from "../../ButtonEffects/ButtonEffects";
+import "./PayementRegistrationForm.css";
+import CustomLoadingButton from "../../FormButton/FormButton";
+import { toast } from "react-hot-toast";
 function PayementRegistrationForm(props) {
   const exhibitionId = useParams().id;
+  const [showCheckoutForm, setShowCheckoutForm] = useState(false);
+  const [responseData, setResponseData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { exhibitions } = props;
   const wanted = exhibitions.filter((item, index) => {
     return (item.id = exhibitionId);
@@ -26,81 +31,55 @@ function PayementRegistrationForm(props) {
   const handleOnChange = (value) => {
     setPhoneNumber(value);
   };
-  const handleOnSubmit = (event) => {
-    event.preventDefault();
-    document.querySelector(".response-alert").innerHTML = "";
-    loading(".submit-btn");
-    let formData = new FormData();
-    formData.append("firstname", firstName);
-    formData.append("lastName", lastName);
-    formData.append("email", email);
-    formData.append("phonenumber", phoneNumber);
-    formData.append("exhibition", exhibitionId);
-    fetch(`${settings.server_domain}/add_customer`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
-          <span>continue</span>
-        );
-        if (data.success) {
-          setActiveTab(1);
-          ReactDOM.createRoot(
-            document.querySelector(".payment-form-container")
-          ).render(
-            <CheckoutForm
-              c_id={data.data[0].id}
-              id={exhibitionId}
-              firstName={firstName}
-              lastName={lastName}
-              email={email}
-              phoneNumber={phoneNumber}
-              exhibitionName={wanted.name}
-              amount={wanted.fees}
-              navigate={navigate}
-              diminishProgress={() => {
-                setActiveTab(0);
-              }}
-              updateProgress={() => {
-                setActiveTab(2);
-                setActiveTab(3);
-              }}
-            />
-          );
-        } else {
-          ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            AlertError("Failed to submit Your informations")
-          );
-        }
-      })
-      .catch((error) => {
-        ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-          AlertError("error happened while submiting your informations")
-        );
-        ReactDOM.createRoot(document.querySelector(".submit-btn")).render(
-          <span>continue</span>
-        );
+  const handleOnSubmit = async (event) => {
+    try {
+      setIsLoading(true);
+      event.preventDefault();
+      if (!isPossiblePhoneNumber("+" + phoneNumber)) {
+        throw new Error("phone number is invalid");
+      }
+      document.querySelector(".response-alert").innerHTML = "";
+      let formData = new FormData();
+      formData.append("firstname", firstName);
+      formData.append("lastName", lastName);
+      formData.append("email", email);
+      formData.append("phonenumber", phoneNumber);
+      formData.append("exhibition", exhibitionId);
+      formData.append("datetime", new Date().toLocaleString());
+      const response = await fetch(`${settings.server_domain}/add_customer`, {
+        method: "POST",
+        body: formData,
       });
+      const data = await response.json();
+      if (data.success) {
+        setResponseData(data);
+        setActiveTab(1);
+        setShowCheckoutForm(true);
+        // toast.success("Your information submitted succesfully");
+        document.querySelector("form").reset();
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      toast.error(String(error));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div>
+    <>
       <FormNavbar />
 
-      <div className="payment-form-container container">
-        <div>
-          <h2>CUSTOMER REGISTRATION FORM</h2>
-          <MultiStepProgressBar activeElement={activeTab} options={options} />
-          <form
-            onSubmit={handleOnSubmit}
-            className="row  col-md-6 payment-form"
-          >
-            <div className="form-group"></div>
-
+      <div className="form-outer-container">
+        <div className="form-inner-container">
+          <div>
+            <h2>COMPLETE INFORMATION</h2>
+            <MultiStepProgressBar activeElement={activeTab} options={options} />
+          </div>
+          <form onSubmit={handleOnSubmit}>
             <div className="form-group">
-              <label htmlFor="first_name" className="col-sm-2 col-form-label">
+              <label htmlFor="first_name" className="col-form-label">
                 FIRST NAME
               </label>
               <input
@@ -115,7 +94,9 @@ function PayementRegistrationForm(props) {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="last_name">LAST NAME</label>
+              <label htmlFor="last_name" className="col-form-label">
+                LAST NAME
+              </label>
               <input
                 type="text"
                 name="last_name"
@@ -128,7 +109,9 @@ function PayementRegistrationForm(props) {
             </div>
 
             <div className="form-group">
-              <label htmlFor="email">EMAIL</label>
+              <label htmlFor="email" className="col-form-label">
+                EMAIL
+              </label>
               <input
                 name="email"
                 type="email"
@@ -140,27 +123,61 @@ function PayementRegistrationForm(props) {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="phone">PHONE</label>
+              <label htmlFor="phone" className="col-form-label">
+                PHONE
+              </label>
               <PhoneInput
                 country={"rw"}
                 value={phoneNumber}
                 onChange={handleOnChange}
-                inputProps={{ required: true }}
-                className="form-control"
+                inputProps={{
+                  required: true,
+                }}
+                className="phone-form-control"
               />
             </div>
             <div className="form-group">
-              <button
-                type="submit"
-                className="btn btn-primary submit-btn form-control"
-              >
-                continue &nbsp; <i className="fas fa-arrow-right"></i>
-              </button>
+              <CustomLoadingButton
+                isLoading={isLoading}
+                onClick={null}
+                text="Submit"
+                buttonType="submit"
+              />
             </div>
           </form>
         </div>
       </div>
-    </div>
+      {showCheckoutForm && (
+        <div className="checkout-form-container">
+          {/* <CheckoutForm
+            c_id={responseData.data[0].id}
+            id={exhibitionId}
+            firstName={firstName}
+            lastName={lastName}
+            email={email}
+            phoneNumber={phoneNumber}
+            exhibitionName={wanted.name}
+            amount={wanted.fees}
+            navigate={navigate}
+            diminishProgress={() => {
+              setActiveTab(0);
+            }}
+            updateProgress={() => {
+              setActiveTab(2);
+              setActiveTab(3);
+            }}
+          /> */}
+          <div className="alert alert-success">
+            <h1>
+              <i className="fas fa-check-circle"></i>
+              Success
+            </h1>
+            Thank you making registration to attend our exhibition. <br />
+            Please check your email for more info.
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

@@ -1,9 +1,6 @@
-// import React from "react";
-import React, { useState } from "react";
 import settings from "../settings.json";
 import ReactDOM from "react-dom/client";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { useNavigate } from "react-router-dom";
 
 function PaypalButton(props) {
   const navigate = props.navigate;

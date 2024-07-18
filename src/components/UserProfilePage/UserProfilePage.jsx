@@ -1,159 +1,137 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
 import { paintingKeywords } from "../KeyWords/Keywords";
 import ProfileTopNav from "../ProfileTopNav/ProfileTopNav";
 import ProfileBottomNav from "../ProfileBottomNav/ProfileBottomNav";
 import ListView from "../ListView/ListView";
-import ReactDOM from "react-dom/client";
-import settings from "../settings.json";
 import "./UserProfilePage.css";
-import { AlertError } from "../Alerts/Alert";
-
+import ProfilePage from "../ProfilePage/ProfilePage";
+import PaintingCreationForm from "../Forms/PaintingCreationForm/PaintingCreationForm";
+import PasswordChangeForm from "../Forms/PasswordChangeForm/PasswordChangeForm";
+import { API } from "../../API/serverRequest";
+import Loading from "../loading/loading";
+import { Suspense } from "react";
+import toast from "react-hot-toast";
+import AuthContext from "../Contexts/AuthContext";
+import { PaintingAndExhibitionsContext } from "../Contexts/PaintingAndExhibitionsContext";
 function UserProfilePage(props) {
-  const { login, exhibitions, paintings } = props;
-  const navigate = useNavigate();
-  const [galleries, setGalleries] = useState([]);
-  useEffect(() => {
-    setGalleries(paintings.data);
-  }, []);
+  let loggedIn = useContext(AuthContext);
+  const { exhibition, painting } = useContext(PaintingAndExhibitionsContext);
+  const [paintings, setPaintings] = useState([]);
+  let myPaintings = paintings;
+  const getLoggedUserPaintintings = async () => {
+    try {
+      const data = await API.getUserPaintings();
+      if (data.success) {
+        setPaintings(data.data);
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      toast.error(String(error));
+    }
+  };
 
-  const wantedData = paintings.data.filter((item, index) => {
-    return item.owner == localStorage.getItem("username");
-  });
-  let options = [
-    { text: "Edit", callBack: null, icon: "fas fa-pen" },
+  const options = [
     {
       text: "Delete",
-      callBack: (params) => {
-        fetch(`${settings.server_domain}/delete_painting/${params.item.id}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("session")}`,
-            userId: localStorage.getItem("userId"),
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.unauthorized) {
-              navigate("/sigin-in");
-            }
-            if (data.success) {
-              // if painting has deleted from database update UI
-              let wantedData = data.data;
-              params.delete();
-            } else {
-              ReactDOM.createRoot(document.querySelector(".message")).render(
-                <div className="alert alert-danger">
-                  <center>Failed to delete that Painter</center>
-                </div>
-              );
-            }
-          })
-          .catch((er) => {
-            ReactDOM.createRoot(document.querySelector(".message")).render(
-              <div className="alert alert-danger">
-                <center>Failed to delete that painting</center>
-              </div>
-            );
-          });
+      callBack: async (params) => {
+        try {
+          const data = await API.deletePainting(params);
+          if (data.success) {
+            params.delete();
+          } else {
+            throw new Error(data.message);
+          }
+        } catch (error) {
+          toast.error(String(error));
+        }
       },
       icon: "fas fa-trash",
     },
   ];
 
-  // gettings galleries from server
-  const load = () => {
-    fetch(
-      `${settings.server_domain}/get_user_paintings/${localStorage.getItem(
-        "userId"
-      )}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("session")}`,
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        let wantedData = data.data;
-        let options = [
-          { text: "Edit", callBack: null, icon: "fas fa-pen" },
-          {
-            text: "Delete",
-            callBack: (params) => {
-              fetch(
-                `${settings.server_domain}/delete_painting/${params.item.id}`,
-                {
-                  method: "DELETE",
-                  headers: {
-                    Authorization: `Bearer ${localStorage.getItem("session")}`,
-                    userId: localStorage.getItem("userId"),
-                  },
-                }
-              )
-                .then((response) => response.json())
-                .then((data) => {
-                  console.log(data);
-                  if (data.unauthorized) {
-                    navigate("/sigin-in");
-                  }
-                  if (data.success) {
-                    // if painting has deleted from database update UI
-                    let wantedData = data.data;
-                    params.delete();
-                  } else {
-                    ReactDOM.createRoot(
-                      document.querySelector(".message")
-                    ).render(
-                      <div className="alert alert-danger">
-                        <center>Failed to delete that Painter</center>
-                      </div>
-                    );
-                  }
-                })
-                .catch((er) => {
-                  ReactDOM.createRoot(
-                    document.querySelector(".message")
-                  ).render(
-                    <div className="alert alert-danger">
-                      <center>Failed to delete that painting</center>
-                    </div>
-                  );
-                });
-            },
-            icon: "fas fa-trash",
-          },
-        ];
-
-        ReactDOM.createRoot(document.querySelector(".user")).render(
-          <ListView
-            items={wantedData}
-            title="Your paintings"
-            keyword={paintingKeywords}
-            options={options}
-          />
-        );
-
-        if (!data.authorized) {
-          AlertError("You are not authorized to do this operation");
-        } else {
-          setGalleries(data.data);
-        }
-      });
+  const load = async () => {
+    await getLoggedUserPaintintings();
+    setCurrentComponet("list");
+    setCurrentList(
+      <ListView
+        items={paintings}
+        title="Your paintings"
+        keyword={["name", "category", "id"]}
+        options={options}
+        confirmationRequired={true}
+      />
+    );
   };
+  const [currentComponent, setCurrentComponet] = useState("profile");
+  const [currentList, setCurrentList] = useState();
+  useEffect(() => {
+    getLoggedUserPaintintings();
+  }, []);
+  if (!loggedIn) {
+    loggedIn = sessionStorage.getItem("token");
+  }
+  if (loggedIn) {
+    return (
+      <div className="home-main-container">
+        <ProfileTopNav
+          paintings={paintings}
+          exhibitions={exhibition}
+          onChangeComponent={setCurrentComponet}
+          onChangeList={setCurrentList}
+        />
 
-  load();
-
-  return (
-    <div className="home-main-container">
-      <ProfileTopNav />
-
-      <div className="user user-main"></div>
-      <ProfileBottomNav home={load} paintings={paintings} />
-    </div>
-  );
+        <div className="user user-main">
+          {currentComponent == "defaultList" && (
+            <Suspense fallback={<Loading />}>
+              <ListView
+                items={paintings}
+                title="Your paintings"
+                keyword={["name", "category", "id"]}
+                options={options}
+                confirmationRequired={true}
+              />
+            </Suspense>
+          )}
+          {currentComponent == "list" && (
+            <Suspense fallback={<Loading />}>{currentList}</Suspense>
+          )}
+          {currentComponent === "profile" && (
+            <ProfilePage onChangeComponent={setCurrentComponet} />
+          )}
+          {currentComponent === "paintingCreationForm" && (
+            <PaintingCreationForm
+              paintings={myPaintings}
+              addNewPainting={setPaintings}
+            />
+          )}
+          {currentComponent === "password" && <PasswordChangeForm />}
+        </div>
+        <ProfileBottomNav
+          home={load}
+          paintings={paintings}
+          exhibitions={exhibition}
+          onChangeComponent={setCurrentComponet}
+          onChangeList={setCurrentList}
+        />
+      </div>
+    );
+  } else {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <span className="lead">You are not signed in yet</span>
+        <a href="/sign-in" className="btn btn-primary">
+          sign in
+        </a>
+      </div>
+    );
+  }
 }
 
 export default UserProfilePage;

@@ -1,8 +1,10 @@
+import { useState } from "react";
+import { lazy } from "react";
+import { useNavigate } from "react-router-dom";
 import "./ProfileTopNav.css";
-import PainterCreationForm from "../Forms/PainterCreationForm/PainterCreationForm";
-import React, { useState } from "react";
-import ReactDOM from "react-dom/client";
-import settings from "../settings.json";
+import { exhibitionKeywords, blogKeywords } from "../KeyWords/Keywords";
+import { API } from "../../API/serverRequest";
+import { jwtDecode } from "jwt-decode";
 import {
   Box,
   Drawer,
@@ -12,32 +14,78 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-function ProfileTopNav() {
+import toast from "react-hot-toast";
+function ProfileTopNav(props) {
+  const ListView = lazy(() => import("../ListView/ListView"));
+
+  const renderProfilePage = () => {
+    props.onChangeComponent("profile");
+    setOpenMenu(false);
+  };
+  const renderPasswordChangeForm = () => {
+    props.onChangeComponent("password");
+    setOpenMenu(false);
+  };
+
+  function timeout(delay) {
+    return new Promise((res) => setTimeout(res, delay));
+  }
+  const renderList = async (list) => {
+    props.onChangeComponent("profile");
+    await timeout(10);
+    props.onChangeComponent("list");
+    props.onChangeList(list);
+  };
+
+  const renderExhibitions = () => {
+    renderList(
+      <ListView
+        items={props.exhibitions}
+        title="Exhibtions"
+        keyword={exhibitionKeywords}
+        options={[]}
+      />
+    );
+  };
+
+  const renderBlogs = async () => {
+    try {
+      const data = await API.getBlogs();
+      if (data.success)
+        renderList(
+          <ListView
+            items={data.data}
+            options={[]}
+            keyword={blogKeywords}
+            title="Blogs"
+          />
+        );
+      else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      toast.error(String(error));
+    }
+
+    setOpenMenu(false);
+  };
   const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
-  const handleOpenDropDown = (event) => {
-    if (document.querySelector(".nav-dropdown").style.display === "none") {
-      document.querySelector(".nav-dropdown").style.display = "block";
-    } else {
-      document.querySelector(".nav-dropdown").style.display = "none";
-    }
-  };
+
   const logout = () => {
-    fetch(`${settings.server_domain}/custom-logout`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("session")}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          localStorage.removeItem("session");
-          localStorage.removeItem("userId");
-          navigate("/");
-        }
-      });
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+    navigate("/");
+  };
+  const getCurrentUserId = () => {
+    let userId;
+    try {
+      userId = jwtDecode(localStorage.getItem("token")).user;
+      return userId;
+    } catch (error) {
+      navigate("/sign-in");
+      toast.error("your session expired");
+    }
   };
   return (
     <div className="profile-top-nav-container home-navbar">
@@ -53,7 +101,7 @@ function ProfileTopNav() {
         <Box
           sx={{ width: 250 }}
           role="presentation"
-          onclick={() => setOpenMenu(false)}
+          onClick={() => setOpenMenu(false)}
           onKeyDown={() => setOpenMenu(false)}
         >
           <center>
@@ -61,31 +109,27 @@ function ProfileTopNav() {
           </center>
           <List className="drawer">
             <ListItem>
-              <ListItemButton>
+              <ListItemButton onClick={renderBlogs}>
                 <ListItemIcon>
                   <i className="fas fa-newspaper"></i>
                 </ListItemIcon>
                 <ListItemText primary={"Blogs"} />
               </ListItemButton>
             </ListItem>
-            <ListItem>
-              <ListItemButton>
-                <ListItemIcon>
-                  <i className="fas fa-eye"></i>
-                </ListItemIcon>
-                <ListItemText primary={"Exhibitions"} />
-              </ListItemButton>
-            </ListItem>
 
             <ListItem>
-              <ListItemButton>
+              <ListItemButton onClick={renderProfilePage}>
                 <ListItemIcon>
                   <i className="fas fa-user "></i>
                 </ListItemIcon>
                 <ListItemText primary="Profile" />
               </ListItemButton>
             </ListItem>
-
+            <ListItem>
+              <ListItemButton onClick={renderPasswordChangeForm}>
+                <ListItemText primary="Change password" />
+              </ListItemButton>
+            </ListItem>
             <ListItem>
               <ListItemButton onClick={logout}>
                 <ListItemIcon>
@@ -102,7 +146,7 @@ function ProfileTopNav() {
           {" "}
           <i className="fas fa-shield-alt"></i>&nbsp;PAINTER DASHBOARD
         </h5>
-        &nbsp;|&nbsp; <i>{localStorage.getItem("username")}</i>
+        &nbsp;|&nbsp; <i>{getCurrentUserId()}</i>
       </span>
       <div className="navbar-menu">
         <button

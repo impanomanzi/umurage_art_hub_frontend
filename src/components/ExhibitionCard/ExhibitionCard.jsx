@@ -1,21 +1,21 @@
-import React from "react";
 import "./ExhibitionCard.css";
 import { Link } from "react-router-dom";
 import settings from "../settings.json";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function ExhibitionCard(props) {
   return (
     <>
       <div className="exhibition-card">
         <div className="exhibition-image">
-          <img
-            className="img-thumbnail"
-            ref={props.mref}
-            id={props.exhibition.id}
+          <LazyLoadImage
             src={`${props.exhibition.image.replace(
               "http://localhost:5000",
               `${settings.server_domain}`
             )}`}
+            effect="blur"
+            placeholderSrc="/placeholder.png"
+            width={"265px"}
           />
         </div>
 

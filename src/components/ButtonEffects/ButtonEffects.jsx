@@ -1,16 +1,18 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-
 export const loading = (el) => {
-  ReactDOM.createRoot(document.querySelector(el)).render(
-    <center>
-      <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </center>
-  );
+  const centerEl = document.createElement("center");
+  const divEl = document.createElement("div");
+  divEl.classList.add("spinner-border");
+  divEl.setAttribute("role", "status");
+  const spanEl = document.createElement("span");
+  spanEl.classList.add("sr-only");
+  spanEl.textContent = "Loading ...";
+  centerEl.append(divEl);
+  divEl.append(spanEl);
+  document.querySelector(el).disabled = true;
+  document.querySelector(el).replaceChildren(centerEl);
 };
 
 export const unload = (el, name) => {
-  ReactDOM.createRoot(document.querySelector(el)).render(name);
+  document.querySelector(el).replaceChildren(name);
+  document.querySelector(el).disabled = false;
 };

@@ -1,41 +1,68 @@
-import React from "react";
+import "./ExhibitionPaintings.css";
 import FormNavbar from "../NavBar/FormNavbar";
 import settings from "../settings.json";
-import ReactDOM from "react-dom/client";
-import "./ExhibitionPaintings.css";
 import ExhibtionPaintingCard from "../ExhibtionPaintingCard/ExhibtionPaintingCard";
-import { useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { API } from "../../API/serverRequest";
 function ExhibitionPaintings() {
   const id = useParams().id;
-  fetch(`${settings.server_domain}/get_exhibition_paintings/${id}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("session")}`,
-      clientId: localStorage.getItem("clientId"),
-      exId: id,
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      let paintings = data;
-      let paintingsEl = (
-        <div className="inner-exhibition-paintings-container">
-          {paintings.map((item, index) => {
-            return (
-              <ExhibtionPaintingCard item={item} key={index} exhibition={id} />
-            );
-          })}
-        </div>
-      );
-      ReactDOM.createRoot(
-        document.querySelector(".exhibition-paintings-container")
-      ).render(paintingsEl);
-    });
+  const navigate = useNavigate();
+  const [verified, setVerified] = useState(false);
+  const [paintings, setPaintings] = useState([]);
+  const getPaintings = async () => {
+    try {
+      const data = await API.getExhibitionPaintings(id);
+      if (data.success) {
+        setVerified(true);
+        setPaintings(data.data);
+      }
+    } catch (error) {
+      toast.error(String(error));
+    }
+  };
+  const logout = () => {
+    localStorage.removeItem("clientId");
+    navigate("/");
+  };
+  useEffect(() => {
+    getPaintings();
+  }, []);
 
   return (
     <>
       <FormNavbar />
-      <div className="exhibition-paintings-container"></div>
+      <div className="exhibition-paintings-container">
+        {verified && (
+          <div>
+            <div
+              className="logout-container"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginRight: "1em",
+              }}
+            >
+              <button className="btn btn-outline-primary" onClick={logout}>
+                <i className="fas fa-logout"></i> Sign out
+              </button>
+            </div>
+
+            <div className="inner-exhibition-paintings-container">
+              {paintings.map((item, index) => {
+                return (
+                  <ExhibtionPaintingCard
+                    item={item}
+                    key={index}
+                    exhibition={id}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }

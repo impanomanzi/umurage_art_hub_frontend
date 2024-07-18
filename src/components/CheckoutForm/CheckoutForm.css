@@ -1,8 +1,25 @@
-.checkout-container{
-    display: flex;
-    justify-content: space-between;
-}
 
+.checkout-container-outer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    width: 550px;
+    border-width: 3px;
+    background-color: whitesmoke;
+    padding: 1em;
+    border-radius: 10px;
+    box-shadow:5px 5px 5px #7055034d,-5px -5px 5px #4949054d;
+    border-radius: 20px;
+}
+.checkout-container-outer .form-group{
+    display: flexbox;
+}
+.checkout-container-outer button{
+    display: inline-flex;
+    align-items: center;
+}
 @media screen and (max-device-width: 576px) {
     .checkout-container{
          flex-direction: column;

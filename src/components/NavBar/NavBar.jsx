@@ -1,20 +1,16 @@
 import "./NavBar.css";
-import React, { useState } from "react";
-import ReactDOM from "react-dom/client";
-import ExhibitionCreationForm from "../Forms/ExhibitionCreationForm/ExhibitionCreationForm";
-import PainterCreationForm from "../Forms/PainterCreationForm/PainterCreationForm";
-import BlogCreationForm from "../Forms/BlogCreationForm/BlogCreationForm";
-import PaintingCreationForm from "../Forms/PaintingCreationForm/PaintingCreationForm";
-import Dashboard from "../Dashboard/Dashboard";
-import ListView from "../ListView/ListView";
-import settings from "../settings.json";
-import ExhibitionImagesForm from "../Forms/ExhibitionImagesForm/ExhibitionImagesForm";
+import { useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import { lazy } from "react";
+import { toast } from "react-hot-toast";
+import { API } from "../../API/serverRequest";
 import "bootstrap/dist/css/bootstrap.css";
 import {
   exhibitionKeywords,
   painterKeywords,
   paintingKeywords,
   customerKeywords,
+  blogKeywords,
 } from "../KeyWords/Keywords";
 import {
   Box,
@@ -26,30 +22,56 @@ import {
   ListItemText,
 } from "@mui/material";
 function NavBar(props) {
+  const ListView = lazy(() => import("../ListView/ListView"));
   const { username, logout, exhibitions, paintings } = props;
-  const [myFixedExhibitions, setMyFixedExhibitions] = useState(exhibitions);
-  const [myFixedPaintings, setMyFixedPaintings] = useState(paintings);
-  const [myExhibitions, setMyExhibitions] = useState(exhibitions);
-  const [MyPaintings, setMyPaintings] = useState(paintings);
-  const closeAlert = (event) => {
-    document.querySelector(".response-alert").innerHTML = "";
+  const renderPainterCreationForm = () => {
+    props.onChangeComponent("painterCreationForm");
   };
-  const addNewExhibition = (items) => {
-    setMyExhibitions(items);
+  function timeout(delay) {
+    return new Promise((res) => setTimeout(res, delay));
+  }
+  const renderExhibitionImagesForm = () => {
+    props.onChangeComponent("exhibitionImagesForm");
   };
-  const addNewPainting = (items) => {
-    setMyPaintings(items);
+
+  const renderPaintingCreationForm = () => {
+    props.onChangeComponent("paintingCreationForm");
   };
-  let loading = () => {
-    ReactDOM.createRoot(document.querySelector(".profile-main")).render(
-      <center>
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </center>
-    );
+
+  const renderPasswordChangeForm = () => {
+    props.onChangeComponent("passwordChangeForm");
+    setOpenMenu(false);
   };
-  let navBaritems = [
+
+  const renderExhibitionCreationForm = () => {
+    props.onChangeComponent("exhibitionCreationForm");
+  };
+
+  const renderBlogCreationForm = () => {
+    props.onChangeComponent("blogCreationForm");
+  };
+
+  const renderDashboard = () => {
+    props.onChangeComponent("dashboard");
+  };
+
+  const renderList = async (list) => {
+    props.onChangeComponent("dashboard");
+    await timeout(10);
+    props.onChangeComponent("list");
+    props.onChangeList(list);
+  };
+  const getCurrentUserId = () => {
+    let userId;
+    try {
+      userId = jwtDecode(localStorage.getItem("token")).user;
+      return userId;
+    } catch (error) {
+      toast.error("your session expired");
+    }
+  };
+  const [openMenu, setOpenMenu] = useState(false);
+  const navBaritems = [
     {
       text: "Dashboard",
       counts: null,
@@ -57,15 +79,10 @@ function NavBar(props) {
         {
           subText: "View",
           icon: "fas fa-eye",
-          callBack: () => {
-            ReactDOM.createRoot(document.querySelector(".profile-main")).render(
-              <Dashboard />
-            );
-          },
+          callBack: renderDashboard,
         },
       ],
     },
-
     {
       text: "Exhibition",
       counts: exhibitions.length,
@@ -73,103 +90,119 @@ function NavBar(props) {
         {
           subText: "Create exhibition",
           icon: "fas fa-plus",
-          callBack: () => {
-            ReactDOM.createRoot(document.querySelector(".profile-main")).render(
-              <ExhibitionCreationForm
-                exhibitions={exhibitions}
-                addNewExhibition={addNewExhibition}
-              />
-            );
-          },
+          callBack: renderExhibitionCreationForm,
         },
         {
           subText: "Add paintings",
           icon: "fas fa-plus",
-          callBack: () => {
-            ReactDOM.createRoot(document.querySelector(".profile-main")).render(
-              <ExhibitionImagesForm />
-            );
+          callBack: renderExhibitionImagesForm,
+        },
+        {
+          subText: "List paintings",
+          icon: "fas fa-plus",
+          callBack: async () => {
+            const options = [
+              {
+                text: "Delete",
+                callBack: async (params) => {
+                  try {
+                    const data = await API.deleteExhibitionPainting(params);
+                    if (data.success) {
+                      params.delete();
+                    } else {
+                      throw new Error(data.message);
+                    }
+                  } catch (error) {
+                    toast.error(String(error));
+                  }
+                },
+                icon: "fas fa-trash",
+              },
+            ];
+            try {
+              const data = await API.getAllExhibitionPaintings();
+              if (data.success) {
+                renderList(
+                  <ListView
+                    items={data.data}
+                    title="List of Exhibtion Paintings"
+                    keyword={["name", "description"]}
+                    options={options}
+                    confirmationRequired={true}
+                  />
+                );
+              } else {
+                throw new Error(data.message);
+              }
+            } catch (error) {
+              toast.error(String(error));
+            }
           },
         },
         ,
         {
           subText: "List exhibition",
           icon: "fas fa-table",
-          callBack: () => {
-            loading();
-            let options = [
-              {
-                text: "Edit",
-                callBack: (params) => {
-                  ReactDOM.createRoot(
-                    document.querySelector(".profile-main")
-                  ).render(<ExhibitionCreationForm data={params.item} />);
-                },
-                icon: "fas fa-pen",
-              },
+          callBack: async () => {
+            props.onChangeComponent("loading");
+            const options = [
               {
                 text: "Delete",
-                callBack: (params) => {
-                  fetch(
-                    `${settings.server_domain}/delete_exhibition/${params.item.id}/${params.item.name}`,
-                    {
-                      method: "DELETE",
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                          "session"
-                        )}`,
-                      },
+                callBack: async (params) => {
+                  try {
+                    const data = await API.deleteExhibition(params);
+                    if (data.success) {
+                      params.delete();
+                    } else {
+                      throw new Error(data.message);
                     }
-                  )
-                    .then((response) => response.json())
-                    .then((data) => {
-                      if (data.success) {
-                        params.delete();
-                      } else {
-                        ReactDOM.createRoot(
-                          document.querySelector(".response-alert")
-                        ).render(
-                          <div className="alert alert-danger">
-                            <center>Failed to delete that exhibitions</center>
-                            <button
-                              className="btn btn-close"
-                              onClick={closeAlert}
-                            ></button>
-                          </div>
-                        );
-                      }
-                    })
-                    .catch((error) => {
-                      console.error(error);
-                      ReactDOM.createRoot(
-                        document.querySelector(".response-alert")
-                      ).render(
-                        <div className="alert alert-danger">
-                          <center>{error.toString()}</center>
-                          <button
-                            className="btn btn-close"
-                            onClick={closeAlert}
-                          ></button>
-                        </div>
-                      );
-                    });
+                  } catch (error) {
+                    toast.error(String(error));
+                  }
+                },
+                icon: "fas fa-trash",
+              },
+              {
+                text: "change status",
+                callBack: async (params) => {
+                  try {
+                    const data = await API.changeExhibitionStatus(params);
+                    if (data.success) {
+                      params.updater(data.data);
+                      toast.success("exhibition status updated");
+                    } else {
+                      throw new Error(data.message);
+                    }
+                  } catch (error) {
+                    toast.error(String(error));
+                  }
                 },
                 icon: "fas fa-trash",
               },
             ];
-
-            ReactDOM.createRoot(document.querySelector(".profile-main")).render(
-              <ListView
-                items={exhibitions}
-                title="List of Exhibtions"
-                keyword={exhibitionKeywords}
-                options={options}
-              />
-            );
+            try {
+              const data = await API.getAllExhibitions();
+              if (data.success) {
+                renderList(
+                  <ListView
+                    items={data.data}
+                    title="List of Exhibtions"
+                    keyword={exhibitionKeywords}
+                    options={options}
+                    confirmationRequired={true}
+                  />
+                );
+              } else {
+                throw new Error(data.message);
+              }
+            } catch (error) {
+              toast.error(String(error));
+            }
           },
         },
       ],
     },
+
     {
       text: "Painter",
       counts: null,
@@ -177,105 +210,50 @@ function NavBar(props) {
         {
           subText: "Add painter account",
           icon: "fas fa-plus",
-          callBack: () => {
-            ReactDOM.createRoot(document.querySelector(".profile-main")).render(
-              <PainterCreationForm />
-            );
-          },
+          callBack: renderPainterCreationForm,
         },
         {
           subText: "List painters",
           icon: "fas fa-table",
-          callBack: () => {
-            loading();
-            let options = [
-              {
-                text: "Delete",
-                callBack: (params) => {
-                  fetch(
-                    `${settings.server_domain}/delete_painter/${params.item.id}`,
-                    {
-                      method: "DELETE",
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                          "session"
-                        )}`,
-                      },
-                    }
-                  )
-                    .then((response) => response.json())
-                    .then((data) => {
+          callBack: async () => {
+            try {
+              props.onChangeComponent("loading");
+              const options = [
+                {
+                  text: "Delete",
+                  callBack: async (params) => {
+                    try {
+                      const data = await API.deletePainter(params);
                       if (data.success) {
                         params.delete();
                       } else {
-                        ReactDOM.createRoot(
-                          document.querySelector(".response-alert")
-                        ).render(
-                          <div className="alert alert-danger">
-                            <center>Failed to delete that Painter</center>
-                            <button
-                              className="btn btn-close"
-                              onClick={closeAlert}
-                            ></button>
-                          </div>
-                        );
+                        throw new Error(data.message);
                       }
-                    })
-                    .catch((er) => {
-                      ReactDOM.createRoot(
-                        document.querySelector(".response-alert")
-                      ).render(
-                        <div className="alert alert-danger">
-                          <center>
-                            Error happened while deleting that painter
-                          </center>
-                          <button
-                            className="btn btn-close"
-                            onClick={closeAlert}
-                          ></button>
-                        </div>
-                      );
-                    });
+                    } catch (error) {
+                      toast.error(String(error));
+                    }
+                  },
+                  icon: "fas fa-trash",
                 },
-                icon: "fas fa-trash",
-              },
-            ];
-            fetch(`${settings.server_domain}/get_painters`, {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("session")}`,
-              },
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                ReactDOM.createRoot(
-                  document.querySelector(".profile-main")
-                ).render(
-                  <ListView
-                    items={data}
-                    options={options}
-                    keyword={painterKeywords}
-                    title="List of all registered painters"
-                  />
-                );
-              })
-              .catch((error) => {
-                ReactDOM.createRoot(
-                  document.querySelector(".response-alert")
-                ).render(
-                  <div className="alert alert-danger">
-                    <center>Failed to load painters</center>
-                    <button
-                      className="btn btn-close"
-                      onClick={closeAlert}
-                    ></button>
-                  </div>
-                );
-              });
+              ];
+              const data = await API.getPainters();
+              renderList(
+                <ListView
+                  items={data}
+                  options={options}
+                  keyword={painterKeywords}
+                  title="List of all registered painters"
+                  confirmationRequired={true}
+                />
+              );
+            } catch (error) {
+              toast.error(String(error));
+            }
           },
         },
       ],
     },
+
     {
       text: "Blogs",
       counts: null,
@@ -283,60 +261,53 @@ function NavBar(props) {
         {
           subText: "Add new Blog",
           icon: "fas fa-plus",
-          callBack: () => {
-            ReactDOM.createRoot(document.querySelector(".profile-main")).render(
-              <BlogCreationForm />
-            );
-          },
+          callBack: renderBlogCreationForm,
         },
         {
           subText: "List blogs",
           icon: "fas fa-table",
-          callBack: () => {
-            loading();
-            let options = [
-              { text: "Edit", callBack: null, icon: "fas fa-trash" },
-              {
-                text: "Delete",
-                callBack: (blog) => {
-                  fetch(
-                    `${settings.server_domain}/api/blog/delete_blog/${blog.Id}`,
-                    {
-                      method: "DELETE",
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                          "session"
-                        )}`,
-                      },
+          callBack: async () => {
+            try {
+              props.onChangeComponent("loading");
+              const options = [
+                {
+                  text: "Delete",
+                  callBack: async (params) => {
+                    try {
+                      const data = await API.deleteBlog(params);
+                      if (data.success) {
+                        params.delete();
+                      } else {
+                        throw new Error(data.message);
+                      }
+                    } catch (error) {
+                      toast.error(String(error));
                     }
-                  )
-                    .then((response) => response.json())
-                    .then((data) => data)
-                    .catch((error) => {
-                      console.log(error);
-                    });
+                  },
                 },
-                icon: "fas fa-pen",
-              },
-            ];
-            fetch(`${settings.server_domain}/api/blog/get_blogs`)
-              .then((response) => response.json())
-              .then((data) => {
-                ReactDOM.createRoot(
-                  document.querySelector(".profile-main")
-                ).render(
+              ];
+              const data = await API.getBlogs();
+              if (data.success)
+                renderList(
                   <ListView
-                    items={data}
+                    items={data.data}
                     options={options}
+                    keyword={blogKeywords}
                     title="List of released Blogs"
+                    confirmationRequired={true}
                   />
                 );
-              })
-              .catch((error) => console.info(error));
+              else {
+                throw new Error(data.message);
+              }
+            } catch (error) {
+              toast.error(String(error));
+            }
           },
         },
       ],
     },
+
     {
       text: "Paintings",
       counts: paintings.data.length,
@@ -344,90 +315,45 @@ function NavBar(props) {
         {
           subText: "Add new",
           icon: "fas fa-plus",
-          callBack: () => {
-            ReactDOM.createRoot(document.querySelector(".profile-main")).render(
-              <PaintingCreationForm
-                paintings={paintings}
-                addNewPainting={addNewPainting}
-              />
-            );
-          },
+          callBack: renderPaintingCreationForm,
         },
         {
           subText: "List Paintings",
           icon: "fas fa-table",
-          callBack: () => {
-            loading();
-            let options = [
-              { text: "Edit", callBack: null, icon: "fas fa-pen" },
+          callBack: async () => {
+            props.onChangeComponent("loading");
+            const options = [
               {
                 text: "Delete",
-                callBack: (params) => {
-                  fetch(
-                    `${settings.server_domain}/delete_painting/${params.item.id}`,
-                    {
-                      method: "DELETE",
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                          "session"
-                        )}`,
-                        userId: localStorage.getItem("userId"),
-                      },
+                callBack: async (params) => {
+                  try {
+                    const data = await API.deletePainting(params);
+                    if (data.success) {
+                      params.delete();
+                    } else {
+                      throw new Error(data.message);
                     }
-                  )
-                    .then((response) => response.json())
-                    .then((data) => {
-                      if (data.success) {
-                        // if painting has deleted from database update UI
-
-                        params.delete();
-                      } else {
-                        ReactDOM.createRoot(
-                          document.querySelector(".response-alert")
-                        ).render(
-                          <div className="alert alert-danger">
-                            <center>Failed to delete that Painting</center>
-                            <button
-                              className="btn btn-close"
-                              onClick={closeAlert}
-                            ></button>
-                          </div>
-                        );
-                      }
-                    })
-                    .catch((er) => {
-                      console.log(err);
-                      ReactDOM.createRoot(
-                        document.querySelector(".response-alert")
-                      ).render(
-                        <div className="alert alert-danger">
-                          <center>
-                            error happened while deleting that painting
-                          </center>
-                          <button
-                            className="btn btn-close"
-                            onClick={closeAlert}
-                          ></button>
-                        </div>
-                      );
-                    });
+                  } catch (error) {
+                    toast.error(String(error));
+                  }
                 },
-                icon: "fas fa-trash",
+                icon: "",
               },
             ];
-
-            ReactDOM.createRoot(document.querySelector(".profile-main")).render(
+            renderList(
               <ListView
                 items={paintings.data}
                 title="List of paintings"
                 keyword={paintingKeywords}
                 options={options}
+                confirmationRequired={true}
               />
             );
           },
         },
       ],
     },
+
     {
       text: "Customer",
       counts: null,
@@ -435,203 +361,66 @@ function NavBar(props) {
         {
           subText: "List customers",
           icon: "fas fa-list",
-          callBack: () => {
-            loading();
-            fetch(`${settings.server_domain}/get_customers`, {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("session")}`,
-              },
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                if (data.success) {
-                  let options = [
-                    {
-                      text: "Delete",
-                      callBack: (params) => {
-                        let button = params.event.target;
-                        button.setAttribute("disabled", true);
+          callBack: async () => {
+            props.onChangeComponent("loading");
+            try {
+              const options = [
+                {
+                  text: "Delete",
+                  callBack: async (params) => {
+                    try {
+                      const data = await API.deleteCustomer(params);
+                      if (data.success) {
+                        params.delete();
+                      } else {
+                        throw new Error("Failed to delete that customer");
+                      }
+                    } catch (error) {
+                      toast.error(String(error));
+                    }
+                  },
+                  icon: "",
+                },
+                {
+                  text: "Change status",
+                  callBack: async (params) => {
+                    try {
+                      const data = await API.changeCustomerStatus(params);
+                      if (data.success) {
+                        params.updater(data.data);
+                        toast.success("customer status updated");
+                      } else {
+                        throw new Error(data.message);
+                      }
+                    } catch (error) {
+                      toast.error(String(error));
+                    }
+                  },
+                },
+              ];
 
-                        ReactDOM.createRoot(button).render(
-                          <center>
-                            <div class="spinner-border" role="status">
-                              <span class="sr-only">Loading...</span>
-                            </div>
-                          </center>
-                        );
-
-                        let formData = new FormData();
-                        formData.append("customer_id", params.item.id);
-                        fetch(`${settings.server_domain}/delete_customer`, {
-                          method: "DELETE",
-                          headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                              "session"
-                            )}`,
-                          },
-                          body: formData,
-                        })
-                          .then((response) => response.json())
-                          .then((data) => {
-                            if (data.success) {
-                              params.delete();
-                            } else {
-                              button.removeAttribute("disabled");
-                              ReactDOM.createRoot(button).render(
-                                <span>
-                                  <i className="fas fa-trash"></i>&nbsp;Delete
-                                </span>
-                              );
-                              ReactDOM.createRoot(
-                                document.querySelector(".response-alert")
-                              ).render(
-                                <div className="alert alert-danger">
-                                  <center>
-                                    Failed to delete that customer
-                                  </center>
-                                  <button
-                                    className="btn btn-close"
-                                    onClick={closeAlert}
-                                  ></button>
-                                </div>
-                              );
-                            }
-                          })
-                          .catch((er) => {
-                            button.removeAttribute("disabled");
-                            ReactDOM.createRoot(button).render(
-                              <span>
-                                <i className="fas fa-trash"></i>&nbsp;Delete
-                              </span>
-                            );
-                            ReactDOM.createRoot(
-                              document.querySelector(".response-alert")
-                            ).render(
-                              <div className="alert alert-danger">
-                                <center>
-                                  error happened while deleting customer
-                                </center>
-                                <button
-                                  className="btn btn-close"
-                                  onClick={closeAlert}
-                                ></button>
-                              </div>
-                            );
-                          });
-                      },
-                      icon: "fas fa-trash",
-                    },
-                    {
-                      text: "Change status",
-                      callBack: (params) => {
-                        ReactDOM.createRoot(
-                          document.querySelector(".response-alert")
-                        ).render(
-                          <div className="alert alert-success">
-                            <center>
-                              customer status changed successfully
-                            </center>
-                            <button
-                              className="btn btn-close"
-                              onClick={closeAlert}
-                            ></button>
-                          </div>
-                        );
-                        let formData = new FormData();
-                        formData.append("customer_id", params.item.id);
-                        formData.append("current_status", params.item.status);
-                        fetch(
-                          `${settings.server_domain}/update_customer_status`,
-                          {
-                            method: "POST",
-                            headers: {
-                              Authorization: `Bearer ${localStorage.getItem(
-                                "session"
-                              )}`,
-                            },
-                            body: formData,
-                          }
-                        )
-                          .then((response) => response.json())
-                          .then((data) => {
-                            if (data.success) {
-                              ReactDOM.createRoot(
-                                document.querySelector(".profile-main")
-                              ).render(
-                                <ListView
-                                  items={data.data}
-                                  title="List of customers"
-                                  keyword={customerKeywords}
-                                  options={options}
-                                />
-                              );
-                            } else {
-                              ReactDOM.createRoot(
-                                document.querySelector(".response-alert")
-                              ).render(
-                                <div className="alert alert-danger">
-                                  <center>
-                                    Failed to update customer status
-                                  </center>
-                                  <button
-                                    className="btn btn-close"
-                                    onClick={closeAlert}
-                                  ></button>
-                                </div>
-                              );
-                            }
-                          })
-                          .catch((error) => {
-                            ReactDOM.createRoot(
-                              document.querySelector(".response-alert")
-                            ).render(
-                              <div className="alert alert-danger">
-                                <center>
-                                  error happened updating customer status
-                                </center>
-                                <button
-                                  className="btn btn-close"
-                                  onClick={closeAlert}
-                                ></button>
-                              </div>
-                            );
-                          });
-                      },
-                    },
-                  ];
-
-                  ReactDOM.createRoot(
-                    document.querySelector(".profile-main")
-                  ).render(
-                    <ListView
-                      items={data.data}
-                      title="List of customers"
-                      keyword={customerKeywords}
-                      options={options}
-                    />
-                  );
-                }
-              })
-              .catch((error) => {
-                ReactDOM.createRoot(
-                  document.querySelector(".response-alert")
-                ).render(
-                  <div className="alert alert-danger">
-                    <center>Error happened while deleting customer</center>
-                    <button
-                      className="btn btn-close"
-                      onClick={closeAlert}
-                    ></button>
-                  </div>
+              const data = await API.getCustomers();
+              if (data.success)
+                renderList(
+                  <ListView
+                    items={data.data}
+                    title="List of customers"
+                    keyword={customerKeywords}
+                    options={options}
+                    confirmationRequired={true}
+                  />
                 );
-              });
+              else {
+                throw new Error(data.message);
+              }
+            } catch (error) {
+              toast.error(String(error));
+            }
           },
         },
       ],
     },
   ];
-  const [openMenu, setOpenMenu] = useState(false);
 
   return (
     <div className="profile-top-nav-container home-navbar bg-light">
@@ -643,7 +432,7 @@ function NavBar(props) {
           {" "}
           <i className="fas fa-shield-alt"></i>&nbsp;ADMIN DASHBOARD
         </h5>
-        &nbsp;|&nbsp; <i>{localStorage.getItem("username")}</i>
+        &nbsp;|&nbsp; <i>{getCurrentUserId()}</i>
       </span>
       <span
         style={{
@@ -670,6 +459,7 @@ function NavBar(props) {
             backgroundColor: "transparent",
             color: "black",
           }}
+          onMouseEnter={() => setOpenMenu(true)}
         >
           <i className="fas fa-bars"></i>
         </button>
@@ -684,7 +474,6 @@ function NavBar(props) {
         <Box
           sx={{ width: 250 }}
           role="presentation"
-          onclick={() => setOpenMenu(false)}
           onKeyDown={() => setOpenMenu(false)}
         >
           <ListItem>
@@ -700,12 +489,13 @@ function NavBar(props) {
                     className="link-btn card"
                     key={index}
                     onClick={item.callBack}
+                    onMouseEnter={(event) => {
+                      event.target.open = true;
+                    }}
+                    onMouseLeave={(event) => [(event.target.open = false)]}
                     style={{ padding: "0 1em 0 1em" }}
                   >
-                    <summary className="lead">
-                      {item.text} &nbsp;
-                      <span className="badge badge-success">{item.counts}</span>
-                    </summary>
+                    <summary className="lead">{item.text} &nbsp;</summary>
 
                     {item.subHeadings.map((innerItem, innerIndex) => {
                       return (
@@ -726,7 +516,11 @@ function NavBar(props) {
                 </ListItem>
               );
             })}
-
+            <ListItem>
+              <ListItemButton onClick={renderPasswordChangeForm}>
+                <ListItemText>Change Password</ListItemText>
+              </ListItemButton>
+            </ListItem>
             <ListItem>
               <ListItemButton
                 onClick={() => {

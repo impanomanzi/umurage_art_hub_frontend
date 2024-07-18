@@ -4,12 +4,13 @@
     list-style: none;
 }
 .scroller-container li{
-    background-color: #ed9b1f;
+    background-color: rgb(2, 11, 20);
     border-radius: 5px;
     padding-block: 7px;
     padding-left: 1em;
     padding-right: 1em;
-    width: 100%;
+    width: max-content;
+    color: #ed9b1f
 
 }
 .scroller-container .scroller{

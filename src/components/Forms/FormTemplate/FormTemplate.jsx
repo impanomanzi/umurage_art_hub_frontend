@@ -1,5 +1,4 @@
 import "./FormTemplate.css";
-import { Link } from "react-router-dom";
 function FormTemplate(props) {
   return (
     <div className="payment-registration-form-container">

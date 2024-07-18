@@ -1,4 +1,3 @@
-import React from "react";
 import { BsInstagram } from "react-icons/bs";
 import { BsMailbox2 } from "react-icons/bs";
 import { BsWhatsapp } from "react-icons/bs";

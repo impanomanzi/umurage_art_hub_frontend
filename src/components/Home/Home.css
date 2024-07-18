@@ -1,11 +1,10 @@
  
-.home-exhibition-container {
+ 
+.exhibition-section {
+  height: 80vh;
   background: url("/background.png");
   background-repeat: no-repeat;
   background-size: cover;
-}
-.exhibition-section {
-  height: 89vh;
 }
  
  header {
@@ -17,6 +16,7 @@
 }
 .gallery-section{
   transition: all 60s ease-in-out;
+  padding-left: 10px;
 }
  
 

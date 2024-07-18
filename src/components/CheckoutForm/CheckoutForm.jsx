@@ -1,66 +1,96 @@
-import React from "react";
-import FormNavbar from "../NavBar/FormNavbar";
-import { Link } from "react-router-dom";
-import settings from "../settings.json";
-import PaypalButton from "../PaypalButton/PaypalButton";
-import PayementRegistrationForm from "../Forms/PaymentRegistrationForm/PayementRegistrationForm";
-import "./CheckoutForm.css";
-import ReactDOM from "react-dom/client";
-
 import { useState } from "react";
+import settings from "../settings.json";
+import "./CheckoutForm.css";
+import { loading, unload } from "../ButtonEffects/ButtonEffects";
+import { toast } from "react-hot-toast";
+
 function CheckoutForm(props) {
-  const [productName, setProductName] = useState(props.exhibitionName);
-  const [productQuantity, setProductQuantity] = useState(1);
-  const [productPrice, setProductPrice] = useState(props.amount);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [isMTN, setIsMTN] = useState(false);
+  const [btnDisabled, setBtnDisabled] = useState(true);
+  const [isAirtel, setIsAirtel] = useState();
+  const detectPhonenuber = (event) => {
+    if (
+      event.target.value.startsWith("079") |
+      event.target.value.startsWith("078")
+    ) {
+      setIsMTN(true);
+      if (event.target.value.length == 10) {
+        setBtnDisabled(false);
+      } else {
+        setBtnDisabled(true);
+      }
+    } else if (
+      event.target.value.startsWith("072") |
+      event.target.value.startsWith("073")
+    ) {
+      setIsAirtel(true);
+    } else {
+      setIsMTN(false);
+      setIsAirtel(false);
+    }
+  };
+  const make_mtn_payment = async (event) => {
+    event.preventDefault();
+    loading(".check-submit-btn");
+    let formData = new FormData();
+    formData.append("c_id", props.c_id);
+    formData.append("phonenumber", phoneNumber);
+    formData.append("amount", props.amount);
+    formData.append("ex_id", props.id);
+    setBtnDisabled(true);
+    try {
+      const response = await fetch(`${settings.server_domain}/request_to_pay`, {
+        method: "POST",
+        headers: {
+          encType: "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData,
+      });
+      const data = await response.json();
+      if (data.success) {
+        localStorage.setItem("clientId", props.c_id);
+        props.navigate(`/exhibition_paintings/${props.id}`);
+      } else {
+        document.querySelector(".check-submit-btn").innerHTML = `
+        <img
+        src="https://momodeveloper.mtn.com/content/mtnmomoLogo.svg"
+        height="32px"
+        width={"32px"}
+      />
+      Pay With MTN Mobile Money
+     `;
+        document.querySelector(".check-submit-btn").disabled = false;
+        toast.error(data.error);
+        setBtnDisabled(false);
+      }
+    } catch (error) {
+      document.querySelector(".check-submit-btn").innerHTML = `
+       <img
+         src="https://momodeveloper.mtn.com/content/mtnmomoLogo.svg"
+         height="50px"
+         width={"50px"}
+       />
+       Pay via MoMo
+     `;
+
+      toast.error(error.toString());
+      setBtnDisabled(false);
+    }
+  };
 
   return (
-    <div>
-      <div className="checkout-message"></div>
-      <h2>CHECKOUT</h2>
-      <button
-        className="btn btn-outline-tertiary"
-        onClick={(event) => {
-          props.navigate(`/payment/${props.id}`);
-        }}
-      >
-        <i className="fas fa-arrow-left"></i>
-      </button>
-      <hr />
-      <div className="checkout-container">
-        <div className="payment-info-alert">
-          <div
-            className="alert alert-dismissible alert-info"
-            style={{ color: "black" }}
-          >
-            <h4 className="h4">Payment guide</h4>
-            <hr />
-            <span>
-              <p className="lead">
-                <div className="alert alert-warning" style={{ color: "black" }}>
-                  CHECK YOUR EMAIL INBOX TO SEE YOUR ID <br />
-                  To use to access an exhibition <br />
-                  after payment.
-                </div>{" "}
-                <br />
-                After making payment send payment screenshot to this <br />
-                number, to get access to an exhibition. <br />
-                <b>0791105800</b>
-                <br />
-                or E-mail to <br />
-                <b>niyomugaboisaie05@gmail.com</b>
-              </p>
-            </span>
-            {/* <a href="#pay-button1">
-            {" "}
-            <button className="btn btn-outline-primary"> see pay button</button>
-          </a> */}
-          </div>
-        </div>
-        <form className="row col-md-5">
+    <div className="checkout-container-outer">
+      <div>
+        <h2>CHECKOUT</h2>
+
+        <hr />
+
+        <form className="row" onSubmit={make_mtn_payment}>
           <p className="h3">Invoice data</p>
-          <hr />
           <div className="form-group">
-            <label htmlFor="first_name"> YOUR FIRST NAME</label>
+            <label htmlFor="first_name">FIRST NAME</label>
             <input
               type="text"
               name="first-name"
@@ -73,7 +103,7 @@ function CheckoutForm(props) {
           </div>
           <hr />
           <div className="form-group">
-            <label htmlFor="last_name"> YOUR LAST NAME</label>
+            <label htmlFor="last_name">LAST NAME</label>
             <input
               type="text"
               name="last_name"
@@ -85,7 +115,7 @@ function CheckoutForm(props) {
           </div>
           <hr />
           <div className="form-group">
-            <label htmlFor="email">YOUR EMAIL</label>
+            <label htmlFor="email">EMAIL</label>
             <input
               name="email"
               type="email"
@@ -110,19 +140,7 @@ function CheckoutForm(props) {
           <hr />
 
           <div className="form-group">
-            <label htmlFor="phone">YOUR PHONE</label>
-            <input
-              name="exhibitionName"
-              type="text"
-              disabled
-              value={props.phoneNumber}
-              className="form-control-plaintext"
-              style={{ fontWeight: "900", fontSize: "1.2em" }}
-            />
-          </div>
-          <hr />
-          <div className="form-group">
-            <label htmlFor="amount">AMOUNT TO PAY</label>
+            <label htmlFor="amount">AMOUNT</label>
             <input
               name="amount"
               type="text"
@@ -133,18 +151,45 @@ function CheckoutForm(props) {
             />
           </div>
           <hr />
+          <div className="form-group">
+            <label htmlFor="phone">PHONE</label>
+            <input
+              name="exhibitionName"
+              type="text"
+              value={phoneNumber}
+              required
+              selected
+              onChange={(event) => {
+                setPhoneNumber(event.target.value);
+                detectPhonenuber(event);
+              }}
+              // className="form-control-plaintext"
+              style={{ fontWeight: "900", fontSize: "1.2em" }}
+            />
+          </div>
+          <hr />
           <div className="row justify-content-center" role="group">
-            <a
-              href={`tel:*182*8*1*798732#`}
-              className="mtn btn btn-secondary"
-              id="pay-button1"
-            >
-              SEND MONEY HERE <br />
-              *182*8*1*798732#
-            </a>
-            {/* <a href={"#"} className="airtel btn btn-secondary">
-            Pay With Airtel Money
-          </a> */}
+            {isMTN && (
+              <button
+                href={`tel:*182*8*1*798732#`}
+                type="submit"
+                className="mtn btn btn-secondary check-submit-btn mtn-submit-btn"
+                id="pay-button1"
+                disabled={btnDisabled}
+              >
+                <img
+                  src="https://momodeveloper.mtn.com/content/mtnmomoLogo.svg"
+                  height="32px"
+                  width={"32px"}
+                />
+                Pay With MTN Mobile Money
+              </button>
+            )}
+            {/* {isAirtel && (
+              <button className="airtel btn btn-secondary" type="submit">
+                Pay With Airtel Money
+              </button>
+            )} */}
 
             {/* <PaypalButton
             productInfo={{

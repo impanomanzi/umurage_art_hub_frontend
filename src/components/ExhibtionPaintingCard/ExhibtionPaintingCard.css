@@ -1,17 +1,39 @@
 .exhibition-painting-card {
-  border-radius: 15px;
   margin: 0.5rem;
   color: black;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  /* justify-content: center; */
+  box-shadow:5px 5px 5px #7055034d,-5px -5px 5px #4949054d;
   background-color: white;
+  
+}
+ 
+.exhibition-painting-card .ecard-img{
+  pointer-events: none;
 }
 .exhibition-painting-card img {
-  height: 35vh;
+  pointer-events: none
+}
+.ep-link .card-body{
+  border: none;
+}
+.exhibition-painting-card .card-title{
   width: 250px;
-  border-top-right-radius: 15px;
-  border-top-left-radius: 15px;
+  font-size: 1.1rem;
+  font-weight: 400;
+  font-style: normal;
+  border: none;
+}
+.exhibition-painting-card details {
+  width: 250px;
+  overflow-x: auto;
+  text-overflow: ellipsis;
+  border: none;
+}
+.exhibition-painting-card .btn{
+  width: 100%;
+}
+.exhibition-painting-card details p{
+  font-weight: 100;
 }

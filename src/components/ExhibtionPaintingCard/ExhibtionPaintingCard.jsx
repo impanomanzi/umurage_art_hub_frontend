@@ -1,29 +1,36 @@
-import React from "react";
 import "./ExhibtionPaintingCard.css";
 import "bootstrap/dist/css/bootstrap.css";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import settings from "../settings.json";
 
 function ExhibtionPaintingCard(props) {
   return (
     <div className="card exhibition-painting-card">
-      <img
+      <LazyLoadImage
         src={`${props.item.image}?clientId=${localStorage.getItem(
           "clientId"
         )}&exId=${props.exhibition}`.replace(
           "http://localhost:5000",
           `${settings.server_domain}`
         )}
-        loading="lazy"
-        className="card-img-top"
+        effect="blur"
+        placeholderSrc="/placeholder.png"
+        className="ecard-img"
+        width={"300px"}
+        height={"320px"}
       />
+
       <div className="card-body">
-        <h5 className="card-title">{props.item.name}</h5>
-        <p className="card-text">{props.item.description}</p>
+        <p className="card-title lead">{props.item.name}</p>
+        <details>
+          <summary>Details</summary>
+          <p className="card-text">{props.item.description}</p>
+        </details>
         <a
           href={`/view_painting/${props.item.id}?i=${props.item.image}&a=${props.item.audio}&name=${props.item.name}&des=${props.item.description}&painter=${props.item.painter}&exhibition=${props.item.owner}&eid=${props.exhibition}&b=/exhibition_paintings/${props.exhibition}`}
           className="btn btn-primary"
         >
-          <i className="fas fa-eye"></i>&nbsp; view painiting
+          View
         </a>
       </div>
     </div>

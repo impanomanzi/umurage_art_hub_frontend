@@ -1,0 +1,66 @@
+.profile-page-container,.profilepage-details-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.profilepage-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+	width:max-content;
+	border-radius: 33px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	padding: 2rem !important;
+}
+ 
+.profilepage-image-container, .profilepage-image-container img{
+    height: 120px;
+    width: 120px;
+    border-radius: 60px;
+
+}
+.profilepage-details-container .fullname{
+    font-weight: 550;
+    font-size: 1.3rem
+}
+
+.profilepage-details-container .username{
+    font-weight: 400;
+    font-size: 1.2rem
+}
+
+
+.edit-profile-outer-container{
+    position:fixed;
+    top: 0%;
+    left: 0%;
+    z-index: 300;
+    width: 100%;
+    padding:4%;
+    background-color: rgba(10, 2, 9, .5);
+    height: 100%;
+    
+
+}
+
+.edit-profile-page-container{
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+    flex-direction: column;
+     
+}
+.edit-profile-page-container form{
+    background-color: white;
+    padding: 2%;
+}
+.close-btn-container{
+    display: flex;
+    justify-content: flex-end;
+}
+ 

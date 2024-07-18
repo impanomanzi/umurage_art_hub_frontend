@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
+import { useEffect, useState } from "react";
 import "../FormTemplate/FormTemplate.css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import settings from "../../settings.json";
-import { AlertError, AlertSuccess } from "../../Alerts/Alert";
-import { loading } from "../../ButtonEffects/ButtonEffects";
+import { toast } from "react-hot-toast";
+import { validateFileType } from "../../../FileValidation/FileValidation";
+import { API } from "../../../API/serverRequest";
+import CustomLoadingButton from "../../FormButton/FormButton";
 
 function PainterCreationForm(props) {
+  const [showImagePreview, setShowImagePreview] = useState(false);
   const [fullname, setFullname] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const acceptedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+  const [fileError, setFileError] = useState(false);
+  const FILE_ERROR = "the file you selected is not supported.";
 
   const handleOnChange = (value) => {
     setPhoneNumber(value);
@@ -25,68 +31,34 @@ function PainterCreationForm(props) {
     formData.append("password", password);
     formData.append("phonenumber", phoneNumber);
     formData.append("profilepicture", profilePicture);
+    formData.append("email", email);
     return formData;
   };
 
-  const changeBtnText = () => {
-    const btnText = (
-      <span>
-        <i className="fas fa-plus"></i>
-        &nbsp;&nbsp; Add new
-      </span>
-    );
-    document.querySelector(".painter-form").reset();
-    ReactDOM.createRoot(document.querySelector(".submit-btn")).render(btnText);
-  };
-
-  const handleRequest = (url) => {
-    let formData = getFormData();
-    let options = {
-      method: "POST",
-      headers: {
-        encType: "multipart/form-data",
-      },
-      body: formData,
-    };
-
-    fetch(`${settings.server_domain}/${url}`, options)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            AlertSuccess("Painter Saved successfully")
-          );
-          changeBtnText();
-        } else if (data.userExist) {
-          ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            AlertError("user Already Exist")
-          );
-
-          changeBtnText();
-        } else {
-          ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            AlertError("Painter not saved try again")
-          );
-
-          changeBtnText();
-        }
-      })
-      .catch((error) => {
-        ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-          AlertError("Error happened while adding new painter.")
-        );
-        changeBtnText();
-      });
+  const handleRequest = async (url) => {
+    try {
+      setIsLoading(true);
+      let formData = getFormData();
+      const data = await API.addPainter(formData);
+      if (data.success) {
+        document.querySelector(".painter-form").reset();
+        toast.success("Painter Saved successfully");
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      toast.error(String(error));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleOnSubmit = (event) => {
     event.preventDefault();
-    loading(".submit-btn");
     handleRequest("add_new_painter");
   };
   const handleUpdate = (event) => {
     event.preventDefault();
-    loading();
     handleRequest(`update_painter/${props.data.id}`);
   };
   props.data
@@ -153,6 +125,22 @@ function PainterCreationForm(props) {
           />
         </div>
         <div className="form-group">
+          <label htmlFor="email" className="col-sm-2 col-form-label">
+            EMAIL
+          </label>
+          <input
+            type="email"
+            required
+            autoComplete="off"
+            className="form-control"
+            name="email"
+            placeholder={props.data ? props.data.password : null}
+            onChange={(event) => {
+              setEmail(event.target.value);
+            }}
+          />
+        </div>
+        <div className="form-group">
           <label htmlFor="password" className="col-sm-2 col-form-label">
             PASSWORD
           </label>
@@ -173,37 +161,50 @@ function PainterCreationForm(props) {
             <label htmlFor="profile" className="col-sm-2 col-form-label">
               PROFILE PICTURE
             </label>
-            <div className="profile-preview"></div>
+
             <input
               required
               type="file"
               name="profilepicture"
               className="form-control-file"
+              accept=".jpg, .png, .jpeg"
               onChange={(event) => {
-                const url = URL.createObjectURL(event.target.files[0]);
-                const el = `<center><img src="${url}" width="135px" height="135px" style="border-radius:67.5px"/></center>`;
-                event.target.parentElement.querySelector(
-                  ".profile-preview"
-                ).innerHTML = el;
-                setProfilePicture(event.target.files[0]);
+                validateFileType(
+                  event,
+                  acceptedFileTypes,
+                  setProfilePicture,
+                  setShowImagePreview,
+                  setFileError
+                );
               }}
             />
+            {fileError && (
+              <div className="alert alert-danger">
+                {FILE_ERROR} <br />
+                Supported files are .png, .jpg, .jpeg
+              </div>
+            )}
+            {showImagePreview && (
+              <div className="profile-preview">
+                <center>
+                  <img
+                    src={URL.createObjectURL(profilePicture)}
+                    width="135px"
+                    height="135px"
+                    style={{ borderRadius: "67.5px" }}
+                  />
+                </center>
+              </div>
+            )}
           </div>
         )}
 
-        <button type="submit" className="submit-btn btn btn-primary">
-          {props.data ? (
-            <span>
-              <i className="fas fa-pen"></i>
-              &nbsp;&nbsp; UPDATE PAINTER
-            </span>
-          ) : (
-            <span>
-              <i className="fas fa-plus"></i>
-              &nbsp;&nbsp; ADD PAINTER
-            </span>
-          )}
-        </button>
+        <CustomLoadingButton
+          isLoading={isLoading}
+          onClick={null}
+          text="Add painter"
+          buttonType="submit"
+        />
       </form>
     </div>
   );

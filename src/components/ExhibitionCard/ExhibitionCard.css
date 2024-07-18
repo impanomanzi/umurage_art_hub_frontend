@@ -1,17 +1,17 @@
 .exhibition-card {
-  width: fit-content;
+  width: 265px;
   height: fit-content;
-  border-radius: 15px;
+  border-radius: .4rem;
   margin: 0.5rem;
   color: rgba(0, 0, 0, 0.196);
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: black;
-  background-color: rgb(185, 181, 181);
+  background-color: white;
   box-shadow: inset;
+  box-shadow:5px 5px 5px #7055034d,-5px -5px 5px #4949054d;
 }
 
 .exhibition-meta {
@@ -43,8 +43,9 @@
 .exhibition-image .skeleton {
   height: 30vh;
   width: 250px;
-  border-top-right-radius: 15px;
-  border-top-left-radius: 15px;
+  pointer-events: none;
+  border-top-right-radius: .4rem;
+  border-top-left-radius: .4rem;
   padding-bottom: 2px;
 }
 

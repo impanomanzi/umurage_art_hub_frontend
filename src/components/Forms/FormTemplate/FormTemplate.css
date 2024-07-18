@@ -1,16 +1,13 @@
-/* @font-face {
-  font-family: form-roboto;
-  src: url("/src/assets/fonts/Roboto-Regular.ttf");
-} */
+ 
 .payment-registration-form-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 1rem;
-  /* font-family: form-roboto; */
-  /* background-color: #445566; */
+   
 }
+
 .uploading {
   background-color: "green";
   content: "";
@@ -50,18 +47,72 @@ option {
 .payment-registration-form-container button {
   align-items: center;
   width: 90%;
-  /* background-color: rgb(5, 51, 158); */
-  /* color: white; */
-  /* font-size: 1.2rem; */
-  /* border-radius: 0.5em; */
-  /* box-shadow: 2px 2px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54); */
+  
 }
-/* .payment-registration-form-container button:hover {
+ .left-line, .right-line{
+  height: 3px;
+  width: 100%;
+  margin: 5px;
+  background-color: #ed9b1f;
+  border-radius: 1px;
+ }
+ .horizontal-line{
+  display: flex;
+  align-items: center;
+ }
+ .social-login{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+ }
+
+
+
+
+
+.form-outer-container{
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  background-color: rgba(245, 233, 227, 0.6);
+  height: 100%;
+  overflow-y: scroll;
+}
+.form-inner-container{
+  display: inline-flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  gap: 2rem;
   background-color: white;
-  border-color: #334455;
-  color: black;
-} */
+  border-radius: 20px;
+  box-shadow:5px 5px 5px #7055034d,-5px -5px 5px #4949054d;
+   margin: 5%;
+  padding: 2rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
 @media screen and (max-device-width: 676px) {
+  .form-inner-container{
+    flex-direction: column;
+    padding: 1em;
+    gap: 1em;
+  }
+  
   .form-inputs-container {
     display: flex;
     flex-direction: column;
@@ -69,17 +120,7 @@ option {
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  .form-inputs-container input {
-    width: 100%;
-    margin-top: 1rem;
-  }
-
-  .payment-registration-form-container {
-    justify-content: left;
-    align-items: normal;
-  }
-  .payment-registration-form-container button {
-    margin-left: 1rem;
-    margin-right: 1rem;
-  }
+ 
+ 
+  
 }

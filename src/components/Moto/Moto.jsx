@@ -1,4 +1,3 @@
-import React from "react";
 import "./Moto.css";
 
 function Moto() {

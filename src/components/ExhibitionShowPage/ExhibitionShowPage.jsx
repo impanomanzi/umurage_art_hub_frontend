@@ -1,12 +1,14 @@
-import React from "react";
+import { PaintingAndExhibitionsContext } from "../Contexts/PaintingAndExhibitionsContext";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "../forms/FormTemplate/FormTemplate.css";
+import FormNavbar from "../NavBar/FormNavbar";
 import { useParams } from "react-router-dom";
 import settings from "../settings.json";
 import "./ExhibitionShowPage.css";
-import FormNavbar from "../NavBar/FormNavbar";
-import { ListItem } from "@mui/material";
+import { useContext } from "react";
 
-function ExhibitionShowPage(props) {
-  const { exhibitions } = props;
+function ExhibitionShowPage() {
+  const { exhibitions, paintings } = useContext(PaintingAndExhibitionsContext);
   const exhibitionId = useParams().id;
   const wanted = exhibitions.filter((item, index) => {
     return (item.id = exhibitionId);
@@ -15,65 +17,62 @@ function ExhibitionShowPage(props) {
   return (
     <>
       <FormNavbar />
-      <center>
-        <h2>{wanted.name.toUpperCase()}</h2>
-      </center>
-      <div className="exhibition-show-container">
-        <div className="exhibition-page-container">
+      <div className="form-outer-container">
+        <div className="form-inner-container">
           <div>
-            <div className="exhibition-description">
-              <ListItem>
-                <p>
-                  <i className="fas fa-user-alt"></i>&nbsp;
-                  {wanted.host}
-                </p>
-              </ListItem>
-
-              <ListItem>
-                <p>
-                  <i className="fas fa-calendar"></i>
-                  &nbsp; {wanted.startdate}
-                </p>
-              </ListItem>
-              <ListItem>
-                <p>
-                  <i className="fas fa-calendar"></i>
-                  &nbsp; {wanted.enddate}
-                </p>
-              </ListItem>
-            </div>
+            <h2>{wanted.name.toUpperCase()}</h2>
+            <LazyLoadImage
+              src={`${wanted.image.replace(
+                "http://localhost:5000",
+                `${settings.server_domain}`
+              )}`}
+              effect="blur"
+              placeholderSrc="/placeholder.png"
+              width={"300px"}
+              height={"350px"}
+            />
           </div>
+          <div>
+            <div>
+              <p>
+                <i className="fas fa-user-alt">&nbsp;Host</i> &nbsp;
+                {wanted.host}
+              </p>
 
-          <img
-            src={`${wanted.image.replace(
-              "http://localhost:5000",
-              `${settings.server_domain}`
-            )}`}
-            alt={wanted.name}
-            className="img-thumbnail"
-            width={"500px"}
-          />
+              <p>
+                <i className="fas fa-calendar">&nbsp; Start</i> &nbsp;{" "}
+                {wanted.startdate}
+              </p>
 
-          <div className="exhibition-continue">
-            <h3 className="h3">Entrace:&nbsp;{wanted.fees} Rwf </h3>
+              <p>
+                <i className="fas fa-calendar">&nbsp; End</i>
+                &nbsp; {wanted.enddate}
+              </p>
+            </div>
+            <div>
+              <h3>Entrace:&nbsp;{wanted.fees} Rwf </h3>
 
-            <a href={`/payment/${exhibitionId}`}>
-              <button className="btn btn-primary">
-                Register &nbsp; <i className="fas fa-arrow-right"></i>
-              </button>
-            </a>
-            <br />
-            <center>
-              <span> Already paid? </span>
-            </center>
-            <a href={`/check_payment/${exhibitionId}`}>
-              <button
-                className="btn btn-outline-primary"
-                style={{ marginTop: "1em" }}
-              >
-                Sign in
-              </button>
-            </a>
+              <a href={`/payment/${exhibitionId}`}>
+                <button className="btn btn-primary">
+                  Register &nbsp; <i className="fas fa-arrow-right"></i>
+                </button>
+              </a>
+              <br />
+              <div className="horizontal-line">
+                <span className="left-line">&nbsp;</span>
+                <span className="text"> Already paid?</span>
+                <span className="right-line">&nbsp;</span>
+              </div>
+
+              <a href={`/check_payment/${exhibitionId}`}>
+                <button
+                  className="btn btn-outline-primary"
+                  style={{ marginTop: "1em" }}
+                >
+                  Sign in
+                </button>
+              </a>
+            </div>
           </div>
         </div>
       </div>

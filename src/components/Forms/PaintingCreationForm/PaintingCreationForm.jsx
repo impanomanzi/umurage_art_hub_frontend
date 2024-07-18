@@ -1,67 +1,70 @@
-import React from "react";
-import { useState } from "react";
-import ReactDOM from "react-dom/client";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
 import "../FormTemplate/FormTemplate.css";
-import settings from "../../settings.json";
-import { AlertError, AlertSuccess } from "../../Alerts/Alert";
-import { loading } from "../../ButtonEffects/ButtonEffects";
+import { toast } from "react-hot-toast";
+import { API } from "../../../API/serverRequest";
+import CustomLoadingButton from "../../FormButton/FormButton";
+import { validateFileType } from "../../../FileValidation/FileValidation";
 function PaintingCreationForm(props) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("Potrait");
   const [painting, setPainting] = useState("");
-  const btnText = (
-    <span>
-      <i className="fas fa-plus "></i>
-      Add
-    </span>
-  );
-  const changebtnText = () => {
-    ReactDOM.createRoot(document.querySelector(".submit-btn")).render(btnText);
-  };
-  let formData = new FormData();
+  const [showImagePreview, setShowImagePreview] = useState(false);
+  const [imagePreviewLink, setImagePreviewLink] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const acceptedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+  const [fileError, setFileError] = useState(false);
+  const FILE_ERROR = "the file you selected is not supported.";
+  const formData = new FormData();
+  let owner;
+  try {
+    owner = jwtDecode(localStorage.getItem("token")).id;
+  } catch (error) {
+    toast.error("your session expired");
+  }
   formData.append("name", name);
   formData.append("category", category);
   formData.append("painting", painting);
-  formData.append("owner", localStorage.getItem("userId"));
-  const handleOnSubmit = (event) => {
+  formData.append("owner", owner);
+  formData.append("created", new Date().toLocaleString());
+  const handleOnSubmit = async (event) => {
     event.preventDefault();
-    loading(".submit-btn");
-    fetch(`${settings.server_domain}/add_new_painting`, {
-      method: "PUT",
-      headers: {
-        encType: "multipart/form-data",
-        Authorization: `Bearer ${localStorage.getItem("session")}`,
-      },
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          23;
-          let inner = props.paintings.data;
-          inner.push(data.data[0]);
-          props.addNewPainting(inner);
-          ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            AlertSuccess("Painting added succesfully")
-          );
-          changebtnText();
-          document.querySelector(".painting-form").reset();
-        } else {
-          ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-            AlertError("failed to add new painting")
-          );
-          changebtnText();
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        ReactDOM.createRoot(document.querySelector(".response-alert")).render(
-          AlertError("Error happened while adding new painting")
-        );
-        changebtnText();
-      });
-  };
+    try {
+      setIsLoading(true);
+      const data = await API.addPainting(formData);
+      if (data.success) {
+        toast.success("Painting added succesfully");
 
+        if (props.paintings.data) {
+          let inner = props.paintings.data;
+          let newItem = {
+            category: category,
+            created: new Date().toLocaleString(),
+            id: data.data[0].id,
+            image: data.data[0].image,
+            name: name,
+            owner: jwtDecode(localStorage.getItem("token")).user,
+            likes: data.data[0].likes,
+          };
+          inner.push(newItem);
+          props.addNewPainting(inner);
+        }
+        document.querySelector(".painting-form").reset();
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      toast.error(String(error));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (painting.name) {
+      setShowImagePreview(true);
+      setImagePreviewLink(URL.createObjectURL(painting));
+    }
+  }, [painting]);
   return (
     <div className="payment-registration-form-container m-3">
       <h2>ADD NEW PAINTING</h2>
@@ -93,10 +96,9 @@ function PaintingCreationForm(props) {
             onChange={(event) => {
               setCategory(event.target.value);
             }}
+            defaultValue={"Potrait"}
           >
-            <option value="Potrait" selected>
-              Potrait
-            </option>
+            <option value="Potrait">Potrait</option>
             <option value="Art work">Art Work</option>
           </select>
         </div>
@@ -111,20 +113,41 @@ function PaintingCreationForm(props) {
             required
             className="form-control-file"
             type="file"
+            accept=".jpg, .png, .jpeg"
             onChange={(event) => {
-              const url = URL.createObjectURL(event.target.files[0]);
-              const el = `<center><img src="${url}" width="135px" style="border-radius:10px"/></center>`;
-              event.target.parentElement.querySelector(
-                ".painting-preview"
-              ).innerHTML = el;
-              setPainting(event.target.files[0]);
+              validateFileType(
+                event,
+                acceptedFileTypes,
+                setPainting,
+                setShowImagePreview,
+                setFileError
+              );
             }}
           />
-          <div className="painting-preview"></div>
+          {fileError && (
+            <div className="alert alert-danger">
+              {FILE_ERROR} <br />
+              Supported files are .png, .jpg, .jpeg
+            </div>
+          )}
+          {showImagePreview && (
+            <div className="painting-preview">
+              <center>
+                <img
+                  src={imagePreviewLink}
+                  width="135px"
+                  style={{ borderRadius: "10px" }}
+                />
+              </center>
+            </div>
+          )}
         </div>
-        <button type="submit" className="submit-btn btn btn-primary">
-          {btnText}
-        </button>
+        <CustomLoadingButton
+          isLoading={isLoading}
+          onClick={null}
+          text="Add"
+          buttonType="submit"
+        />
       </form>
     </div>
   );

@@ -1,4 +1,3 @@
-import React from "react";
 import "../ProfileHome/ProfileHome.css";
 import LeftSideBarMenu from "../LeftSideBarMenu/LeftSideBarMenu";
 import HomeProjectCard from "../HomeProjectCard/HomeProjectCard.css";

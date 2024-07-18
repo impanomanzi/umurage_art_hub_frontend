@@ -5,16 +5,18 @@ import Gallery from "../Gallery/Gallery.jsx";
 import HomeNavBar from "../NavBar/HomeNavBar.jsx";
 import Moto from "../Moto/Moto.jsx";
 import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useInView, useAnimation } from "framer-motion";
-import React from "react";
-function Home(props) {
-  const { exhibitions, paintings } = props;
+import { PaintingAndExhibitionsContext } from "../Contexts/PaintingAndExhibitionsContext.jsx";
+function Home() {
+  const { exhibitions, paintings } = useContext(PaintingAndExhibitionsContext);
   const renderExhibitions = () => {
     return exhibitions.length == 0 ? (
       <div style={styles.centeredContainer}>
         <i className="fas fa-trash-alt"></i>
-        <center style={{ color: "dodgerBlue" }}>No Data</center>
+        <center style={{ color: "dodgerBlue" }}>
+          Oops, no active exhibitions are available
+        </center>
       </div>
     ) : (
       <Exhibitions exhibitions={exhibitions} />
@@ -86,7 +88,7 @@ function Home(props) {
 const styles = {
   centeredContainer: {
     height: "100%",
-    fontSize: "4rem",
+    fontSize: "2rem",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",

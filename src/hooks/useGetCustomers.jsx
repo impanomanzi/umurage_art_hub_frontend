@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import settings from "../components/settings.json";
 
 export const useGetExhibitions = () => {
@@ -10,7 +10,7 @@ export const useGetExhibitions = () => {
       const res = await fetch(`${settings.server_domain}/get_exhibitions`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("session")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       const data = await res.json();
@@ -18,7 +18,7 @@ export const useGetExhibitions = () => {
       setExhibitions(data);
       localStorage.setItem("exhibitions", data.length);
     } catch (err) {
-      console.log(err);
+      toast.e;
     }
   };
   useEffect(() => {

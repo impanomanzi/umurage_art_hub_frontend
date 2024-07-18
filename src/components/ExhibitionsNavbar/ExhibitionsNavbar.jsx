@@ -1,4 +1,3 @@
-import React from "react";
 import Exhibitions from "../Exhibitions/Exhibitions";
 import ReactDOM from "react-dom/client";
 import "./ExhibitionsNavbar.css";

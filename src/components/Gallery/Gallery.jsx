@@ -3,12 +3,13 @@ import "../ExhibitionCard/ExhibitionCard.css";
 import "bootstrap/dist/css/bootstrap.css";
 import HomeProjectsSlider from "../HomeProjectsSlider/HomeProjectsSlider";
 import { Link } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 function Gallery(props) {
   const { paintings } = props;
   const [fixedGalleryOwner, setFixedGalleryOnwer] = useState([]);
   const [galleryOwner, setGalleryOwner] = useState([]);
   const [galleries, setGalleries] = useState(paintings.data);
+  const [galleryLoading, setGalleryLoading] = useState(true);
 
   // function to remove dupplication from an array
   const removeDuplication = (array) => {
@@ -39,13 +40,14 @@ function Gallery(props) {
   return (
     <div className="gallery-outer-container">
       <div
-        class="btn-group"
+        className="btn-group"
         role="group"
         aria-label="button group for filtering and sorting exhibitions"
       >
         <input
           type="text"
           placeholder="Search by gallery name"
+          className="search-input"
           onChange={(event) => {
             let searchResult = fixedGalleryOwner.filter((item) => {
               return item.toLowerCase().startsWith(event.target.value);
@@ -57,26 +59,33 @@ function Gallery(props) {
           <i className="fas fa-search"></i>
         </button>
       </div>
-      <div className="skeletons">
-        <div className="gallery-loading" style={{ color: "black" }}>
-          <center>
-            <div class="spinner-border" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
-          </center>
+      {galleryLoading && (
+        <div className="skeletons">
+          <div className="gallery-loading" style={{ color: "black" }}>
+            <center>
+              <div className="spinner-border" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            </center>
+          </div>
         </div>
-      </div>
+      )}
       <div className="message"></div>
       <div className="gallery-container">
         {galleryOwner.map((item, index) => {
-          document.querySelector(`.gallery-loading`).innerHTML = "";
+          galleryLoading ? setGalleryLoading(false) : null;
           return (
             <div
               key={index}
               className="gallery-home-card"
               style={{ borderColor: "#cbcfd4", borderWidth: "20px" }}
             >
-              <h3 style={{ color: "black" }}>{item}</h3>
+              <h3
+                className="lead h3"
+                style={{ color: "black", fontWeight: 600 }}
+              >
+                {item}
+              </h3>
               <Link to={`/gallery/${item}`}>
                 <HomeProjectsSlider
                   projects={galleries.filter((innerItem) => {
@@ -84,7 +93,6 @@ function Gallery(props) {
                   })}
                 />
               </Link>
-              <hr />
             </div>
           );
         })}

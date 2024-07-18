@@ -1,27 +1,50 @@
-import React from "react";
-import { useState } from "react";
 import "../FormTemplate/FormTemplate.css";
 import settings from "../../settings.json";
+import { loading, unload } from "../../ButtonEffects/ButtonEffects";
+import { useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import { toast } from "react-hot-toast";
+import CustomLoadingButton from "../../FormButton/FormButton";
 function BlogCreationForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  let body = { title, content };
-  let options = {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  };
-  const handleOnSubmit = (event) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const handleOnSubmit = async (event) => {
     event.preventDefault();
-    fetch(`${settings.server_domain}/api/blog/add_new_blog`, options)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) console.info("New blog submitted succcessfully");
-        else console.error(data.success);
-      })
-      .catch((error) => console.error(error));
+    setIsLoading(true);
+    try {
+      let userId;
+      try {
+        userId = jwtDecode(localStorage.getItem("token")).user;
+      } catch (error) {
+        throw new Error("Your session expired");
+      }
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("content", content);
+      formData.append("created", new Date().toLocaleString());
+      formData.append("author", userId);
+      const response = await fetch(
+        `${settings.server_domain}/blog/add_new_blog`,
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      if (data.success) {
+        toast.success("Blog submitted successfully");
+      } else {
+        throw new Error("Blog Failed to be submitted ");
+      }
+    } catch (error) {
+      toast.error(String(error));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -61,9 +84,12 @@ function BlogCreationForm() {
             rows={10}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          Post
-        </button>
+        <CustomLoadingButton
+          isLoading={isLoading}
+          onClick={null}
+          text="post"
+          buttonType="submit"
+        />
       </form>
     </div>
   );

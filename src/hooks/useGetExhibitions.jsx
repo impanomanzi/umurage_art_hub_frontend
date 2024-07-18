@@ -8,21 +8,12 @@ export const useGetExhibitions = () => {
 
   const get_exhibitions = async () => {
     try {
-      let data;
-      try {
-        data = await API.getExhibitions();
-      } catch (error) {
-        throw new Error(error);
-      }
-      if (data.success) {
-        setLoading(false);
-        setExhibitions(data.data);
-        localStorage.setItem("exhibitions", data.data.length);
-      } else {
-        throw new Error("Network error");
-      }
+      const data = await API.getExhibitions();
+      setLoading(false);
+      setExhibitions(data);
+      localStorage.setItem("exhibitions", data.length);
     } catch (error) {
-      toast.error(String(error));
+      console.log(error);
     }
   };
   useEffect(() => {

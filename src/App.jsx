@@ -56,7 +56,10 @@ function App() {
   ) : (
     <AuthContext.Provider value={sessionStorage.getItem("token")}>
       <PaintingAndExhibitionsContext.Provider
-        value={{ exhibitions: exhibitions, paintings: paintings }}
+        value={{
+          exhibitions: exhibitions,
+          paintings: paintings,
+        }}
       >
         <BrowserRouter>
           <Routes>

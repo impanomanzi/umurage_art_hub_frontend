@@ -8,14 +8,14 @@ function Gallery(props) {
   const { paintings } = props;
   const [fixedGalleryOwner, setFixedGalleryOnwer] = useState([]);
   const [galleryOwner, setGalleryOwner] = useState([]);
-  const [galleries, setGalleries] = useState(paintings.data);
+  const [galleries, setGalleries] = useState(paintings?.data);
   const [galleryLoading, setGalleryLoading] = useState(true);
 
   // function to remove dupplication from an array
   const removeDuplication = (array) => {
     let clearArray = [];
 
-    for (let i = 0; i < array.length; i++) {
+    for (let i = 0; i < array?.length; i++) {
       let found = false;
       for (let j = 0; j < clearArray.length; j++) {
         if (array[i] === clearArray[j]) {
@@ -30,7 +30,7 @@ function Gallery(props) {
   };
   // gettings galleries from server
   useEffect(() => {
-    let galleryOwners = galleries.map((item, index) => {
+    let galleryOwners = galleries?.map((item, index) => {
       return item.owner;
     });
     setGalleryOwner(removeDuplication(galleryOwners));

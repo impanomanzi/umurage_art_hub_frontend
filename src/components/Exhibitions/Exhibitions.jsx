@@ -137,7 +137,7 @@ function Exhibitions(props) {
 
         <div className="exhibitions-container" id="exhibitions-container">
           {/* {myRef["current"] && images.push(myRef["current"])} */}
-          {exhibitions.map((exhibition, index) => {
+          {exhibitions?.map((exhibition, index) => {
             return (
               <>
                 <ExhibitionCard

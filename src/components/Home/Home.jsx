@@ -11,7 +11,7 @@ import { PaintingAndExhibitionsContext } from "../Contexts/PaintingAndExhibition
 function Home() {
   const { exhibitions, paintings } = useContext(PaintingAndExhibitionsContext);
   const renderExhibitions = () => {
-    return exhibitions.length == 0 ? (
+    return exhibitions?.length == 0 ? (
       <div style={styles.centeredContainer}>
         <i className="fas fa-trash-alt"></i>
         <center style={{ color: "dodgerBlue" }}>
@@ -23,7 +23,7 @@ function Home() {
     );
   };
   const renderGallery = () => {
-    return paintings.data.length == 0 ? (
+    return paintings?.data.length == 0 ? (
       <div style={styles.centeredContainer}>
         <i className="fas fa-trash-alt"></i>
         <center style={{ color: "dodgerBlue" }}>No Data</center>

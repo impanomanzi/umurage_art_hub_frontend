@@ -1,4 +1,4 @@
 import { createContext } from "react";
 
-const NavigatorContext = createContext(undefined);
+const NavigatorContext = createContext([]);
 export default NavigatorContext;

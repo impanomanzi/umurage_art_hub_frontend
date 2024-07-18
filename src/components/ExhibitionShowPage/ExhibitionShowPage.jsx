@@ -1,6 +1,6 @@
 import { PaintingAndExhibitionsContext } from "../Contexts/PaintingAndExhibitionsContext";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import "../forms/FormTemplate/FormTemplate.css";
+import "../Forms/FormTemplate/FormTemplate.css";
 import FormNavbar from "../NavBar/FormNavbar";
 import { useParams } from "react-router-dom";
 import settings from "../settings.json";

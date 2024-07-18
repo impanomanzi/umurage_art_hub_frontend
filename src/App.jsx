@@ -51,7 +51,6 @@ function App() {
 
   const [exhibitionLoading, exhibitions] = useGetExhibitions();
   const [paintingLoading, paintings] = useGetPaintings();
-  console.log(paintingLoading, exhibitionLoading);
   return exhibitionLoading || paintingLoading ? (
     <Loading />
   ) : (

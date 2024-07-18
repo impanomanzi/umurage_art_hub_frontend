@@ -6,7 +6,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import Viewer from "react-viewer";
 import { toast } from "react-hot-toast";
 import { confirmAlert } from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css";
+// import "react-confirm-alert/src/react-confirm-alert.css";
 
 function ListView(props) {
   if (!props.items) {

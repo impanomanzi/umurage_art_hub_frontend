@@ -5,8 +5,6 @@ import settings from "../settings.json";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Viewer from "react-viewer";
 import { toast } from "react-hot-toast";
-import { confirmAlert } from "react-confirm-alert";
-// import "react-confirm-alert/src/react-confirm-alert.css";
 
 function ListView(props) {
   if (!props.items) {
@@ -290,37 +288,18 @@ function ListView(props) {
                           setIsLoading(true);
                           setActiveButton((index + 1) * (optionIndex + index));
                           if (props.confirmationRequired) {
-                            confirmAlert({
-                              title: "Confirm",
-                              message: "Are you sure to do this.",
-                              buttons: [
-                                {
-                                  label: "Yes",
-                                  onClick: async () => {
-                                    await optionItem.callBack({
-                                      event: event,
-                                      item: item,
-                                      updater: (newItems) => {
-                                        innerUpdater(newItems);
-                                      },
-                                      delete: () => {
-                                        deleteItem(item);
-                                      },
-                                    });
-                                    setIsLoading(false);
-                                    setActiveButton("");
-                                  },
-                                },
-                                {
-                                  label: "No",
-                                  onClick: () => {
-                                    setIsLoading(false);
-                                    setActiveButton("");
-                                    return;
-                                  },
-                                },
-                              ],
+                            await optionItem.callBack({
+                              event: event,
+                              item: item,
+                              updater: (newItems) => {
+                                innerUpdater(newItems);
+                              },
+                              delete: () => {
+                                deleteItem(item);
+                              },
                             });
+                            setIsLoading(false);
+                            setActiveButton("");
                           } else {
                             await optionItem.callBack({
                               event: event,

@@ -118,7 +118,7 @@ function ExhibitionImagesForm() {
                 <option value="Select Exhibitions" selected disabled>
                   Select Exhibitions
                 </option>
-                {exhibitions.map((item, index) => {
+                {exhibitions?.map((item, index) => {
                   return (
                     <option
                       style={{ color: "black" }}

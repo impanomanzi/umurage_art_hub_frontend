@@ -10,7 +10,7 @@ export const useGetExhibitions = () => {
     try {
       const data = await API.getExhibitions();
       setLoading(false);
-      setExhibitions(data);
+      setExhibitions(data.data);
       localStorage.setItem("exhibitions", data?.length);
     } catch (error) {
       console.log(error);

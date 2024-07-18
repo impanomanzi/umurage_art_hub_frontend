@@ -19,6 +19,7 @@ function ExhibitionCreationForm(props) {
     formData.append("end_date", enddate);
     formData.append("entrace_fees", fees);
     formData.append("banner", banner);
+    formData.append("banner", banner);
     return formData;
   };
   const handleRequest = async (url, formData) => {

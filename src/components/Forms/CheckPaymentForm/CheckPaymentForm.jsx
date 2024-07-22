@@ -19,8 +19,8 @@ function CheckPaymentForm() {
       formData.append("customerId", customerId);
       const resp = await API.checkPayment(formData);
       if (resp.success) {
-        localStorage.setItem("clientId", data.c_id);
-        navigate(`/exhibition_paintings/${data.id}`);
+        localStorage.setItem("clientId", resp.c_id);
+        navigate(`/exhibition_paintings/${resp.id}`);
       } else {
         throw new Error(resp.message);
       }

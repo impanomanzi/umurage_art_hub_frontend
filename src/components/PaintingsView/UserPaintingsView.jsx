@@ -13,11 +13,11 @@ function UserPaintingsView() {
   const [isLoading, setIsLoading] = useState(true);
   const { setToast } = useToast();
   const user = useUser();
-  console.log(user);
   const getPaintings = async () => {
     const formData = new FormData();
     formData.append("userId", user.id);
     const resp = await API.getUserPaintings(formData);
+    console.log(resp);
     if (resp.success) {
       setPaintings(resp.data);
     }

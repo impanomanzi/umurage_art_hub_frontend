@@ -3,6 +3,7 @@ import { useState } from "react";
 import FormNavbar from "../NavBar/FormNavbar";
 import { useEffect } from "react";
 import { API } from "../../API/serverRequest";
+import { Link } from "react-router-dom";
 import useToast from "../../hooks/useToast";
 function EmailVerification() {
   const token = new URLSearchParams(useLocation().search);

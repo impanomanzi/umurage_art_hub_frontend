@@ -99,21 +99,18 @@ function ExhibitionImagesForm() {
                 <option value="Select Exhibitions" selected disabled>
                   Select Exhibitions
                 </option>
-                {exhibitions.length ? (
-                  exhibitions?.map((item, index) => {
-                    return (
-                      <option
-                        style={{ color: "black" }}
-                        value={item.name}
-                        key={index}
-                      >
-                        {item.name}
-                      </option>
-                    );
-                  })
-                ) : (
-                  <option disabled>Loading ...</option>
-                )}
+
+                {exhibitions?.map((item, index) => {
+                  return (
+                    <option
+                      style={{ color: "black" }}
+                      value={item.name}
+                      key={index}
+                    >
+                      {item.name}
+                    </option>
+                  );
+                })}
               </select>
             </div>
 
@@ -129,17 +126,13 @@ function ExhibitionImagesForm() {
                 <option value="select painter" selected disabled>
                   select painter
                 </option>
-                {painters.length ? (
-                  painters.map((item, index) => {
-                    return (
-                      <option value={item.username} key={index}>
-                        {item.username}
-                      </option>
-                    );
-                  })
-                ) : (
-                  <option disabled>Loading ...</option>
-                )}
+                {painters.map((item, index) => {
+                  return (
+                    <option value={item.username} key={index}>
+                      {item.username}
+                    </option>
+                  );
+                })}
               </select>
             </div>
             <div className="painting-image-container">

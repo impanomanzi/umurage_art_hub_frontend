@@ -1,16 +1,17 @@
 import "./ExhibitionPaintings.css";
 import FormNavbar from "../NavBar/FormNavbar";
-import settings from "../settings.json";
 import ExhibtionPaintingCard from "../ExhibtionPaintingCard/ExhibtionPaintingCard";
 import { toast } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { API } from "../../API/serverRequest";
+import { Spinner } from "react-bootstrap";
 function ExhibitionPaintings() {
   const id = useParams().id;
   const navigate = useNavigate();
   const [verified, setVerified] = useState(false);
   const [paintings, setPaintings] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const getPaintings = async () => {
     try {
       const data = await API.getExhibitionPaintings(id);
@@ -20,6 +21,8 @@ function ExhibitionPaintings() {
       }
     } catch (error) {
       toast.error(String(error));
+    } finally {
+      setIsLoading(false);
     }
   };
   const logout = () => {
@@ -34,6 +37,12 @@ function ExhibitionPaintings() {
     <>
       <FormNavbar />
       <div className="exhibition-paintings-container">
+        {isLoading && (
+          <div className="inner-exhibition-paintings-container">
+            <Spinner animation="border" />
+          </div>
+        )}
+
         {verified && (
           <div>
             <div

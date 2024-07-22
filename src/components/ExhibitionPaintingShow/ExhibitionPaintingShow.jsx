@@ -14,6 +14,7 @@ function ExhibitionPaintingShow(props) {
   return (
     <>
       <FormNavbar />
+
       <div>
         <Viewer
           visible={visible}
@@ -29,6 +30,9 @@ function ExhibitionPaintingShow(props) {
             },
           ]}
         />
+        <div style={{ zIndex: 3000, position: "fixed", top: "1%" }}>
+          <audio src={paintingInfo.get("a")} controls></audio>
+        </div>
       </div>
     </>
   );

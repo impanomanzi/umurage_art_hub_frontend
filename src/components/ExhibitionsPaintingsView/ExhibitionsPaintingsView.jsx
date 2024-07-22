@@ -26,6 +26,7 @@ function ExhibitionsPaintingsView() {
   const handleDelete = async (id) => {
     try {
       const resp = await API.deleteExhibitionPainting(id);
+      console.log(resp);
       if (resp.success) {
         setToast({
           variant: "success",

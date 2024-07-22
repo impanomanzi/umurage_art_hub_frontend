@@ -20,6 +20,7 @@ function PasswordChangeForm() {
     }
     return true;
   };
+  //  adding some cooment
   const handleSubmitNewPassword = async (event) => {
     event.preventDefault();
     try {

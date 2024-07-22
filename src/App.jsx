@@ -98,6 +98,9 @@ function App() {
     )
   );
   const Profile = lazy(() => import("./components/Profile/Profile.jsx"));
+  const PaintingView = lazy(() =>
+    import("./components/PaintingView/PaintingView.jsx")
+  );
 
   return (
     <BrowserRouter>
@@ -175,6 +178,16 @@ function App() {
                         <ErrorBoundary fallback={<ErrorComponent />}>
                           <Suspense fallback={<Loading />}>
                             <GalleryShow />
+                          </Suspense>
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/gallery/:name/:id"
+                      element={
+                        <ErrorBoundary fallback={<ErrorComponent />}>
+                          <Suspense fallback={<Loading />}>
+                            <PaintingView />
                           </Suspense>
                         </ErrorBoundary>
                       }

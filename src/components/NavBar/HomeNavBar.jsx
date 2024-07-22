@@ -21,15 +21,14 @@ function HomeNavBar() {
             backgroundColor: "transparent",
             color: "white",
           }}
-          className="btn btn-outline-primary"
+          className="btn btn-outline-primary z-2"
           data-toggle="collapse"
           data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          {" "}
-          <i className="fas fa-unlock" style={{ color: "black" }}></i>
+          <i className="fas fa-unlock-alt" style={{ color: "black" }}></i>
         </Link>
       </div>
     </>

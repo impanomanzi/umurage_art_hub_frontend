@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./GalleryCard.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { API } from "../../API/serverRequest";
@@ -9,11 +9,12 @@ function GalleryCard(props) {
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(props.likes);
   const setToast = useToast();
+  const location = useLocation();
   let imageUrl = props.gallery.image;
   let index1 = imageUrl.indexOf("upload/") + "upload/".length;
   let newUrl =
     imageUrl.substring(0, index1) +
-    "c_auto,g_auto,h_350,w_300/" +
+    "q_auto:best/" +
     imageUrl.substring(index1, imageUrl.length);
 
   const like = async () => {
@@ -33,7 +34,7 @@ function GalleryCard(props) {
   };
   const dislike = async () => {
     try {
-      let temp = Number.parseInt(likes);
+      let temp = Number.parseInt(likes ? likes : 0);
       setLikes(temp > 0 ? temp - 1 : 0);
       const resp = await API.dislikePainting(props.gallery.id);
       if (resp.success) {
@@ -52,7 +53,7 @@ function GalleryCard(props) {
         await navigator.share({
           title: "Umurage art hub",
           text: `${props.gallery.name} by \n ${props.gallery.owner}`,
-          url: imageUrl,
+          url: `${location.pathname}/${props.id}`,
         });
       } catch (error) {
         setToast({ variant: "danger", message: error.message });
@@ -63,7 +64,7 @@ function GalleryCard(props) {
   return (
     <div className="col-md-4 mt-2 col-lg-3 gallery-card">
       <a
-        href=""
+        className="image-viewer"
         onClick={(event) => {
           props.onImageClicked(event, props.gallery);
         }}
@@ -90,11 +91,18 @@ function GalleryCard(props) {
             <i className="fas fa-cart-arrow-down"></i>&nbsp; Buy now
           </Link>
           <button className="btn btn-secondary" onClick={share}>
-            <i className="fas fa-share"></i> &nbsp;share
+            <i class="fas fa-share-alt"></i>&nbsp; share
           </button>
           <button
             className="btn btn-secondary"
-            onClick={() => (!liked ? like : dislike)}
+            onClick={() => {
+              console.log(props.id);
+              if (liked) {
+                dislike();
+              } else {
+                like();
+              }
+            }}
             style={{ backgroundColor: "#ed9b1f" }}
           >
             <i className="fas fa-heart"></i>&nbsp;

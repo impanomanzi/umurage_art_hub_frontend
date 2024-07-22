@@ -4,9 +4,10 @@ import GalleryCard from "../GalleryCard/GalleryCard";
 import "./GalleryShow.css";
 import FormNavbar from "../NavBar/FormNavbar";
 import usePaintings from "../../hooks/usePaintings";
+import Viewer from "react-viewer";
 function GalleryShow() {
   const { paintings } = usePaintings();
-  const [viewImageViewer, setViewImageViewer] = useState(false);
+  const [visible, setVisible] = useState(false);
   const galleryOwner = useParams().name;
   const [currentPainting, setCurrentPainting] = useState({});
   const [query, setQuery] = useState("");
@@ -24,10 +25,15 @@ function GalleryShow() {
       [fixedGalleries, query]
     )
   );
+  const imageUrl = useMemo(() => {
+    let index1 = currentPainting?.image?.indexOf("upload/") + "upload/".length;
+    let newUrl =
+      currentPainting?.image?.substring(0, index1) +
+      "q_auto:best/" +
+      currentPainting?.image?.substring(index1, currentPainting?.image?.length);
+    return newUrl;
+  }, [currentPainting]);
 
-  console.log(fixedGalleries);
-  console.log(filteredGalleries);
-  console.log(query);
   const closeFilterDropdown = () => {
     if (document.querySelector(".f-dropdown-menu").style.display === "none") {
       document.querySelector(".f-dropdown-menu").style.display = "block";
@@ -36,12 +42,9 @@ function GalleryShow() {
     }
   };
 
-  const closeImageViewer = () => {
-    setViewImageViewer(false);
-  };
   const showImageViewer = (event, painting) => {
     event.preventDefault();
-    setViewImageViewer(true);
+    setVisible(true);
     setCurrentPainting(painting);
   };
 
@@ -114,14 +117,31 @@ function GalleryShow() {
                   key={index}
                   likes={item.likes}
                   onImageClicked={showImageViewer}
+                  id={item.id}
                 />
               </>
             );
           })}
         </div>
       </div>
+      <Viewer
+        visible={visible}
+        onClose={() => setVisible(false)}
+        className="image-viewer"
+        images={[
+          {
+            src: imageUrl,
+            alt: "",
+          },
+        ]}
+        noFooter
+        noImgDetails
+        noNavbar
+        noToolbar
+        changeable
+      />
 
-      {viewImageViewer && (
+      {/* {viewImageViewer && (
         <div className="my-image-viewer">
           <button className="btn btn-danger" onClick={closeImageViewer}>
             <i className="fas fa-times"></i>
@@ -157,7 +177,7 @@ function GalleryShow() {
             </span>
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 }

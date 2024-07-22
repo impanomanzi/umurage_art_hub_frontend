@@ -43,6 +43,7 @@
 }
 .footer a {
   color: white;
+  text-decoration: none;
 }
 @media screen and (max-device-width: 576px) {
   .footer {

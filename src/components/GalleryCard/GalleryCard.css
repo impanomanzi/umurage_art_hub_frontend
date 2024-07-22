@@ -21,4 +21,12 @@
 }
 
 
+@media screen and (max-device-width: 576px) {
+  .gallery-card-link{
+    display: none;
+  }
+  
+}
+
+
  

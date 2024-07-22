@@ -48,7 +48,23 @@ function RefreshLayout() {
     }
   }, [navigator.onLine]);
   return refreshing ? (
-    <ProgressBar now={progress} variant="progress" />
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <ProgressBar now={progress} variant="progress" />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "20%",
+        }}
+      >
+        <img src="/loading.gif" style={{ width: "120px" }} />
+      </div>
+    </div>
   ) : (
     <>
       <Outlet />

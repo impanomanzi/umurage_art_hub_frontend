@@ -254,6 +254,20 @@ export const API = {
       console.log(error);
     }
   },
+  getPaintingById: async (username, id) => {
+    try {
+      const res = await fetch(
+        `${settings.server_domain}/painting/${username}/${id}`,
+        {
+          method: "POST",
+        }
+      );
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
   getCustomers: async () => {
     try {
       const response = await fetch(`${settings.server_domain}/get_customers`, {

@@ -11,7 +11,6 @@ function Footer() {
           position: "fixed",
           bottom: "12%",
           right: "1vw",
-
           zIndex: "1",
         }}
       >
@@ -31,17 +30,17 @@ function Footer() {
           <div className="socials">
             <span>
               <a href="https://www.instagram.com/_isaiee_?gsh=MzRIODBiNWFIZA==">
-                <BsInstagram />
+                <i class="fab fa-instagram"></i>
               </a>
             </span>
             <span>
-              <a href="https://wa.me/+8615619381006">
-                <i class="bi bi-whatsapp"></i>
+              <a href="https://wa.me/+254724299950">
+                <i class="fab fa-whatsapp"></i>
               </a>
             </span>
             <span>
-              <a href="mailto:rukundoprince04@gmail.com">
-                <i class="bi bi-envelope"></i>
+              <a href="mailto:niyomugaboisaie05@gmail.com">
+                <i class="far fa-envelope"></i>
               </a>
             </span>
             <span>

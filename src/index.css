@@ -5,7 +5,9 @@ html {
    
  
 }
- 
+ .image-viewer img{
+  pointer-events: none;
+ }
 
 
 

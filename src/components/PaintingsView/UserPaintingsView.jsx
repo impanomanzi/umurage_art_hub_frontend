@@ -7,14 +7,12 @@ import StatusButton from "../StatusButton/StatusButton";
 import { useMemo } from "react";
 import useToast from "../../hooks/useToast";
 import useUser from "../../hooks/useUser";
-import useAPI from "../../hooks/useApi";
 function UserPaintingsView() {
   const [paintings, setPaintings] = useState([]);
   const [interactedPainting, setInteractedPainting] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const { setToast } = useToast();
   const user = useUser();
-  const { API } = useAPI();
   const getPaintings = async () => {
     const formData = new FormData();
     formData.append("userId", user.id);

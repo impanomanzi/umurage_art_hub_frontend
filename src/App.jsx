@@ -18,7 +18,6 @@ import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.jsx";
 import ErrorComponent from "./components/ErrorComponent/ErrorComponent.jsx";
 import { ToastProvider } from "./Contexts/ToastContext.jsx";
 import Toaster from "./components/Toaster/Toaster.jsx";
-import { APIProvider } from "./Contexts/APIContext.jsx";
 
 function App() {
   const Home = lazy(() => import("./components/Home/Home.jsx"));
@@ -108,397 +107,118 @@ function App() {
           <PaintingsProvider>
             <AnnouncementsProvider>
               <AuthProvider>
-                <APIProvider>
-                  <Routes>
-                    <Route element={<RefreshLayout />}>
-                      <Route
-                        path="/"
-                        element={
-                          <ErrorBoundary fallback={<ErrorComponent />}>
-                            <Suspense fallback={<Loading />}>
-                              <Home />
-                            </Suspense>
-                          </ErrorBoundary>
-                        }
-                      />
-                      <Route
-                        path="/exhibition/:id"
-                        element={
-                          <ErrorBoundary fallback={<ErrorComponent />}>
-                            <Suspense fallback={<Loading />}>
-                              <ExhibitionShowPage />
-                            </Suspense>
-                          </ErrorBoundary>
-                        }
-                      />
-                      <Route
-                        path="/view_painting/:id"
-                        element={
-                          <ErrorBoundary fallback={<ErrorComponent />}>
-                            <Suspense fallback={<Loading />}>
-                              <ExhibitionPaintingShow />
-                            </Suspense>
-                          </ErrorBoundary>
-                        }
-                      />
-                      <Route
-                        path="/oprofile"
-                        element={
-                          <ErrorBoundary fallback={<ErrorComponent />}>
-                            <Suspense fallback={<Loading />}>
-                              <ProfileOutside />
-                            </Suspense>
-                          </ErrorBoundary>
-                        }
-                      />
-                      <Route
-                        path="/check_payment/:id"
-                        element={
-                          <ErrorBoundary fallback={<ErrorComponent />}>
-                            <Suspense fallback={<Loading />}>
-                              <CheckPaymentForm />
-                            </Suspense>
-                          </ErrorBoundary>
-                        }
-                      />
-                      <Route
-                        path="/payment/:id"
-                        element={
-                          <ErrorBoundary fallback={<ErrorComponent />}>
-                            <Suspense fallback={<Loading />}>
-                              <PayementRegistrationForm />
-                            </Suspense>
-                          </ErrorBoundary>
-                        }
-                      />
-                      <Route
-                        path="/gallery/:name"
-                        element={
-                          <ErrorBoundary fallback={<ErrorComponent />}>
-                            <Suspense fallback={<Loading />}>
-                              <GalleryShow />
-                            </Suspense>
-                          </ErrorBoundary>
-                        }
-                      />
-                      <Route
-                        path="/verify-email"
-                        element={
-                          <ErrorBoundary fallback={<ErrorComponent />}>
-                            <Suspense fallback={<Loading />}>
-                              <EmailVerification />
-                            </Suspense>
-                          </ErrorBoundary>
-                        }
-                      />
-                      <Route
-                        path="/exhibition_paintings/:id"
-                        element={
-                          <ErrorBoundary fallback={<ErrorComponent />}>
-                            <Suspense fallback={<Loading />}>
-                              <ExhibitionPaintings />
-                            </Suspense>
-                          </ErrorBoundary>
-                        }
-                      />
+                <Routes>
+                  <Route element={<RefreshLayout />}>
+                    <Route
+                      path="/"
+                      element={
+                        <ErrorBoundary fallback={<ErrorComponent />}>
+                          <Suspense fallback={<Loading />}>
+                            <Home />
+                          </Suspense>
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/exhibition/:id"
+                      element={
+                        <ErrorBoundary fallback={<ErrorComponent />}>
+                          <Suspense fallback={<Loading />}>
+                            <ExhibitionShowPage />
+                          </Suspense>
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/view_painting/:id"
+                      element={
+                        <ErrorBoundary fallback={<ErrorComponent />}>
+                          <Suspense fallback={<Loading />}>
+                            <ExhibitionPaintingShow />
+                          </Suspense>
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/oprofile"
+                      element={
+                        <ErrorBoundary fallback={<ErrorComponent />}>
+                          <Suspense fallback={<Loading />}>
+                            <ProfileOutside />
+                          </Suspense>
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/check_payment/:id"
+                      element={
+                        <ErrorBoundary fallback={<ErrorComponent />}>
+                          <Suspense fallback={<Loading />}>
+                            <CheckPaymentForm />
+                          </Suspense>
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/payment/:id"
+                      element={
+                        <ErrorBoundary fallback={<ErrorComponent />}>
+                          <Suspense fallback={<Loading />}>
+                            <PayementRegistrationForm />
+                          </Suspense>
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/gallery/:name"
+                      element={
+                        <ErrorBoundary fallback={<ErrorComponent />}>
+                          <Suspense fallback={<Loading />}>
+                            <GalleryShow />
+                          </Suspense>
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/verify-email"
+                      element={
+                        <ErrorBoundary fallback={<ErrorComponent />}>
+                          <Suspense fallback={<Loading />}>
+                            <EmailVerification />
+                          </Suspense>
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/exhibition_paintings/:id"
+                      element={
+                        <ErrorBoundary fallback={<ErrorComponent />}>
+                          <Suspense fallback={<Loading />}>
+                            <ExhibitionPaintings />
+                          </Suspense>
+                        </ErrorBoundary>
+                      }
+                    />
 
-                      <Route
-                        path="/sign-in"
-                        element={
-                          <ErrorBoundary fallback={<ErrorComponent />}>
-                            <Suspense fallback={<Loading />}>
-                              <LoginForm />
-                            </Suspense>
-                          </ErrorBoundary>
-                        }
-                      />
-                      <Route path="/:image" />
-                      <Route element={<LoginRequired />}>
-                        <Route element={<AdminRequired />}>
-                          <Route
-                            path="/profile"
-                            element={
-                              <ErrorBoundary fallback={<ErrorComponent />}>
-                                <Suspense fallback={<Loading />}>
-                                  <Profile />
-                                </Suspense>
-                              </ErrorBoundary>
-                            }
-                          >
-                            <Route
-                              index
-                              element={
-                                <ErrorBoundary fallback={<ErrorComponent />}>
-                                  <Suspense fallback={<Loading />}>
-                                    <Dashboard />
-                                  </Suspense>
-                                </ErrorBoundary>
-                              }
-                            />
-                            <Route
-                              path="dash"
-                              element={
-                                <ErrorBoundary fallback={<ErrorComponent />}>
-                                  <Suspense fallback={<Loading />}>
-                                    <Dashboard />
-                                  </Suspense>
-                                </ErrorBoundary>
-                              }
-                            />
-                            <Route
-                              path="exhibitions"
-                              element={
-                                <ErrorBoundary fallback={<ErrorComponent />}>
-                                  <Suspense fallback={<Loading />}>
-                                    <ExhibitionsView />
-                                  </Suspense>
-                                </ErrorBoundary>
-                              }
-                            >
-                              <Route
-                                index
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <ListView title="List of Exhibtions" />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                              <Route
-                                path="all"
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <ListView title="List of Exhibtions" />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                              <Route
-                                path="add_exhibition"
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <ExhibitionCreationForm />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                            </Route>
-                            <Route
-                              path="exhibition_paintings"
-                              element={
-                                <ErrorBoundary fallback={<ErrorComponent />}>
-                                  <Suspense fallback={<Loading />}>
-                                    <ExhibitionsPaintingsView />
-                                  </Suspense>
-                                </ErrorBoundary>
-                              }
-                            >
-                              <Route
-                                index
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <ListView title="List of Exhibtion Paintings" />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                              <Route
-                                path="all"
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <ListView title="List of Exhibtion Paintings" />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                              <Route
-                                path="add_exhibition_paintings"
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <ExhibitionImagesForm />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                            </Route>
-                            <Route
-                              path="painters"
-                              element={
-                                <ErrorBoundary fallback={<ErrorComponent />}>
-                                  <Suspense fallback={<Loading />}>
-                                    <PainterView />
-                                  </Suspense>
-                                </ErrorBoundary>
-                              }
-                            >
-                              <Route
-                                index
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <ListView title="List of painters" />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                              <Route
-                                path="all"
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <ListView title="List of painters" />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                              <Route
-                                path="add_painter"
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <PainterCreationForm />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                            </Route>
-                            <Route
-                              path="blogs"
-                              element={
-                                <ErrorBoundary fallback={<ErrorComponent />}>
-                                  <Suspense fallback={<Loading />}>
-                                    <BlogsView />
-                                  </Suspense>
-                                </ErrorBoundary>
-                              }
-                            >
-                              <Route
-                                index
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <ListView title="List of blogs" />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                              <Route
-                                path="all"
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <ListView title="List of blogs" />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                              <Route
-                                path="add_blog"
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <BlogCreationForm />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                            </Route>
-                            <Route
-                              path="paintings"
-                              element={
-                                <ErrorBoundary fallback={<ErrorComponent />}>
-                                  <Suspense fallback={<Loading />}>
-                                    <PaintingsView />
-                                  </Suspense>
-                                </ErrorBoundary>
-                              }
-                            >
-                              <Route
-                                index
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <ListView title="List of paintings" />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                              <Route
-                                path="all"
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <ListView title="List of paintings" />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                              <Route
-                                path="add_painting"
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <PaintingCreationForm />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                            </Route>
-                            <Route
-                              path="customers"
-                              element={
-                                <ErrorBoundary fallback={<ErrorComponent />}>
-                                  <Suspense fallback={<Loading />}>
-                                    <CustomersView />
-                                  </Suspense>
-                                </ErrorBoundary>
-                              }
-                            >
-                              <Route
-                                index
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <ListView title="List of customers" />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                              <Route
-                                path="all"
-                                element={
-                                  <ErrorBoundary fallback={<ErrorComponent />}>
-                                    <Suspense fallback={<Loading />}>
-                                      <ListView title="List of customers" />
-                                    </Suspense>
-                                  </ErrorBoundary>
-                                }
-                              />
-                            </Route>
-                            <Route
-                              path="change_password"
-                              element={
-                                <ErrorBoundary fallback={<ErrorComponent />}>
-                                  <Suspense fallback={<Loading />}>
-                                    <PasswordChangeForm />
-                                  </Suspense>
-                                </ErrorBoundary>
-                              }
-                            />
-                          </Route>
-                        </Route>
+                    <Route
+                      path="/sign-in"
+                      element={
+                        <ErrorBoundary fallback={<ErrorComponent />}>
+                          <Suspense fallback={<Loading />}>
+                            <LoginForm />
+                          </Suspense>
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route path="/:image" />
+                    <Route element={<LoginRequired />}>
+                      <Route element={<AdminRequired />}>
                         <Route
-                          path="/user-profile"
+                          path="/profile"
                           element={
                             <ErrorBoundary fallback={<ErrorComponent />}>
                               <Suspense fallback={<Loading />}>
-                                <UserProfilePage />
+                                <Profile />
                               </Suspense>
                             </ErrorBoundary>
                           }
@@ -508,21 +228,144 @@ function App() {
                             element={
                               <ErrorBoundary fallback={<ErrorComponent />}>
                                 <Suspense fallback={<Loading />}>
-                                  <ProfilePage />
+                                  <Dashboard />
                                 </Suspense>
                               </ErrorBoundary>
                             }
                           />
                           <Route
-                            path="profile"
+                            path="dash"
                             element={
                               <ErrorBoundary fallback={<ErrorComponent />}>
                                 <Suspense fallback={<Loading />}>
-                                  <ProfilePage />
+                                  <Dashboard />
                                 </Suspense>
                               </ErrorBoundary>
                             }
                           />
+                          <Route
+                            path="exhibitions"
+                            element={
+                              <ErrorBoundary fallback={<ErrorComponent />}>
+                                <Suspense fallback={<Loading />}>
+                                  <ExhibitionsView />
+                                </Suspense>
+                              </ErrorBoundary>
+                            }
+                          >
+                            <Route
+                              index
+                              element={
+                                <ErrorBoundary fallback={<ErrorComponent />}>
+                                  <Suspense fallback={<Loading />}>
+                                    <ListView title="List of Exhibtions" />
+                                  </Suspense>
+                                </ErrorBoundary>
+                              }
+                            />
+                            <Route
+                              path="all"
+                              element={
+                                <ErrorBoundary fallback={<ErrorComponent />}>
+                                  <Suspense fallback={<Loading />}>
+                                    <ListView title="List of Exhibtions" />
+                                  </Suspense>
+                                </ErrorBoundary>
+                              }
+                            />
+                            <Route
+                              path="add_exhibition"
+                              element={
+                                <ErrorBoundary fallback={<ErrorComponent />}>
+                                  <Suspense fallback={<Loading />}>
+                                    <ExhibitionCreationForm />
+                                  </Suspense>
+                                </ErrorBoundary>
+                              }
+                            />
+                          </Route>
+                          <Route
+                            path="exhibition_paintings"
+                            element={
+                              <ErrorBoundary fallback={<ErrorComponent />}>
+                                <Suspense fallback={<Loading />}>
+                                  <ExhibitionsPaintingsView />
+                                </Suspense>
+                              </ErrorBoundary>
+                            }
+                          >
+                            <Route
+                              index
+                              element={
+                                <ErrorBoundary fallback={<ErrorComponent />}>
+                                  <Suspense fallback={<Loading />}>
+                                    <ListView title="List of Exhibtion Paintings" />
+                                  </Suspense>
+                                </ErrorBoundary>
+                              }
+                            />
+                            <Route
+                              path="all"
+                              element={
+                                <ErrorBoundary fallback={<ErrorComponent />}>
+                                  <Suspense fallback={<Loading />}>
+                                    <ListView title="List of Exhibtion Paintings" />
+                                  </Suspense>
+                                </ErrorBoundary>
+                              }
+                            />
+                            <Route
+                              path="add_exhibition_paintings"
+                              element={
+                                <ErrorBoundary fallback={<ErrorComponent />}>
+                                  <Suspense fallback={<Loading />}>
+                                    <ExhibitionImagesForm />
+                                  </Suspense>
+                                </ErrorBoundary>
+                              }
+                            />
+                          </Route>
+                          <Route
+                            path="painters"
+                            element={
+                              <ErrorBoundary fallback={<ErrorComponent />}>
+                                <Suspense fallback={<Loading />}>
+                                  <PainterView />
+                                </Suspense>
+                              </ErrorBoundary>
+                            }
+                          >
+                            <Route
+                              index
+                              element={
+                                <ErrorBoundary fallback={<ErrorComponent />}>
+                                  <Suspense fallback={<Loading />}>
+                                    <ListView title="List of painters" />
+                                  </Suspense>
+                                </ErrorBoundary>
+                              }
+                            />
+                            <Route
+                              path="all"
+                              element={
+                                <ErrorBoundary fallback={<ErrorComponent />}>
+                                  <Suspense fallback={<Loading />}>
+                                    <ListView title="List of painters" />
+                                  </Suspense>
+                                </ErrorBoundary>
+                              }
+                            />
+                            <Route
+                              path="add_painter"
+                              element={
+                                <ErrorBoundary fallback={<ErrorComponent />}>
+                                  <Suspense fallback={<Loading />}>
+                                    <PainterCreationForm />
+                                  </Suspense>
+                                </ErrorBoundary>
+                              }
+                            />
+                          </Route>
                           <Route
                             path="blogs"
                             element={
@@ -553,13 +396,23 @@ function App() {
                                 </ErrorBoundary>
                               }
                             />
+                            <Route
+                              path="add_blog"
+                              element={
+                                <ErrorBoundary fallback={<ErrorComponent />}>
+                                  <Suspense fallback={<Loading />}>
+                                    <BlogCreationForm />
+                                  </Suspense>
+                                </ErrorBoundary>
+                              }
+                            />
                           </Route>
                           <Route
                             path="paintings"
                             element={
                               <ErrorBoundary fallback={<ErrorComponent />}>
                                 <Suspense fallback={<Loading />}>
-                                  <UserPaintingsView />
+                                  <PaintingsView />
                                 </Suspense>
                               </ErrorBoundary>
                             }
@@ -596,6 +449,37 @@ function App() {
                             />
                           </Route>
                           <Route
+                            path="customers"
+                            element={
+                              <ErrorBoundary fallback={<ErrorComponent />}>
+                                <Suspense fallback={<Loading />}>
+                                  <CustomersView />
+                                </Suspense>
+                              </ErrorBoundary>
+                            }
+                          >
+                            <Route
+                              index
+                              element={
+                                <ErrorBoundary fallback={<ErrorComponent />}>
+                                  <Suspense fallback={<Loading />}>
+                                    <ListView title="List of customers" />
+                                  </Suspense>
+                                </ErrorBoundary>
+                              }
+                            />
+                            <Route
+                              path="all"
+                              element={
+                                <ErrorBoundary fallback={<ErrorComponent />}>
+                                  <Suspense fallback={<Loading />}>
+                                    <ListView title="List of customers" />
+                                  </Suspense>
+                                </ErrorBoundary>
+                              }
+                            />
+                          </Route>
+                          <Route
                             path="change_password"
                             element={
                               <ErrorBoundary fallback={<ErrorComponent />}>
@@ -608,20 +492,133 @@ function App() {
                         </Route>
                       </Route>
                       <Route
-                        path="/logout"
+                        path="/user-profile"
                         element={
                           <ErrorBoundary fallback={<ErrorComponent />}>
                             <Suspense fallback={<Loading />}>
-                              <Logout />
+                              <UserProfilePage />
                             </Suspense>
                           </ErrorBoundary>
                         }
-                      />
-                      <Route path="/checkout/:payement-data" />
+                      >
+                        <Route
+                          index
+                          element={
+                            <ErrorBoundary fallback={<ErrorComponent />}>
+                              <Suspense fallback={<Loading />}>
+                                <ProfilePage />
+                              </Suspense>
+                            </ErrorBoundary>
+                          }
+                        />
+                        <Route
+                          path="profile"
+                          element={
+                            <ErrorBoundary fallback={<ErrorComponent />}>
+                              <Suspense fallback={<Loading />}>
+                                <ProfilePage />
+                              </Suspense>
+                            </ErrorBoundary>
+                          }
+                        />
+                        <Route
+                          path="blogs"
+                          element={
+                            <ErrorBoundary fallback={<ErrorComponent />}>
+                              <Suspense fallback={<Loading />}>
+                                <BlogsView />
+                              </Suspense>
+                            </ErrorBoundary>
+                          }
+                        >
+                          <Route
+                            index
+                            element={
+                              <ErrorBoundary fallback={<ErrorComponent />}>
+                                <Suspense fallback={<Loading />}>
+                                  <ListView title="List of blogs" />
+                                </Suspense>
+                              </ErrorBoundary>
+                            }
+                          />
+                          <Route
+                            path="all"
+                            element={
+                              <ErrorBoundary fallback={<ErrorComponent />}>
+                                <Suspense fallback={<Loading />}>
+                                  <ListView title="List of blogs" />
+                                </Suspense>
+                              </ErrorBoundary>
+                            }
+                          />
+                        </Route>
+                        <Route
+                          path="paintings"
+                          element={
+                            <ErrorBoundary fallback={<ErrorComponent />}>
+                              <Suspense fallback={<Loading />}>
+                                <UserPaintingsView />
+                              </Suspense>
+                            </ErrorBoundary>
+                          }
+                        >
+                          <Route
+                            index
+                            element={
+                              <ErrorBoundary fallback={<ErrorComponent />}>
+                                <Suspense fallback={<Loading />}>
+                                  <ListView title="List of paintings" />
+                                </Suspense>
+                              </ErrorBoundary>
+                            }
+                          />
+                          <Route
+                            path="all"
+                            element={
+                              <ErrorBoundary fallback={<ErrorComponent />}>
+                                <Suspense fallback={<Loading />}>
+                                  <ListView title="List of paintings" />
+                                </Suspense>
+                              </ErrorBoundary>
+                            }
+                          />
+                          <Route
+                            path="add_painting"
+                            element={
+                              <ErrorBoundary fallback={<ErrorComponent />}>
+                                <Suspense fallback={<Loading />}>
+                                  <PaintingCreationForm />
+                                </Suspense>
+                              </ErrorBoundary>
+                            }
+                          />
+                        </Route>
+                        <Route
+                          path="change_password"
+                          element={
+                            <ErrorBoundary fallback={<ErrorComponent />}>
+                              <Suspense fallback={<Loading />}>
+                                <PasswordChangeForm />
+                              </Suspense>
+                            </ErrorBoundary>
+                          }
+                        />
+                      </Route>
                     </Route>
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </APIProvider>
+                    <Route
+                      path="/logout"
+                      element={
+                        <ErrorBoundary fallback={<ErrorComponent />}>
+                          <Suspense fallback={<Loading />}>
+                            <Logout />
+                          </Suspense>
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route path="/checkout/:payement-data" />
+                  </Route>
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
               </AuthProvider>
             </AnnouncementsProvider>
           </PaintingsProvider>

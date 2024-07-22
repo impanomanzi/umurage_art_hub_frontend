@@ -1,42 +1,18 @@
 import "./Home.css";
-import Announcement from "../Announcement/Announcement.jsx";
-import Exhibitions from "../Exhibitions/Exhibitions.jsx";
-import Gallery from "../Gallery/Gallery.jsx";
-import HomeNavBar from "../NavBar/HomeNavBar.jsx";
-import Moto from "../Moto/Moto.jsx";
 import { motion } from "framer-motion";
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef, lazy, Suspense } from "react";
 import { useInView, useAnimation } from "framer-motion";
-import { PaintingAndExhibitionsContext } from "../Contexts/PaintingAndExhibitionsContext.jsx";
-function Home() {
-  const { exhibitions, paintings } = useContext(PaintingAndExhibitionsContext);
-  const renderExhibitions = () => {
-    return exhibitions?.length == 0 ? (
-      <div style={styles.centeredContainer}>
-        <i className="fas fa-trash-alt"></i>
-        <center style={{ color: "dodgerBlue" }}>
-          Oops, no active exhibitions are available
-        </center>
-      </div>
-    ) : (
-      <Exhibitions exhibitions={exhibitions} />
-    );
-  };
-  const renderGallery = () => {
-    return paintings?.data.length == 0 ? (
-      <div style={styles.centeredContainer}>
-        <i className="fas fa-trash-alt"></i>
-        <center style={{ color: "dodgerBlue" }}>No Data</center>
-      </div>
-    ) : (
-      <Gallery paintings={paintings} ref={ref} mainControls={mainControls} />
-    );
-  };
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary.jsx";
+import Loading from "../loading/loading.jsx";
+import ErrorComponent from "../ErrorComponent/ErrorComponent.jsx";
 
-  const renderMoto = () => {
-    return <Moto />;
-  };
-  const ref = useRef(null);
+function Home() {
+  const HomeNavBar = lazy(() => import("../NavBar/HomeNavBar.jsx"));
+  const Announcement = lazy(() => import("../Announcement/Announcement.jsx"));
+  const Gallery = lazy(() => import("../Gallery/Gallery.jsx"));
+  const Exhibitions = lazy(() => import("../Exhibitions/Exhibitions.jsx"));
+  const Moto = lazy(() => import("../Moto/Moto.jsx"));
+  const ref = useRef();
   const isInView = useInView(ref, { once: true });
   const mainControls = useAnimation();
   useEffect(() => {
@@ -47,23 +23,40 @@ function Home() {
 
   return (
     <div className="home">
-      <HomeNavBar />
+      <ErrorBoundary fallback={<ErrorComponent />}>
+        <Suspense fallback={<Loading />}>
+          <HomeNavBar />
+        </Suspense>
+      </ErrorBoundary>
       <div>
-        <Announcement />
+        <ErrorBoundary fallback={<ErrorComponent />}>
+          <Suspense fallback={<Loading />}>
+            <Announcement />
+          </Suspense>
+        </ErrorBoundary>
       </div>
-
       <div className="home-main-container">
         <div className="exhibition-section">
           <header>
             <h2>Exhibitions</h2>
           </header>
-          <div className="home-exhibition-container">{renderExhibitions()}</div>
+          <div className="home-exhibition-container">
+            <ErrorBoundary fallback={<ErrorComponent />}>
+              <Suspense fallback={<Loading />}>
+                <Exhibitions />
+              </Suspense>
+            </ErrorBoundary>
+          </div>
         </div>
         <div className="gallery-section">
           <header>
             <h2>Galleries</h2>
           </header>
-          {renderGallery()}
+          <ErrorBoundary fallback={<ErrorComponent />}>
+            <Suspense fallback={<Loading />}>
+              <Gallery />
+            </Suspense>
+          </ErrorBoundary>
         </div>
         <motion.div
           ref={ref}
@@ -79,20 +72,15 @@ function Home() {
           <header>
             <h2>About</h2>
           </header>
-          {renderMoto()}
+          <ErrorBoundary fallback={<ErrorComponent />}>
+            <Suspense fallback={<Loading />}>
+              <Moto />
+            </Suspense>
+          </ErrorBoundary>
         </motion.div>
       </div>
     </div>
   );
 }
-const styles = {
-  centeredContainer: {
-    height: "100%",
-    fontSize: "2rem",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-};
+
 export default Home;

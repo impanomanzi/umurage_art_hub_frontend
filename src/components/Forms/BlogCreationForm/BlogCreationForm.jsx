@@ -1,47 +1,32 @@
 import "../FormTemplate/FormTemplate.css";
-import settings from "../../settings.json";
-import { loading, unload } from "../../ButtonEffects/ButtonEffects";
 import { useState } from "react";
-import { jwtDecode } from "jwt-decode";
-import { toast } from "react-hot-toast";
 import CustomLoadingButton from "../../FormButton/FormButton";
+import useUser from "../../../hooks/useUser";
+import useToast from "../../../hooks/useToast";
+import { API } from "../../../API/serverRequest";
 function BlogCreationForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { setToast } = useToast();
+  const user = useUser();
   const handleOnSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     try {
-      let userId;
-      try {
-        userId = jwtDecode(localStorage.getItem("token")).user;
-      } catch (error) {
-        throw new Error("Your session expired");
-      }
       const formData = new FormData();
       formData.append("title", title);
       formData.append("content", content);
       formData.append("created", new Date().toLocaleString());
-      formData.append("author", userId);
-      const response = await fetch(
-        `${settings.server_domain}/blog/add_new_blog`,
-        {
-          method: "POST",
-          body: formData,
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      const data = await response.json();
-      if (data.success) {
-        toast.success("Blog submitted successfully");
+      formData.append("author", user.user);
+      const resp = await API.addBlog(formData);
+      if (resp.success) {
+        setToast({ variant: "success", message: "Blog posted" });
       } else {
-        throw new Error("Blog Failed to be submitted ");
+        setToast({ variant: "danger", message: resp.message });
       }
     } catch (error) {
-      toast.error(String(error));
+      setToast({ variant: "danger", message: String(error) });
     } finally {
       setIsLoading(false);
     }
@@ -51,7 +36,6 @@ function BlogCreationForm() {
     <div className="payment-registration-form-container m-3">
       <h2>CREATE NEW BLOG</h2>
       <hr />
-
       <form onSubmit={handleOnSubmit}>
         <div className="form-group">
           <label htmlFor="title" className="col-sm-2 col-form-label">

@@ -1,26 +1,9 @@
-import { useEffect, useState } from "react";
 import "./Announcement.css";
-import { API } from "../../API/serverRequest";
-import { toast } from "react-hot-toast";
+import useAnnouncements from "../../hooks/useAnnouncements";
 
 function Announcement() {
-  const [announcements, setAnnouncements] = useState([]);
+  const { announcements } = useAnnouncements();
 
-  const getPendingExhibitions = async () => {
-    try {
-      const data = await API.getPendingExhibitions();
-      if (data.success) {
-        if (data.data) setAnnouncements(data.data);
-      } else {
-        throw new Error(data.message);
-      }
-    } catch (error) {
-      toast.error(String(error));
-    }
-  };
-  useEffect(() => {
-    getPendingExhibitions();
-  }, []);
   return (
     <div className="scroller-container">
       <ul
@@ -30,7 +13,7 @@ function Announcement() {
         data-animated={true}
       >
         <div className="inner-scroller">
-          {announcements.map((item, index) => {
+          {announcements?.map((item, index) => {
             return (
               <li key={index}>
                 <img src={item[3]} width="32px" height="32px" />
@@ -39,7 +22,7 @@ function Announcement() {
               </li>
             );
           })}
-          {announcements.map((item, index) => {
+          {announcements?.map((item, index) => {
             return (
               <li aria-hidden={true} key={index}>
                 <img

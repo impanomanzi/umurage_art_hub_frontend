@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import "../FormTemplate/FormTemplate.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "./ExhibitionImagesForm.css";
-import settings from "../../settings.json";
-import { toast } from "react-hot-toast";
 import CustomLoadingButton from "../../FormButton/FormButton";
 import { validateFileType } from "../../../FileValidation/FileValidation";
 import { API } from "../../../API/serverRequest";
+import useToast from "../../../hooks/useToast";
 function ExhibitionImagesForm() {
+  const { setToast } = useToast();
   const [showImagePreview, setShowImagePreview] = useState(false);
   const [showAudioPreview, setShowAudioPreview] = useState(false);
   const [paintingImage, setPaintingImage] = useState("");
@@ -31,15 +31,13 @@ function ExhibitionImagesForm() {
   const FILE_ERROR = "the file you selected is not supported.";
   const getExibitions = async () => {
     try {
-      const data = await API.getAllExhibitions();
-      if (data.success) {
-        setExhibitions(data.data);
+      const resp = await API.getAllExhibitions();
+      if (resp.success) {
+        setExhibitions(resp.data);
       } else {
-        throw new Error(data.message);
+        throw new Error(resp.message);
       }
-    } catch (error) {
-      toast.error(String(error));
-    }
+    } catch (error) {}
   };
 
   const getPainters = async () => {
@@ -50,9 +48,7 @@ function ExhibitionImagesForm() {
       } else {
         throw new Error(data.data);
       }
-    } catch (error) {
-      toast.error(String(error));
-    }
+    } catch (error) {}
   };
 
   const handleOnSubmit = async (event) => {
@@ -66,29 +62,14 @@ function ExhibitionImagesForm() {
       formData.append("audio", paintingAudio);
       formData.append("owner", paintingOwner);
       formData.append("ex", paintingExhibititon);
-      let options = {
-        method: "POST",
-        headers: {
-          encType: "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: formData,
-      };
-
-      const response = await fetch(
-        `${settings.server_domain}/add_exhibition_painting`,
-        options
-      );
-      const data = await response.json();
-
-      if (data.success) {
-        toast.success("Painting added successfully");
-        // document.querySelector(".painting-form").reset();
+      const resp = await API.addExhibitionPainting(formData);
+      if (resp.success) {
+        setToast({ variant: "success", message: "Painting uploaded" });
       } else {
-        throw new Error(data.message);
+        setToast({ variant: "danger", message: resp.message });
       }
     } catch (error) {
-      toast.error(String(error));
+      setToast({ variant: "danger", message: error.message });
     } finally {
       setIsLoading(false);
     }
@@ -118,17 +99,21 @@ function ExhibitionImagesForm() {
                 <option value="Select Exhibitions" selected disabled>
                   Select Exhibitions
                 </option>
-                {exhibitions?.map((item, index) => {
-                  return (
-                    <option
-                      style={{ color: "black" }}
-                      value={item.name}
-                      key={index}
-                    >
-                      {item.name}
-                    </option>
-                  );
-                })}
+                {exhibitions.length ? (
+                  exhibitions?.map((item, index) => {
+                    return (
+                      <option
+                        style={{ color: "black" }}
+                        value={item.name}
+                        key={index}
+                      >
+                        {item.name}
+                      </option>
+                    );
+                  })
+                ) : (
+                  <option disabled>Loading ...</option>
+                )}
               </select>
             </div>
 
@@ -144,13 +129,17 @@ function ExhibitionImagesForm() {
                 <option value="select painter" selected disabled>
                   select painter
                 </option>
-                {painters.map((item, index) => {
-                  return (
-                    <option value={item.username} key={index}>
-                      {item.username}
-                    </option>
-                  );
-                })}
+                {painters.length ? (
+                  painters.map((item, index) => {
+                    return (
+                      <option value={item.username} key={index}>
+                        {item.username}
+                      </option>
+                    );
+                  })
+                ) : (
+                  <option disabled>Loading ...</option>
+                )}
               </select>
             </div>
             <div className="painting-image-container">

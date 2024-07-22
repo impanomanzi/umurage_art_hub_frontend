@@ -5,7 +5,7 @@ function MultiStepProgressBar(props) {
     <div className="multi-step-progressbar-container">
       {props.options.map((item, index) => {
         return (
-          <div className={`progress-circle-container `} key={item}>
+          <div className={`progress-circle-container `} key={index}>
             <div className="circle-content">
               <span
                 className={`progress-circle ${
@@ -34,7 +34,6 @@ function MultiStepProgressBar(props) {
                 ></p>
               )}
             </div>
-            <p className={`circle-description lead`}>{item}</p>
           </div>
         );
       })}

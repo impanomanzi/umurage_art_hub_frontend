@@ -10,5 +10,15 @@
   border-width: 1px;
 }
  
+@media screen and (max-device-width: 576px) {
+  .gallery-container {
+     
+    justify-content: center;
+ }
+ .search-input{
+   border-radius: 5px;
+   border-width: 1px;
+ }
+}
  
  

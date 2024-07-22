@@ -36,12 +36,12 @@ function Footer() {
             </span>
             <span>
               <a href="https://wa.me/+8615619381006">
-                <BsWhatsapp />
+                <i class="bi bi-whatsapp"></i>
               </a>
             </span>
             <span>
               <a href="mailto:rukundoprince04@gmail.com">
-                <BsMailbox2 />
+                <i class="bi bi-envelope"></i>
               </a>
             </span>
             <span>

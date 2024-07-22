@@ -1,8 +1,9 @@
-import { useState } from "react";
-import settings from "../../settings.json";
-import { toast } from "react-hot-toast";
+import { useRef, useState } from "react";
 import CustomLoadingButton from "../../FormButton/FormButton";
-function ExhibitionCreationForm(props) {
+import useToast from "../../../hooks/useToast";
+import { API } from "../../../API/serverRequest";
+function ExhibitionCreationForm() {
+  const { setToast } = useToast();
   const [name, setName] = useState("");
   const [host, setHost] = useState("");
   const [startdate, setStartdate] = useState("");
@@ -10,74 +11,38 @@ function ExhibitionCreationForm(props) {
   const [fees, setFees] = useState("");
   const [banner, setExhibitionBanner] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const formRef = useRef();
 
-  const getFormData = () => {
-    let formData = new FormData();
-    formData.append("name", name);
-    formData.append("host", host);
-    formData.append("start_date", startdate);
-    formData.append("end_date", enddate);
-    formData.append("entrace_fees", fees);
-    formData.append("banner", banner);
-    formData.append("banner", banner);
-    return formData;
-  };
-  const handleRequest = async (url, formData) => {
+  const handleOnSubmit = async (event) => {
+    event.preventDefault();
     try {
       setIsLoading(true);
-      const response = await fetch(`${settings.server_domain}/${url}`, {
-        method: "PUT",
-        headers: {
-          encType: "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: formData,
-      });
-      const data = await response.json();
-
-      if (data.success) {
-        let inner = props.exhibitions;
-        inner.push(data.data[0]);
-        props.addNewExhibition(inner);
-        document.querySelector(".exhibition-form").reset();
-        toast.success("Exhibition Added successfully.");
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("host", host);
+      formData.append("start_date", startdate);
+      formData.append("end_date", enddate);
+      formData.append("entrace_fees", fees);
+      formData.append("banner", banner);
+      formData.append("banner", banner);
+      const resp = await API.addExhibition(formData);
+      if (resp.success) {
+        setToast({ variant: "success", message: "Exhibition created" });
+        formRef.current.reset();
       } else {
-        throw new Error(data.message);
+        setToast({ variant: "danger", message: resp.message });
       }
     } catch (error) {
-      toast.error(String(error));
+      setToast({ variant: "danger", message: error.message });
     } finally {
       setIsLoading(false);
     }
   };
-  const handleOnSubmit = (event) => {
-    event.preventDefault();
-    let formData = getFormData();
 
-    // make request
-    handleRequest("add_new_exhibition", formData);
-  };
-  const handleUpdate = (event) => {
-    event.preventDefault();
-    let formData = getFormData();
-
-    // make request
-    handleRequest(
-      `update_exhibition/${props.data.id}/${props.data.name}`,
-      formData
-    );
-  };
   return (
     <div className="payment-registration-form-container m-3">
-      <form
-        onSubmit={props.data ? handleUpdate : handleOnSubmit}
-        className="exhibition-form"
-      >
-        {props.data ? (
-          <h2>UPDATE EXHIBITION</h2>
-        ) : (
-          <h2>CREATE NEW EXHIBITION</h2>
-        )}
+      <form onSubmit={handleOnSubmit} className="exhibition-form" ref={formRef}>
+        <h2>CREATE NEW EXHIBITION</h2>
         <div className="form-group">
           <label htmlFor="name" className="col-sm-2 col-form-label">
             EXHIBITION NAME
@@ -87,7 +52,6 @@ function ExhibitionCreationForm(props) {
             name="name"
             className="form-control"
             required
-            placeholder={props.data ? props.data.name : null}
             onChange={(event) => {
               setName(event.target.value);
             }}
@@ -102,7 +66,6 @@ function ExhibitionCreationForm(props) {
             name="host"
             className="form-control"
             required
-            placeholder={props.data ? props.data.host : null}
             onChange={(event) => {
               setHost(event.target.value);
             }}
@@ -117,7 +80,6 @@ function ExhibitionCreationForm(props) {
             className="form-control"
             type="date"
             name="startdate"
-            placeholder={props.data ? props.data.name : null}
             onChange={(event) => {
               setStartdate(event.target.value);
             }}
@@ -132,7 +94,6 @@ function ExhibitionCreationForm(props) {
             name="enddate"
             className="form-control"
             required
-            placeholder={props.data ? props.data.enddate : null}
             onChange={(event) => {
               setEnddate(event.target.value);
             }}
@@ -147,7 +108,6 @@ function ExhibitionCreationForm(props) {
             name="fees"
             className="form-control"
             required
-            placeholder={props.data ? props.data.fees : null}
             onChange={(event) => {
               setFees(event.target.value);
             }}

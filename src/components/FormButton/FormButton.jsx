@@ -6,7 +6,7 @@ function CustomLoadingButton(props) {
 
   return (
     <button
-      className="btn btn-primary"
+      className="btn btn-primary w-100 mt-2"
       disabled={isLoading ? true : false}
       onClick={handleOnclick}
       type={buttonType}

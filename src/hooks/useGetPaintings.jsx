@@ -1,27 +1,15 @@
-import { useEffect, useState } from "react";
 import { API } from "../API/serverRequest";
-import toast from "react-hot-toast";
+import usePaintings from "./usePaintings";
 export const useGetPaintings = () => {
-  const [paintings, setPaintings] = useState([]);
-  const [paintingLoading, setPaintingLoading] = useState(true);
+  const { setPaintings } = usePaintings();
 
   const getPaintings = async () => {
     try {
-      let data;
-      try {
-        data = await API.getPaintings();
-      } catch (error) {
-        throw new Error(error);
-      }
-      setPaintingLoading(false);
+      const data = await API.getPaintings();
       setPaintings(data);
     } catch (error) {
-      toast.error(String(error));
+      throw new Error(error.message);
     }
   };
-  useEffect(() => {
-    getPaintings();
-  }, []);
-
-  return [paintingLoading, paintings];
+  return getPaintings;
 };

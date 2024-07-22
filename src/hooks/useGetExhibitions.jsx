@@ -1,24 +1,16 @@
-import { useEffect, useState } from "react";
 import { API } from "../API/serverRequest";
-import { toast } from "react-hot-toast";
+import useExhibitions from "./useExhibitions";
 
 export const useGetExhibitions = () => {
-  const [exhibitions, setExhibitions] = useState([]);
-  const [exhibitionLoading, setLoading] = useState(true);
+  const { setExhibitions } = useExhibitions();
 
-  const get_exhibitions = async () => {
+  const getExhibitions = async () => {
     try {
       const data = await API.getExhibitions();
-      setLoading(false);
-      setExhibitions(data.data);
-      localStorage.setItem("exhibitions", data?.length);
+      setExhibitions(data?.data);
     } catch (error) {
-      console.log(error);
+      throw new Error(error.message);
     }
   };
-  useEffect(() => {
-    get_exhibitions();
-  }, []);
-
-  return [exhibitionLoading, exhibitions];
+  return getExhibitions;
 };

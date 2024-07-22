@@ -2,60 +2,64 @@ import { useState } from "react";
 import "./GalleryCard.css";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
-import settings from "../settings.json";
-import { toast } from "react-hot-toast";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { API } from "../../API/serverRequest";
+import useToast from "../../hooks/useToast";
 function GalleryCard(props) {
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(props.likes);
-  const [likeBtnText, setLikeBtnText] = useState("Like");
-  const like = () => {
-    let temp = Number.parseInt(likes);
-    setLikes(temp + 1);
-    fetch(`${settings.server_domain}/like/${props.gallery.id}`, {
-      method: "POST",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          setLiked(true);
-          setLikes(data.likes);
-        } else {
-          setLikes(temp - 1);
-          setLikeBtnText("Like");
-        }
-      })
-      .catch((error) => {
-        setLikes(temp - 1);
-        toast.error(error.toString());
-      });
-  };
-  const dislike = () => {
-    let temp = Number.parseInt(likes);
-    setLikes(temp > 0 ? temp - 1 : 0);
-    fetch(`${settings.server_domain}/dislike/${props.gallery.id}`, {
-      method: "POST",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          setLiked(false);
-          setLikes(data.likes);
-        } else {
-          setLikes(temp + 1);
-          toast.error("failed");
-        }
-      })
-      .catch((error) => {
-        setLikes(temp + 1);
-      });
-  };
+  const setToast = useToast();
   let imageUrl = props.gallery.image;
   let index1 = imageUrl.indexOf("upload/") + "upload/".length;
   let newUrl =
     imageUrl.substring(0, index1) +
     "c_auto,g_auto,h_350,w_300/" +
     imageUrl.substring(index1, imageUrl.length);
+
+  const like = async () => {
+    let temp = Number.parseInt(likes);
+    try {
+      setLikes(temp + 1);
+      const resp = await API.likePainting(props.gallery.id);
+      if (resp.success) {
+        setLiked(true);
+        setLikes(resp.likes);
+      } else {
+        setLikes(temp - 1);
+      }
+    } catch (error) {
+      setLikes(temp - 1);
+    }
+  };
+  const dislike = async () => {
+    try {
+      let temp = Number.parseInt(likes);
+      setLikes(temp > 0 ? temp - 1 : 0);
+      const resp = await API.dislikePainting(props.gallery.id);
+      if (resp.success) {
+        setLiked(false);
+        setLikes(data.likes);
+      } else {
+        setLikes(temp + 1);
+      }
+    } catch (error) {
+      setLikes(temp + 1);
+    }
+  };
+  const share = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Umurage art hub",
+          text: `${props.gallery.name} by \n ${props.gallery.owner}`,
+          url: imageUrl,
+        });
+      } catch (error) {
+        setToast({ variant: "danger", message: error.message });
+      }
+    }
+  };
+
   return (
     <div className="col-md-4 mt-2 col-lg-3 gallery-card">
       <a
@@ -85,32 +89,12 @@ function GalleryCard(props) {
           >
             <i className="fas fa-cart-arrow-down"></i>&nbsp; Buy now
           </Link>
-          <button
-            className="btn btn-secondary"
-            onClick={(event) => {
-              if (navigator.share) {
-                navigator
-                  .share({
-                    title: "Umurage art hub",
-                    text: `${props.gallery.name} by \n ${props.gallery.owner}`,
-                    url: imageUrl,
-                  })
-                  .then(() => toast.success("Successful share"))
-                  .catch((error) => toast.error("Error sharing", error));
-              }
-            }}
-          >
+          <button className="btn btn-secondary" onClick={share}>
             <i className="fas fa-share"></i> &nbsp;share
           </button>
           <button
             className="btn btn-secondary"
-            onClick={(event) => {
-              if (!liked) {
-                like();
-              } else {
-                dislike();
-              }
-            }}
+            onClick={() => (!liked ? like : dislike)}
             style={{ backgroundColor: "#ed9b1f" }}
           >
             <i className="fas fa-heart"></i>&nbsp;

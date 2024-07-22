@@ -2,16 +2,33 @@ import settings from "../components/settings.json";
 import { toast } from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
 export const API = {
-  login: async (options) => {
+  login: async (formData) => {
     try {
-      const response = await fetch(
-        `${settings.server_domain}/custom-login`,
-        options
-      );
+      const response = await fetch(`${settings.server_domain}/custom-login`, {
+        method: "POST",
+        body: formData,
+      });
       const data = await response.json();
       return data;
     } catch (error) {
-      toast.error(String(error));
+      throw new Error(error.message);
+    }
+  },
+  getAnnouncements: async () => {
+    try {
+      const resp = await fetch(
+        `${settings.server_domain}/get_pending_exhibitions`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
     }
   },
   addPainting: async (formData) => {
@@ -30,7 +47,7 @@ export const API = {
       const data = await response.json();
       return data;
     } catch (error) {
-      toast.error(String(error));
+      throw new Error(error.message);
     }
   },
   addPainter: async (formData) => {
@@ -51,7 +68,7 @@ export const API = {
       const data = await response.json();
       return data;
     } catch (error) {
-      toast.error(String(error));
+      throw new Error(error.message);
     }
   },
   updatePainter: async (formData) => {
@@ -72,17 +89,16 @@ export const API = {
       const data = await response.json();
       return data;
     } catch (error) {
-      toast.error(String(error));
+      throw new Error(error.message);
     }
   },
   getPaintings: async () => {
     try {
       const res = await fetch(`${settings.server_domain}/get_paintings`);
       const data = await res.json();
-      localStorage.setItem("paintings", data.data.length);
       return data;
     } catch (error) {
-      toast.error(String(error));
+      throw new Error(error.message);
     }
   },
   getExhibitions: async () => {
@@ -94,10 +110,9 @@ export const API = {
         },
       });
       const data = await res.json();
-
       return data;
     } catch (error) {
-      toast.error(String(error));
+      throw new Error(error.message);
     }
   },
   getAllExhibitions: async () => {
@@ -112,7 +127,7 @@ export const API = {
 
       return data;
     } catch (error) {
-      toast.error(String(error));
+      throw new Error(error.message);
     }
   },
   getPendingExhibitions: async () => {
@@ -130,7 +145,22 @@ export const API = {
 
       return data;
     } catch (error) {
-      toast.error(String(error));
+      throw new Error(error.message);
+    }
+  },
+  addBlog: async (formData) => {
+    try {
+      const resp = await fetch(`${settings.server_domain}/blog/add_new_blog`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
     }
   },
   getBlogs: async () => {
@@ -139,7 +169,24 @@ export const API = {
       const data = await response.json();
       return data;
     } catch (error) {
-      toast.error(String(error));
+      throw new Error(error.message);
+    }
+  },
+  deleteBlog: async (id) => {
+    try {
+      const response = await fetch(
+        `${settings.server_domain}/blog/delete_blog/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
     }
   },
   getPainters: async () => {
@@ -189,30 +236,19 @@ export const API = {
       const data = await resp.json();
       return data;
     } catch (error) {
-      toast.error(String(error));
+      throw new Error(error.message);
     }
   },
-  getUserPaintings: async () => {
+  getUserPaintings: async (formData) => {
     try {
-      let formData = new FormData();
-      let userId;
-      try {
-        userId = jwtDecode(localStorage.getItem("token")).id;
-      } catch (error) {
-        throw new Error("your session expired");
-      }
-      formData.append("userId", userId);
       const res = await fetch(`${settings.server_domain}/get_user_paintings`, {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
         body: formData,
       });
       const data = await res.json();
       return data;
     } catch (error) {
-      toast.error(String(error));
+      console.log(error);
     }
   },
   getCustomers: async () => {
@@ -226,10 +262,10 @@ export const API = {
       const data = await response.json();
       return data;
     } catch (error) {
-      toast.error(String(error));
+      throw new Error(error.message);
     }
   },
-  deletePainting: async (params) => {
+  deletePainting: async (id) => {
     let userId;
     try {
       userId = jwtDecode(localStorage.getItem("token")).id;
@@ -237,7 +273,7 @@ export const API = {
       toast.error("Your session expired");
     }
     const response = await fetch(
-      `${settings.server_domain}/delete_painting/${params.item.id}`,
+      `${settings.server_domain}/delete_painting/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -249,10 +285,10 @@ export const API = {
     const data = await response.json();
     return data;
   },
-  deleteExhibitionPainting: async (params) => {
+  deleteExhibitionPainting: async (id) => {
     try {
       const response = await fetch(
-        `${settings.server_domain}/delete_exhibition_painting/${params.item.id}`,
+        `${settings.server_domain}/delete_exhibition_painting/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -267,9 +303,9 @@ export const API = {
     }
   },
 
-  deleteExhibition: async (params) => {
+  deleteExhibition: async (id, name) => {
     const response = await fetch(
-      `${settings.server_domain}/delete_exhibition/${params.item.id}/${params.item.name}`,
+      `${settings.server_domain}/delete_exhibition/${id}/${name}`,
       {
         method: "DELETE",
         headers: {
@@ -280,10 +316,10 @@ export const API = {
     const data = await response.json();
     return data;
   },
-  deletePainter: async (params) => {
+  deletePainter: async (id) => {
     try {
       const response = await fetch(
-        `${settings.server_domain}/delete_painter/${params.item.id}`,
+        `${settings.server_domain}/delete_painter/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -298,10 +334,10 @@ export const API = {
     }
   },
 
-  deleteCustomer: async (params) => {
+  deleteCustomer: async (id) => {
     try {
       const formData = new FormData();
-      formData.append("customer_id", params.item.id);
+      formData.append("customer_id", id);
       const response = await fetch(
         `${settings.server_domain}/delete_customer`,
         {
@@ -318,29 +354,13 @@ export const API = {
       toast.error(String(error));
     }
   },
-  deleteBlog: async (params) => {
-    try {
-      const response = await fetch(
-        `${settings.server_domain}/blog/delete_blog/${params.item.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      toast.error(String(error));
-    }
-  },
-  changeCustomerStatus: async (params) => {
+
+  changeCustomerStatus: async (id, status, exId) => {
     try {
       const formData = new FormData();
-      formData.append("customer_id", params.item.id);
-      formData.append("current_status", params.item.status);
-      formData.append("e_name", params.item.exId);
+      formData.append("customer_id", id);
+      formData.append("current_status", status);
+      formData.append("e_name", exId);
       const response = await fetch(
         `${settings.server_domain}/update_customer_status`,
         {
@@ -357,11 +377,11 @@ export const API = {
       toast.error(String(error));
     }
   },
-  changeExhibitionStatus: async (params) => {
+  changeExhibitionStatus: async (id, status) => {
     try {
       const formData = new FormData();
-      formData.append("id", params.item.id);
-      formData.append("current_status", params.item.status);
+      formData.append("id", id);
+      formData.append("current_status", status);
       const response = await fetch(
         `${settings.server_domain}/change_exhibition_status`,
         {
@@ -376,6 +396,110 @@ export const API = {
       return data;
     } catch (error) {
       toast.error(String(error));
+    }
+  },
+  checkPayment: async (formData) => {
+    try {
+      const resp = await fetch(`${settings.server_domain}/check_payment`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+  addExhibition: async (formData) => {
+    try {
+      const resp = await fetch(`${settings.server_domain}/add_new_exhibition`, {
+        method: "PUT",
+        headers: {
+          encType: "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData,
+      });
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+  changePassword: async (formData, userId) => {
+    try {
+      const response = await fetch(
+        `${settings.server_domain}/change_password`,
+        {
+          method: "POST",
+          headers: {
+            encType: "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            userId: userId,
+          },
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+  addExhibitionPainting: async (formData) => {
+    try {
+      const response = await fetch(
+        `${settings.server_domain}/add_exhibition_painting`,
+        {
+          method: "POST",
+          headers: {
+            encType: "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+  verifyEmail: async (formData) => {
+    try {
+      const resp = await fetch(`${settings.server_domain}/verify`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+  likePainting: async (id) => {
+    try {
+      const resp = await fetch(`${settings.server_domain}/like/${id}`, {
+        method: "POST",
+      });
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+  dislikePainting: async (id) => {
+    try {
+      const resp = await fetch(`${settings.server_domain}/dislike/${id}`, {
+        method: "POST",
+      });
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
     }
   },
 };

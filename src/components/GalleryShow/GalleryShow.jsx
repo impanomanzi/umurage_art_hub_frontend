@@ -1,21 +1,33 @@
-import { useContext, useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import GalleryCard from "../GalleryCard/GalleryCard";
 import "./GalleryShow.css";
 import FormNavbar from "../NavBar/FormNavbar";
-import { PaintingAndExhibitionsContext } from "../Contexts/PaintingAndExhibitionsContext";
-function GalleryShow(props) {
-  const { exhibitions, paintings } = useContext(PaintingAndExhibitionsContext);
+import usePaintings from "../../hooks/usePaintings";
+function GalleryShow() {
+  const { paintings } = usePaintings();
   const [viewImageViewer, setViewImageViewer] = useState(false);
   const galleryOwner = useParams().name;
   const [currentPainting, setCurrentPainting] = useState({});
-  const wantedGallery = paintings.data.filter((item) => {
-    return item.owner === galleryOwner;
-  });
-  const [fixedGalleries, setFixedGalleries] = useState(wantedGallery);
-  const [galleries, setGalleries] = useState(wantedGallery);
-  const [filterDropdownText, setFilterDropdownText] = useState("Filter only");
+  const [query, setQuery] = useState("");
+  const fixedGalleries = useMemo(
+    () =>
+      paintings.data.filter((item) => {
+        return item.owner === galleryOwner;
+      }),
+    [paintings]
+  );
 
+  const filteredGalleries = useMemo(() =>
+    fixedGalleries.filter(
+      (item) => item.category.toLowerCase().includes(query.toLowerCase()),
+      [fixedGalleries, query]
+    )
+  );
+
+  console.log(fixedGalleries);
+  console.log(filteredGalleries);
+  console.log(query);
   const closeFilterDropdown = () => {
     if (document.querySelector(".f-dropdown-menu").style.display === "none") {
       document.querySelector(".f-dropdown-menu").style.display = "block";
@@ -62,7 +74,8 @@ function GalleryShow(props) {
                     "none";
                 }}
               >
-                <i className="fas fa-filter"></i>&nbsp; {filterDropdownText}
+                <i className="fas fa-filter"></i>&nbsp;{" "}
+                {query == "" ? "All" : query}
               </button>
               <div
                 className="dropdown-menu f-dropdown-menu"
@@ -74,36 +87,18 @@ function GalleryShow(props) {
               >
                 <button
                   className="dropdown-item"
-                  onClick={(event) => {
-                    let filteredArray = fixedGalleries.filter((item) => {
-                      return item.category == "Art work";
-                    });
-                    setFilterDropdownText("Art works");
-                    setGalleries(filteredArray);
-                  }}
+                  onClick={() => setQuery("Art work")}
                 >
                   Art works
                 </button>
                 <button
                   className="dropdown-item"
-                  onClick={(event) => {
-                    let filteredArray = fixedGalleries.filter((item) => {
-                      return item.category == "Potrait";
-                    });
-                    setFilterDropdownText("Potraits");
-                    setGalleries(filteredArray);
-                  }}
+                  onClick={() => setQuery("Potrait")}
                 >
                   Potraits
                 </button>
-                <button
-                  className="dropdown-item"
-                  onClick={(event) => {
-                    setFilterDropdownText("All");
-                    setGalleries(fixedGalleries);
-                  }}
-                >
-                  Default
+                <button className="dropdown-item" onClick={() => setQuery("")}>
+                  All
                 </button>
               </div>
             </div>
@@ -111,7 +106,7 @@ function GalleryShow(props) {
         </div>
 
         <div className="row">
-          {galleries.map((item, index) => {
+          {filteredGalleries.map((item, index) => {
             return (
               <>
                 <GalleryCard

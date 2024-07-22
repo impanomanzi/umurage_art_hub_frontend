@@ -17,4 +17,10 @@ export default defineConfig({
       external: ["react-confirm-alert/dist/react-confirm-alert.css"],
     },
   },
+  erver: {
+    fs: {
+      // Allow serving files from one level up to the project root
+      allow: [".."],
+    },
+  },
 });

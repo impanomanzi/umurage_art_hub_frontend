@@ -1,0 +1,7 @@
+.bg-progress {   
+  background-color: #ed9b1f;
+
+}
+.progress-bar .progress {
+  border-radius: 0 !important;
+}

@@ -1,18 +1,19 @@
-import { PaintingAndExhibitionsContext } from "../Contexts/PaintingAndExhibitionsContext";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "../Forms/FormTemplate/FormTemplate.css";
 import FormNavbar from "../NavBar/FormNavbar";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import settings from "../settings.json";
 import "./ExhibitionShowPage.css";
-import { useContext } from "react";
+import { useMemo } from "react";
+import useExhibitions from "../../hooks/useExhibitions";
 
 function ExhibitionShowPage() {
-  const { exhibitions, paintings } = useContext(PaintingAndExhibitionsContext);
+  const { exhibitions } = useExhibitions();
   const exhibitionId = useParams().id;
-  const wanted = exhibitions.filter((item, index) => {
-    return (item.id = exhibitionId);
-  })[0];
+  const wanted = useMemo(
+    () => exhibitions.filter((item) => (item.id = exhibitionId))[0],
+    [exhibitions]
+  );
 
   return (
     <>
@@ -52,26 +53,27 @@ function ExhibitionShowPage() {
             <div>
               <h3>Entrace:&nbsp;{wanted.fees} Rwf </h3>
 
-              <a href={`/payment/${exhibitionId}`}>
-                <button className="btn btn-primary">
-                  Register &nbsp; <i className="fas fa-arrow-right"></i>
-                </button>
-              </a>
+              <Link
+                to={`/payment/${exhibitionId}`}
+                className="btn btn-primary"
+                style={{ width: "100%", marginBottom: "1em" }}
+              >
+                Register
+              </Link>
               <br />
               <div className="horizontal-line">
                 <span className="left-line">&nbsp;</span>
-                <span className="text"> Already paid?</span>
+                <span className="text"> or</span>
                 <span className="right-line">&nbsp;</span>
               </div>
 
-              <a href={`/check_payment/${exhibitionId}`}>
-                <button
-                  className="btn btn-outline-primary"
-                  style={{ marginTop: "1em" }}
-                >
-                  Sign in
-                </button>
-              </a>
+              <Link
+                to={`/check_payment/${exhibitionId}`}
+                className="btn btn-outline-primary"
+                style={{ marginTop: "1em", width: "100%" }}
+              >
+                Sign in
+              </Link>
             </div>
           </div>
         </div>

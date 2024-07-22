@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import settings from "../../settings.json";
 import CheckoutForm from "../../CheckoutForm/CheckoutForm";
@@ -11,19 +11,15 @@ import "react-phone-input-2/lib/style.css";
 import "./PayementRegistrationForm.css";
 import CustomLoadingButton from "../../FormButton/FormButton";
 import { toast } from "react-hot-toast";
-function PayementRegistrationForm(props) {
+function PayementRegistrationForm() {
   const exhibitionId = useParams().id;
   const [showCheckoutForm, setShowCheckoutForm] = useState(false);
-  const [responseData, setResponseData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { exhibitions } = props;
-  const wanted = exhibitions.filter((item, index) => {
-    return (item.id = exhibitionId);
-  })[0];
-
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(0);
+  const formRef = useRef();
+  const respRef = useRef();
   const options = ["Registration", "Checkout", "Finish"];
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -52,11 +48,9 @@ function PayementRegistrationForm(props) {
       });
       const data = await response.json();
       if (data.success) {
-        setResponseData(data);
         setActiveTab(1);
         setShowCheckoutForm(true);
-        // toast.success("Your information submitted succesfully");
-        document.querySelector("form").reset();
+        formRef.current.reset();
       } else {
         throw new Error(data.message);
       }
@@ -70,14 +64,13 @@ function PayementRegistrationForm(props) {
   return (
     <>
       <FormNavbar />
-
       <div className="form-outer-container">
         <div className="form-inner-container">
           <div>
             <h2>COMPLETE INFORMATION</h2>
             <MultiStepProgressBar activeElement={activeTab} options={options} />
           </div>
-          <form onSubmit={handleOnSubmit}>
+          <form onSubmit={handleOnSubmit} ref={formRef}>
             <div className="form-group">
               <label htmlFor="first_name" className="col-form-label">
                 FIRST NAME

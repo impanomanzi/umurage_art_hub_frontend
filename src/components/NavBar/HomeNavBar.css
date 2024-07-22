@@ -3,8 +3,17 @@
 
   align-items: center;
   justify-content: space-between;
-  height: 14vh;
+  height: 12vh;
   background-color: #cbcfd4;
 }
 
  
+@media screen and (max-device-width: 676px) {
+ .homenavbar-container .nav-header{
+  font-size: 0.9em;
+ }
+ .navbar-brand{
+  width: 40%;
+ }
+
+}

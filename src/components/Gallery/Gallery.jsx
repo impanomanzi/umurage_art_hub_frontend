@@ -3,39 +3,25 @@ import "../ExhibitionCard/ExhibitionCard.css";
 import "bootstrap/dist/css/bootstrap.css";
 import HomeProjectsSlider from "../HomeProjectsSlider/HomeProjectsSlider";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-function Gallery(props) {
-  const { paintings } = props;
-  const [fixedGalleryOwner, setFixedGalleryOnwer] = useState([]);
-  const [galleryOwner, setGalleryOwner] = useState([]);
-  const [galleries, setGalleries] = useState(paintings?.data);
-  const [galleryLoading, setGalleryLoading] = useState(true);
+import { useMemo, useState } from "react";
+import usePaintings from "../../hooks/usePaintings";
+import { removeDuplication } from "../../lib/removeDuplication";
+function Gallery() {
+  const { paintings } = usePaintings();
+  const [query, setQuery] = useState("");
 
-  // function to remove dupplication from an array
-  const removeDuplication = (array) => {
-    let clearArray = [];
+  const filteredGalleries = useMemo(
+    () =>
+      paintings?.data?.filter((gallery) =>
+        gallery.owner.toLowerCase().includes(query)
+      ),
+    [paintings, query]
+  );
 
-    for (let i = 0; i < array?.length; i++) {
-      let found = false;
-      for (let j = 0; j < clearArray.length; j++) {
-        if (array[i] === clearArray[j]) {
-          found = true;
-        }
-      }
-      if (found === false) {
-        clearArray.push(array[i]);
-      }
-    }
-    return clearArray;
-  };
-  // gettings galleries from server
-  useEffect(() => {
-    let galleryOwners = galleries?.map((item, index) => {
-      return item.owner;
-    });
-    setGalleryOwner(removeDuplication(galleryOwners));
-    setFixedGalleryOnwer(removeDuplication(galleryOwners));
-  }, []);
+  const galleryOwners = useMemo(() => {
+    const galleryOwners = filteredGalleries?.map((gallery) => gallery.owner);
+    return removeDuplication(galleryOwners);
+  }, [filteredGalleries]);
 
   return (
     <div className="gallery-outer-container">
@@ -48,32 +34,15 @@ function Gallery(props) {
           type="text"
           placeholder="Search by gallery name"
           className="search-input"
-          onChange={(event) => {
-            let searchResult = fixedGalleryOwner.filter((item) => {
-              return item.toLowerCase().startsWith(event.target.value);
-            });
-            setGalleryOwner(searchResult);
-          }}
+          onChange={(event) => setQuery(event.target.value)}
         />
         <button className="btn btn-primary">
           <i className="fas fa-search"></i>
         </button>
       </div>
-      {galleryLoading && (
-        <div className="skeletons">
-          <div className="gallery-loading" style={{ color: "black" }}>
-            <center>
-              <div className="spinner-border" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-            </center>
-          </div>
-        </div>
-      )}
       <div className="message"></div>
       <div className="gallery-container">
-        {galleryOwner.map((item, index) => {
-          galleryLoading ? setGalleryLoading(false) : null;
+        {galleryOwners.map((owner, index) => {
           return (
             <div
               key={index}
@@ -84,12 +53,12 @@ function Gallery(props) {
                 className="lead h3"
                 style={{ color: "black", fontWeight: 600 }}
               >
-                {item}
+                {owner}
               </h3>
-              <Link to={`/gallery/${item}`}>
+              <Link to={`/gallery/${owner}`}>
                 <HomeProjectsSlider
-                  projects={galleries.filter((innerItem) => {
-                    return innerItem.owner === item;
+                  projects={filteredGalleries.filter((gallery) => {
+                    return gallery.owner === owner;
                   })}
                 />
               </Link>

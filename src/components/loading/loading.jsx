@@ -5,7 +5,6 @@ function Loading() {
         <div className="spinner-border" role="status">
           <span className="sr-only">Loading...</span>
         </div>
-        <p className="lead"> Loading ...</p>
       </center>
     </div>
   );

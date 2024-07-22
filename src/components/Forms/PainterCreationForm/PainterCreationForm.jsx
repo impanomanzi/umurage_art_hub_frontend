@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../FormTemplate/FormTemplate.css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { toast } from "react-hot-toast";
 import { validateFileType } from "../../../FileValidation/FileValidation";
 import { API } from "../../../API/serverRequest";
 import CustomLoadingButton from "../../FormButton/FormButton";
+import useToast from "../../../hooks/useToast";
 
 function PainterCreationForm(props) {
+  const { setToast } = useToast();
   const [showImagePreview, setShowImagePreview] = useState(false);
   const [fullname, setFullname] = useState("");
   const [username, setUsername] = useState("");
@@ -19,35 +20,37 @@ function PainterCreationForm(props) {
   const acceptedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
   const [fileError, setFileError] = useState(false);
   const FILE_ERROR = "the file you selected is not supported.";
+  const formRef = useRef();
 
   const handleOnChange = (value) => {
     setPhoneNumber(value);
   };
 
-  const getFormData = () => {
-    let formData = new FormData();
-    formData.append("fullname", fullname);
-    formData.append("username", username);
-    formData.append("password", password);
-    formData.append("phonenumber", phoneNumber);
-    formData.append("profilepicture", profilePicture);
-    formData.append("email", email);
-    return formData;
-  };
-
-  const handleRequest = async (url) => {
+  const handleRequest = async () => {
     try {
       setIsLoading(true);
-      let formData = getFormData();
-      const data = await API.addPainter(formData);
-      if (data.success) {
-        document.querySelector(".painter-form").reset();
-        toast.success("Painter Saved successfully");
+      const formData = new FormData();
+      formData.append("fullname", fullname);
+      formData.append("username", username);
+      formData.append("password", password);
+      formData.append("phonenumber", phoneNumber);
+      formData.append("profilepicture", profilePicture);
+      formData.append("email", email);
+      const resp = await API.addPainter(formData);
+      if (resp.success) {
+        formRef.current.reset();
+        setToast({ variant: "success", message: "Painter account created" });
       } else {
-        throw new Error(data.message);
+        setToast({
+          variant: "danger",
+          message: resp.message,
+        });
       }
     } catch (error) {
-      toast.error(String(error));
+      setToast({
+        variant: "danger",
+        message: error.message,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -57,30 +60,11 @@ function PainterCreationForm(props) {
     event.preventDefault();
     handleRequest("add_new_painter");
   };
-  const handleUpdate = (event) => {
-    event.preventDefault();
-    handleRequest(`update_painter/${props.data.id}`);
-  };
-  props.data
-    ? useEffect(() => {
-        setFullname(props.data.fullname);
-        setUsername(props.data.username);
-        setPhoneNumber(props.data.phone);
-        setPassword(props.data.password);
-        setProfilePicture(props.data.image);
-      }, [])
-    : null;
+
   return (
     <div className="payment-registration-form-container m-3">
-      {props.data ? (
-        <h2>UPDATE PAINTER ACCOUNT</h2>
-      ) : (
-        <h2>CREATE NEW PAINTER ACCOUNT</h2>
-      )}
-      <form
-        onSubmit={props.data ? handleUpdate : handleOnSubmit}
-        className="painter-form"
-      >
+      <h2>CREATE NEW PAINTER ACCOUNT</h2>
+      <form onSubmit={handleOnSubmit} className="painter-form" ref={formRef}>
         <div className="form-group">
           <label htmlFor="username" className="col-sm-2 col-form-label">
             FULL NAME
@@ -90,7 +74,6 @@ function PainterCreationForm(props) {
             className="form-control"
             required
             name="fullname"
-            placeholder={props.data ? props.data.fullname : null}
             onChange={(event) => {
               setFullname(event.target.value);
             }}
@@ -105,7 +88,6 @@ function PainterCreationForm(props) {
             name="username"
             className="form-control"
             autoComplete="off"
-            placeholder={props.data ? props.data.username : null}
             required
             onChange={(event) => {
               setUsername(event.target.value);
@@ -134,7 +116,6 @@ function PainterCreationForm(props) {
             autoComplete="off"
             className="form-control"
             name="email"
-            placeholder={props.data ? props.data.password : null}
             onChange={(event) => {
               setEmail(event.target.value);
             }}
@@ -150,7 +131,6 @@ function PainterCreationForm(props) {
             autoComplete="off"
             className="form-control"
             name="password"
-            placeholder={props.data ? props.data.password : null}
             onChange={(event) => {
               setPassword(event.target.value);
             }}

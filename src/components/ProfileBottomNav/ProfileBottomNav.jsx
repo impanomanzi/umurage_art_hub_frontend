@@ -1,42 +1,23 @@
+import { Link } from "react-router-dom";
 import "./ProfileBottomNav.css";
 
 function ProfileBottomNav(props) {
-  function timeout(delay) {
-    return new Promise((res) => setTimeout(res, delay));
-  }
-  const renderProfilePage = () => {
-    props.onChangeComponent("profile");
-  };
-  const renderPaintingCreationForm = () => {
-    props.onChangeComponent("paintingCreationForm");
-  };
-
   return (
     <div className="profile-bottom-nav-container">
       <div className="home-area">
-        <button
-          className="btn btn-primary"
-          onClick={async () => {
-            props.onChangeComponent("profile");
-            await timeout(3);
-            props.home();
-          }}
-        >
+        <Link className="btn btn-primary" to={"paintings"}>
           <i className="fas fa-home"></i>
-        </button>
+        </Link>
       </div>
       <div className="add-area">
-        <button
-          className="btn btn-primary"
-          onClick={renderPaintingCreationForm}
-        >
+        <Link className="btn btn-primary" to={"paintings/add_painting"}>
           <i className="fas fa-plus"></i>
-        </button>
+        </Link>
       </div>
       <div className="contact-area">
-        <button className="btn btn-primary" onClick={renderProfilePage}>
+        <Link className="btn btn-primary" to={"profile"}>
           <i className="fas fa-user-circle"></i>
-        </button>
+        </Link>
       </div>
     </div>
   );

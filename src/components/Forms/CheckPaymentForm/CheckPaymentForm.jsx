@@ -1,9 +1,9 @@
 import { useState } from "react";
 import FormNavbar from "../../NavBar/FormNavbar";
 import { useNavigate, useParams } from "react-router-dom";
-import settings from "../../settings.json";
 import CustomLoadingButton from "../../FormButton/FormButton";
 import "../FormTemplate/FormTemplate.css";
+import { API } from "../../../API/serverRequest";
 
 function CheckPaymentForm() {
   const id = useParams().id;
@@ -17,16 +17,12 @@ function CheckPaymentForm() {
       const formData = new FormData();
       formData.append("exhibitionId", id);
       formData.append("customerId", customerId);
-      const response = await fetch(`${settings.server_domain}/check_payment`, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
-      if (data.success) {
+      const resp = await API.checkPayment(formData);
+      if (resp.success) {
         localStorage.setItem("clientId", data.c_id);
         navigate(`/exhibition_paintings/${data.id}`);
       } else {
-        throw new Error(data.message);
+        throw new Error(resp.message);
       }
     } catch (error) {
       document.querySelector(
@@ -36,7 +32,6 @@ function CheckPaymentForm() {
                 <p class="lead">
                 ${String(error)}
                 </p>
-                
               </center>
             </div>`;
     } finally {
@@ -58,7 +53,7 @@ function CheckPaymentForm() {
             onSubmit={handleOnSubmit}
           >
             <div className="form-group">
-              <label>Enter secret key</label>
+              <label>Secret key</label>
               <input
                 type="text"
                 required
@@ -72,7 +67,7 @@ function CheckPaymentForm() {
               <CustomLoadingButton
                 isLoading={isLoading}
                 onClick={null}
-                text="Log in"
+                text="Sign in"
                 buttonType="submit"
               />
             </div>

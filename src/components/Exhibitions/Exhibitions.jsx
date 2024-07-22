@@ -1,19 +1,22 @@
 import "./Exihibitions.css";
-import { useEffect, useRef } from "react";
+import { useMemo, useRef } from "react";
 import ExhibitionCard from "../ExhibitionCard/ExhibitionCard";
 import { useState } from "react";
+import useExhibitions from "../../hooks/useExhibitions";
 
-function Exhibitions(props) {
-  const [fixedExhibitions, setFixedExhibitions] = useState([]);
+function Exhibitions() {
+  const { exhibitions, setExhibitions } = useExhibitions();
+  const [query, setQuery] = useState("");
+  const filteredExhibitions = useMemo(
+    () =>
+      exhibitions?.filter((exhibition) =>
+        exhibition.name.toLowerCase().includes(query.toLowerCase())
+      ),
+    [exhibitions, query]
+  );
   const [dropdownText, setDropdownText] = useState("Sort by");
-  const [exhibitions, setExhibitions] = useState(props.exhibitions);
   const [observing, setObserving] = useState(true);
   const myRef = useRef();
-  let customArray = [];
-  useEffect(() => {
-    setFixedExhibitions(exhibitions);
-    customArray = exhibitions;
-  }, []);
 
   const closeExDropdown = () => {
     if (document.querySelector(".ex-dropdown-menu").style.display === "block") {
@@ -37,12 +40,7 @@ function Exhibitions(props) {
                 className="form-control exh-search"
                 placeholder="Search by Exh. name"
                 onChange={(event) => {
-                  let searchResult = fixedExhibitions.filter((item) => {
-                    return item.name
-                      .toLowerCase()
-                      .startsWith(event.target.value);
-                  });
-                  setExhibitions(searchResult);
+                  setQuery(event.target.value);
                   setObserving(false);
                 }}
               />
@@ -51,11 +49,7 @@ function Exhibitions(props) {
                 className="btn btn-primary"
                 onClick={(event) => {
                   setObserving(false);
-                  let searchEl = document.querySelector(".exh-search");
-                  let searchResult = fixedExhibitions.filter((item) => {
-                    return item.name.toLowerCase().startsWith(searchEl.value);
-                  });
-                  setExhibitions(searchResult);
+                  setQuery(searchEl.value);
                 }}
               >
                 <i className="fas fa-search"></i>
@@ -136,8 +130,7 @@ function Exhibitions(props) {
         </div>
 
         <div className="exhibitions-container" id="exhibitions-container">
-          {/* {myRef["current"] && images.push(myRef["current"])} */}
-          {exhibitions?.map((exhibition, index) => {
+          {filteredExhibitions?.map((exhibition, index) => {
             return (
               <>
                 <ExhibitionCard

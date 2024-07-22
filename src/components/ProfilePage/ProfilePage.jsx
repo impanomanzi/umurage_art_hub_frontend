@@ -1,18 +1,13 @@
 import "./ProfilePage.css";
-import { jwtDecode } from "jwt-decode";
-import { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+import { useEffect, useRef, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import CustomLoadingButton from "../FormButton/FormButton";
 import { validateFileType } from "../../FileValidation/FileValidation";
 import { API } from "../../API/serverRequest";
+import useUser from "../../hooks/useUser";
+import useToast from "../../hooks/useToast";
 function ProfilePage(props) {
-  let user;
-  try {
-    user = jwtDecode(localStorage.getItem("token"));
-  } catch (error) {
-    toast.error("your session expired");
-  }
+  const user = useUser();
   const [username, setUsername] = useState(user.user);
   const [profilePicture, setProfilePicture] = useState(user.picture);
   const [fullname, setFullname] = useState(user.fullname);
@@ -24,24 +19,26 @@ function ProfilePage(props) {
   const acceptedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
   const [fileError, setFileError] = useState(false);
   const FILE_ERROR = "the file you selected is not supported.";
+  const { setToast } = useToast();
+  const formRef = useRef();
   const handleOnSubmit = async (event) => {
     event.preventDefault();
     try {
       setIsLoading(true);
-      let formData = new FormData();
+      const formData = new FormData();
       formData.append("fullname", fullname);
       formData.append("username", username);
       formData.append("phonenumber", phone);
       formData.append("profilepicture", profilePicture);
-      const data = await API.updatePainter(formData);
-      if (data.success) {
-        document.querySelector(".update-form").reset();
-        toast.success("information updated successfully");
+      const resp = await API.updatePainter(formData);
+      if (resp.success) {
+        formRef.current.reset();
+        setToast({ variant: "success", message: "Information updated" });
       } else {
-        throw new Error(data.message);
+        setToast({ variant: "danger", message: resp.message });
       }
     } catch (error) {
-      toast.error(String(error));
+      setToast({ variant: "danger", message: error.message });
     } finally {
       setIsLoading(false);
     }
@@ -91,7 +88,11 @@ function ProfilePage(props) {
               ></button>
             </div>
             <div className="edit-profile-page-container">
-              <form onSubmit={handleOnSubmit} className="update-form">
+              <form
+                onSubmit={handleOnSubmit}
+                className="update-form"
+                ref={formRef}
+              >
                 <div className="form-group">
                   <div
                     className="profilepage-image-container"

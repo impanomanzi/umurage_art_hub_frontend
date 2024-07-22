@@ -17,7 +17,6 @@ function UserPaintingsView() {
     const formData = new FormData();
     formData.append("userId", user.id);
     const resp = await API.getUserPaintings(formData);
-    console.log(resp);
     if (resp.success) {
       setPaintings(resp.data);
     }

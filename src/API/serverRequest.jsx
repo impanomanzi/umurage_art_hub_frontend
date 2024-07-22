@@ -243,6 +243,9 @@ export const API = {
     try {
       const res = await fetch(`${settings.server_domain}/get_user_paintings`, {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         body: formData,
       });
       const data = await res.json();

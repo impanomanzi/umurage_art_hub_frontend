@@ -16,7 +16,9 @@ function ProfileTopNav(props) {
   return (
     <div className="profile-top-nav-container home-navbar">
       <div className="home-navbar__logo" id="NavBarLogo">
-        <img src="/UMURAGE HEADER.png" alt="" />
+        <Link to={"/"}>
+          <img src="/UMURAGE HEADER.png" alt="" />
+        </Link>
       </div>
       <Drawer
         className="user-profile-drawer"

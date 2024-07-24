@@ -1,7 +1,6 @@
-import { useMemo, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useRef, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import settings from "../../settings.json";
-import CheckoutForm from "../../CheckoutForm/CheckoutForm";
 import FormNavbar from "../../NavBar/FormNavbar";
 import "../FormTemplate/FormTemplate.css";
 import PhoneInput from "react-phone-input-2";
@@ -10,20 +9,64 @@ import MultiStepProgressBar from "../../MultistepProgressBar/MultiStepProgressBa
 import "react-phone-input-2/lib/style.css";
 import "./PayementRegistrationForm.css";
 import CustomLoadingButton from "../../FormButton/FormButton";
-import { toast } from "react-hot-toast";
+import useToast from "../../../hooks/useToast";
+import { closePaymentModal, useFlutterwave } from "flutterwave-react-v3";
+
 function PayementRegistrationForm() {
+  const { setToast } = useToast();
   const exhibitionId = useParams().id;
-  const [showCheckoutForm, setShowCheckoutForm] = useState(false);
+  const exhibition = useLocation().state?.exhibition;
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const formRef = useRef();
-  const respRef = useRef();
+  const navigate = useNavigate();
   const options = ["Registration", "Checkout", "Finish"];
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const config = {
+    public_key: settings.public_key,
+    tx_ref: Date.now(),
+    amount: exhibition?.fees[0],
+    currency: "RWF",
+    payment_options: "card,mobilemoney",
+    customer: {
+      email: email,
+      phone_number: phoneNumber,
+      name: `${firstName} ${lastName}`,
+    },
+    customizations: {
+      title: `${exhibition?.name}`,
+      description: `Payment for an exhibition`,
+      logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
+    },
+  };
+  const handleFlutterPayment = useFlutterwave(config);
+  const paymentCallback = async (customer, response) => {
+    if (response.status == "successful") {
+      const formData = new FormData();
+      formData.append("customer_id", customer.id);
+      formData.append("current_status", "pending");
+      formData.append("e_name", exhibition.id);
+      try {
+        const response = await fetch(
+          `${settings.server_domain}/update_customer_status`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        const resp = await response.json();
+        if (resp.success) {
+          navigate(`/check_payment/${exhibition.id}`);
+        }
+      } catch (error) {
+        setToast({ variant: "danger", message: error.message });
+      }
+    }
+    closePaymentModal();
+  };
   const handleOnChange = (value) => {
     setPhoneNumber(value);
   };
@@ -34,8 +77,7 @@ function PayementRegistrationForm() {
       if (!isPossiblePhoneNumber("+" + phoneNumber)) {
         throw new Error("phone number is invalid");
       }
-      document.querySelector(".response-alert").innerHTML = "";
-      let formData = new FormData();
+      const formData = new FormData();
       formData.append("firstname", firstName);
       formData.append("lastName", lastName);
       formData.append("email", email);
@@ -46,16 +88,19 @@ function PayementRegistrationForm() {
         method: "POST",
         body: formData,
       });
-      const data = await response.json();
-      if (data.success) {
+      const resp = await response.json();
+      if (resp.success) {
         setActiveTab(1);
-        setShowCheckoutForm(true);
-        formRef.current.reset();
+
+        handleFlutterPayment({
+          callback: (response) => paymentCallback(resp.data[0], response),
+          onClose: () => {},
+        });
       } else {
-        throw new Error(data.message);
+        throw new Error(resp.message);
       }
     } catch (error) {
-      toast.error(String(error));
+      setToast({ variant: "danger", message: error.message });
     } finally {
       setIsLoading(false);
     }
@@ -126,50 +171,20 @@ function PayementRegistrationForm() {
                 inputProps={{
                   required: true,
                 }}
-                className="phone-form-control"
+                containerClass="form-control"
               />
             </div>
             <div className="form-group">
               <CustomLoadingButton
                 isLoading={isLoading}
                 onClick={null}
-                text="Submit"
+                text="Pay"
                 buttonType="submit"
               />
             </div>
           </form>
         </div>
       </div>
-      {showCheckoutForm && (
-        <div className="checkout-form-container">
-          {/* <CheckoutForm
-            c_id={responseData.data[0].id}
-            id={exhibitionId}
-            firstName={firstName}
-            lastName={lastName}
-            email={email}
-            phoneNumber={phoneNumber}
-            exhibitionName={wanted.name}
-            amount={wanted.fees}
-            navigate={navigate}
-            diminishProgress={() => {
-              setActiveTab(0);
-            }}
-            updateProgress={() => {
-              setActiveTab(2);
-              setActiveTab(3);
-            }}
-          /> */}
-          <div className="alert alert-success">
-            <h1>
-              <i className="fas fa-check-circle"></i>
-              Success
-            </h1>
-            Thank you making registration to attend our exhibition. <br />
-            Please check your email for more info.
-          </div>
-        </div>
-      )}
     </>
   );
 }

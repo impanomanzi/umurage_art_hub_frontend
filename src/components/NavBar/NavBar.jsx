@@ -21,7 +21,9 @@ function NavBar(props) {
   return (
     <div className="profile-top-nav-container home-navbar bg-light">
       <div className="home-navbar__logo " id="NavBarLogo">
-        <img src="/UMURAGE HEADER.png" alt="" />
+        <Link to={"/"}>
+          <img src="/UMURAGE HEADER.png" alt="" />
+        </Link>
       </div>
       <span>
         <h5 className="h5">

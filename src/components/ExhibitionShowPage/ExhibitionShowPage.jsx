@@ -21,9 +21,9 @@ function ExhibitionShowPage() {
       <div className="form-outer-container">
         <div className="form-inner-container">
           <div>
-            <h2>{wanted.name.toUpperCase()}</h2>
+            <h2>{wanted?.name.toUpperCase()}</h2>
             <LazyLoadImage
-              src={`${wanted.image.replace(
+              src={`${wanted?.image.replace(
                 "http://localhost:5000",
                 `${settings.server_domain}`
               )}`}
@@ -57,6 +57,7 @@ function ExhibitionShowPage() {
                 to={`/payment/${exhibitionId}`}
                 className="btn btn-primary"
                 style={{ width: "100%", marginBottom: "1em" }}
+                state={{ exhibition: wanted }}
               >
                 Register
               </Link>

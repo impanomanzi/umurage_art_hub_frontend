@@ -9,7 +9,9 @@ function HomeNavBar() {
         className="homenavbar-container  navbar-expand-sml navbar-light bg-light"
         id="top"
       >
-        <img className="navbar-brand" src="/UMURAGE HEADER.png" alt="" />
+        <Link to={"/"}>
+          <img className="navbar-brand" src="/UMURAGE HEADER.png" alt="" />
+        </Link>
         <span>
           <h5 className="nav-header">{settings.site_name.toUpperCase()}</h5>
         </span>

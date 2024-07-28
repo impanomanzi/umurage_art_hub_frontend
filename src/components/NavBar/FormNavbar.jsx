@@ -1,7 +1,7 @@
 import "./HomeNavBar.css";
 import settings from "../settings.json";
 import { Link } from "react-router-dom";
-function FormNavbar() {
+function FormNavbar({ header }) {
   return (
     <>
       <div
@@ -12,7 +12,15 @@ function FormNavbar() {
           <img className="navbar-brand" src="/UMURAGE HEADER.png" alt="" />
         </Link>
         <span>
-          <h5 className="nav-header">{settings.site_name.toUpperCase()}</h5>
+          <h5 className="nav-header">
+            {header ? (
+              <span style={{ marginLeft: "1em" }}>
+                <h3 className="h3">{header}</h3>
+              </span>
+            ) : (
+              settings.site_name.toUpperCase()
+            )}
+          </h5>
         </span>
         <span>&nbsp;</span>
       </div>

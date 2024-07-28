@@ -9,6 +9,7 @@ import { useOutletContext } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 import Badge from "react-bootstrap/Badge";
 import Dropdown from "react-bootstrap/Dropdown";
+import ReactMarkdown from "react-markdown";
 
 function ListView(props) {
   const [keyword, setKeyword] = useState("");
@@ -190,16 +191,15 @@ function ListView(props) {
                             </td>
                           </tr>
                         ) : headers[innerIndex] === "description" ? (
-                          <tr className="list-items-container">
+                          <div>
+                            <b className="text-uppercase card-text">
+                              {headers[innerIndex]} &nbsp;
+                            </b>
+
                             <td>
-                              <b className="text-uppercase card-text">
-                                {headers[innerIndex]} &nbsp;
-                              </b>
+                              <ReactMarkdown>{item[innerItem]}</ReactMarkdown>
                             </td>
-                            <td>
-                              <article>{item[innerItem]}</article>
-                            </td>
-                          </tr>
+                          </div>
                         ) : headers[innerIndex] === "actions" ? (
                           ""
                         ) : (

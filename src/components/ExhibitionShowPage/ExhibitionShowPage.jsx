@@ -6,6 +6,7 @@ import settings from "../settings.json";
 import "./ExhibitionShowPage.css";
 import { useMemo } from "react";
 import useExhibitions from "../../hooks/useExhibitions";
+import ReactMarkdown from "react-markdown";
 
 function ExhibitionShowPage() {
   const { exhibitions } = useExhibitions();
@@ -20,7 +21,13 @@ function ExhibitionShowPage() {
       <FormNavbar />
       <div className="form-outer-container">
         <div className="form-inner-container">
-          <div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
             <h2>{wanted?.name.toUpperCase()}</h2>
             <LazyLoadImage
               src={`${wanted?.image.replace(
@@ -32,7 +39,9 @@ function ExhibitionShowPage() {
               width={"300px"}
               height={"350px"}
             />
+            <ReactMarkdown className="w-20">{wanted.description}</ReactMarkdown>
           </div>
+
           <div>
             <div>
               <p>

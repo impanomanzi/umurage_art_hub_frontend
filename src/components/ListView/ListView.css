@@ -31,6 +31,11 @@
     display: flex;
     
 }
+.list-view-description{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
  
 
 @media screen and (max-device-width: 676px) {

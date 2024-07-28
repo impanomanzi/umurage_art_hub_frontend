@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
 import CustomLoadingButton from "../../FormButton/FormButton";
 import useToast from "../../../hooks/useToast";
+import TextareaAutosize from "react-textarea-autosize";
 import { API } from "../../../API/serverRequest";
+import ReactMarkdown from "react-markdown";
 function ExhibitionCreationForm() {
   const { setToast } = useToast();
   const [name, setName] = useState("");
@@ -10,6 +12,7 @@ function ExhibitionCreationForm() {
   const [enddate, setEnddate] = useState("");
   const [fees, setFees] = useState("");
   const [banner, setExhibitionBanner] = useState("");
+  const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const formRef = useRef();
 
@@ -24,7 +27,7 @@ function ExhibitionCreationForm() {
       formData.append("end_date", enddate);
       formData.append("entrace_fees", fees);
       formData.append("banner", banner);
-      formData.append("banner", banner);
+      formData.append("description", description);
       const resp = await API.addExhibition(formData);
       if (resp.success) {
         setToast({ variant: "success", message: "Exhibition created" });
@@ -132,6 +135,27 @@ function ExhibitionCreationForm() {
               setExhibitionBanner(event.target.files[0]);
             }}
           />
+        </div>
+        <div className="form-group">
+          <label htmlFor="description" className="col-sm-2 col-form-label">
+            Description
+          </label>
+          <br />
+
+          <TextareaAutosize
+            onChange={(event) => {
+              setDescription(event.target.value);
+            }}
+            className="form-control"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="description" className="col-sm-2 col-form-label">
+            Preview
+          </label>
+          <br />
+
+          <ReactMarkdown>{description}</ReactMarkdown>
         </div>
         <CustomLoadingButton
           isLoading={isLoading}

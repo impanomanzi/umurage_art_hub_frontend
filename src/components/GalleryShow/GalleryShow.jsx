@@ -55,15 +55,11 @@ function GalleryShow() {
     <>
       <ErrorBoundary fallback={<ErrorComponent />}>
         <Suspense fallback={<Loading />}>
-          <FormNavbar />
+          <FormNavbar header={`${galleryOwner} Gallery`} />
         </Suspense>
       </ErrorBoundary>
       <div className="gallery-shw">
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <span style={{ marginLeft: "1em" }}>
-            <h2>{galleryOwner} Gallery</h2>
-          </span>
-
           <div
             className="btn-group"
             role="group"

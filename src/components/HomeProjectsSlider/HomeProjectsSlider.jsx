@@ -31,6 +31,7 @@ function HomeProjectsSlider(props) {
                 placeholderSrc="/placeholder.png"
                 width={"280px"}
                 height={"300px"}
+                style={{ pointerEvents: "none" }}
               />
             </Carousel.Item>
           );

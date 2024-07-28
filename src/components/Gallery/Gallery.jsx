@@ -1,12 +1,18 @@
 import "./Gallery.css";
 import "../ExhibitionCard/ExhibitionCard.css";
 import "bootstrap/dist/css/bootstrap.css";
-import HomeProjectsSlider from "../HomeProjectsSlider/HomeProjectsSlider";
+
 import { Link } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useMemo, useState, lazy, Suspense } from "react";
 import usePaintings from "../../hooks/usePaintings";
 import { removeDuplication } from "../../lib/removeDuplication";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import ErrorComponent from "../ErrorComponent/ErrorComponent";
+import Loading from "../loading/loading";
 function Gallery() {
+  const HomeProjectSlider = lazy(() =>
+    import("../HomeProjectsSlider/HomeProjectsSlider")
+  );
   const { paintings } = usePaintings();
   const [query, setQuery] = useState("");
 
@@ -56,11 +62,15 @@ function Gallery() {
                 {owner}
               </h3>
               <Link to={`/gallery/${owner}`}>
-                <HomeProjectsSlider
-                  projects={filteredGalleries.filter((gallery) => {
-                    return gallery.owner === owner;
-                  })}
-                />
+                <ErrorBoundary fallback={<ErrorComponent />}>
+                  <Suspense fallback={<Loading />}>
+                    <HomeProjectSlider
+                      projects={filteredGalleries.filter((gallery) => {
+                        return gallery.owner === owner;
+                      })}
+                    />
+                  </Suspense>
+                </ErrorBoundary>
               </Link>
             </div>
           );

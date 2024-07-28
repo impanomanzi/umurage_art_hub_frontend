@@ -5,11 +5,10 @@ import usePaintings from "../../hooks/usePaintings";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary.jsx";
 import ErrorComponent from "../ErrorComponent/ErrorComponent.jsx";
 import Loading from "../loading/loading.jsx";
+import Viewer from "react-viewer";
 function GalleryShow() {
   const FormNavbar = lazy(() => import("../NavBar/FormNavbar"));
   const GalleryCard = lazy(() => import("../GalleryCard/GalleryCard"));
-  const Viewer = lazy(() => import("react-viewer"));
-
   const { paintings } = usePaintings();
   const [visible, setVisible] = useState(false);
   const galleryOwner = useParams().name;
@@ -135,24 +134,20 @@ function GalleryShow() {
         </div>
       </div>
 
-      <ErrorBoundary fallback={<ErrorComponent />}>
-        <Suspense fallback={<Loading />}>
-          <Viewer
-            visible={visible}
-            onClose={() => setVisible(false)}
-            className="image-viewer"
-            images={[
-              {
-                src: imageUrl,
-                alt: "",
-              },
-            ]}
-            noImgDetails
-            noNavbar
-            changeable
-          />
-        </Suspense>
-      </ErrorBoundary>
+      <Viewer
+        visible={visible}
+        onClose={() => setVisible(false)}
+        className="image-viewer"
+        images={[
+          {
+            src: imageUrl,
+            alt: "",
+          },
+        ]}
+        noImgDetails
+        noNavbar
+        changeable
+      />
     </>
   );
 }

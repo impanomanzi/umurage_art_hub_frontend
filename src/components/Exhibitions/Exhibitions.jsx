@@ -14,7 +14,7 @@ function Exhibitions() {
       ),
     [exhibitions, query]
   );
-  const [dropdownText, setDropdownText] = useState("Sort by");
+  const [dropdownText, setDropdownText] = useState("");
   const [observing, setObserving] = useState(true);
   const myRef = useRef();
 
@@ -43,6 +43,7 @@ function Exhibitions() {
                   setQuery(event.target.value);
                   setObserving(false);
                 }}
+                style={{ borderRadius: "0px" }}
               />
               <button
                 type="button"
@@ -51,6 +52,7 @@ function Exhibitions() {
                   setObserving(false);
                   setQuery(searchEl.value);
                 }}
+                style={{ borderRadius: "0px" }}
               >
                 <i className="fas fa-search"></i>
               </button>
@@ -65,6 +67,7 @@ function Exhibitions() {
                 aria-expanded="false"
                 onClick={closeExDropdown}
                 onMouseEnter={closeExDropdown}
+                style={{ borderRadius: "0px" }}
               >
                 <i className="fas fa-sort-amount-down"></i>&nbsp; {dropdownText}
               </button>
@@ -75,6 +78,7 @@ function Exhibitions() {
                   document.querySelector(".ex-dropdown-menu").style.display =
                     "none";
                 }}
+                style={{ borderRadius: "0px" }}
               >
                 <button
                   className="dropdown-item"

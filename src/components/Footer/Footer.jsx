@@ -1,6 +1,3 @@
-import { BsInstagram } from "react-icons/bs";
-import { BsMailbox2 } from "react-icons/bs";
-import { BsWhatsapp } from "react-icons/bs";
 import "./Footer.css";
 function Footer() {
   return (

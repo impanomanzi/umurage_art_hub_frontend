@@ -5,7 +5,7 @@
 }
 .scroller-container li{
     background-color: rgb(2, 11, 20);
-    border-radius: 5px;
+    border-radius: 0px;
     padding-block: 7px;
     padding-left: 1em;
     padding-right: 1em;

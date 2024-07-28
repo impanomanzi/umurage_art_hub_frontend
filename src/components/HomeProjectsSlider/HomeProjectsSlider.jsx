@@ -5,17 +5,10 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function HomeProjectsSlider(props) {
   return (
-    <Container className="carousel-container">
+    <Container className="carousel-container" style={{ borderRadius: "0px" }}>
       <div className="carousel-left"></div>
       <Carousel className="carousel" slide={false} fade>
         {props.projects.map((project, _) => {
-          // let imageUrl = project.image;
-          // let index1 = imageUrl.indexOf("upload/") + "upload/".length;
-          // let newUrl =
-          //   imageUrl.substring(0, index1) +
-          //   "c_scale,o_100,h_200,w_200/" +
-          //   imageUrl.substring(index1, imageUrl.length);
-
           let imageUrl = project.image;
           let index1 = imageUrl.indexOf("upload/") + "upload/".length;
           let newUrl =
@@ -30,7 +23,7 @@ function HomeProjectsSlider(props) {
                 placeholderSrc="/placeholder.png"
                 width={"280px"}
                 height={"300px"}
-                style={{ pointerEvents: "none" }}
+                style={{ pointerEvents: "none", borderRadius: "0px" }}
               />
             </Carousel.Item>
           );

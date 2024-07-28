@@ -1,5 +1,4 @@
 import "./Home.css";
-import { motion } from "framer-motion";
 import { useEffect, useRef, lazy, Suspense } from "react";
 import { useInView, useAnimation } from "framer-motion";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary.jsx";
@@ -12,15 +11,6 @@ function Home() {
   const Gallery = lazy(() => import("../Gallery/Gallery.jsx"));
   const Exhibitions = lazy(() => import("../Exhibitions/Exhibitions.jsx"));
   const Moto = lazy(() => import("../Moto/Moto.jsx"));
-  const Footer = lazy(() => import("../Footer/Footer.jsx"));
-  const ref = useRef();
-  const isInView = useInView(ref, { once: true });
-  const mainControls = useAnimation();
-  useEffect(() => {
-    if (isInView) {
-      mainControls.start("visible");
-    }
-  }, [isInView]);
 
   return (
     <div className="home">
@@ -59,17 +49,7 @@ function Home() {
             </Suspense>
           </ErrorBoundary>
         </div>
-        <motion.div
-          ref={ref}
-          variants={{
-            hidden: { opacity: 0, y: 75 },
-            visible: { opacity: 1, y: 0 },
-          }}
-          initial="hidden"
-          animate={mainControls}
-          transition={{ duration: "0.5", delay: "0.25" }}
-          className="moto-section"
-        >
+        <div className="moto-section">
           <header>
             <h2>About</h2>
           </header>
@@ -78,7 +58,7 @@ function Home() {
               <Moto />
             </Suspense>
           </ErrorBoundary>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

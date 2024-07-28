@@ -83,6 +83,7 @@ function GalleryShow() {
                   document.querySelector(".g-dropdown-menu").style.display =
                     "none";
                 }}
+                style={{ borderRadius: "0px" }}
               >
                 <i className="fas fa-filter"></i>&nbsp;{" "}
                 {query == "" ? "All" : query}
@@ -94,6 +95,7 @@ function GalleryShow() {
                   document.querySelector(".f-dropdown-menu").style.display =
                     "none";
                 }}
+                style={{ borderRadius: "0px" }}
               >
                 <button
                   className="dropdown-item"

@@ -22,6 +22,7 @@ function HomeNavBar() {
             marginRight: "0.5rem",
             backgroundColor: "transparent",
             color: "white",
+            borderRadius: "0px",
           }}
           className="btn btn-outline-primary z-2"
           data-toggle="collapse"

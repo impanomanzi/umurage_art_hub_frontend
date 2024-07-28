@@ -41,8 +41,9 @@ function Gallery() {
           placeholder="Search by gallery name"
           className="search-input"
           onChange={(event) => setQuery(event.target.value)}
+          style={{ borderRadius: "0px" }}
         />
-        <button className="btn btn-primary">
+        <button className="btn btn-primary" style={{ borderRadius: "0px" }}>
           <i className="fas fa-search"></i>
         </button>
       </div>

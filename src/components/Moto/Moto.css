@@ -4,7 +4,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  
     padding-block: 1em;
     padding: 2rem;
 }
@@ -13,4 +12,16 @@
     font-size: 1.3rem;
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.moto-container .links{
+    display: flex;
+    justify-content: space-between;
+}
+.moto-container .links a{
+    text-decoration: none;
+    margin: 1em;
+    color: whitesmoke;
+}
+.moto-container p{
+    opacity: .5;
 }

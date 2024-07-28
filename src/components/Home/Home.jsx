@@ -12,6 +12,7 @@ function Home() {
   const Gallery = lazy(() => import("../Gallery/Gallery.jsx"));
   const Exhibitions = lazy(() => import("../Exhibitions/Exhibitions.jsx"));
   const Moto = lazy(() => import("../Moto/Moto.jsx"));
+  const Footer = lazy(() => import("../Footer/Footer.jsx"));
   const ref = useRef();
   const isInView = useInView(ref, { once: true });
   const mainControls = useAnimation();

@@ -68,7 +68,6 @@ function RefreshLayout() {
   ) : (
     <>
       <Outlet />
-      <Footer />
     </>
   );
 }

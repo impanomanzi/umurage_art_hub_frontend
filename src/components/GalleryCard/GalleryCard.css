@@ -1,7 +1,7 @@
 .gallery-card-link{
   max-width: 100%;
   position: relative;
-  bottom: 10%;
+  bottom: 0%;
   display: none;
 }
 .gallery-card{
@@ -23,7 +23,7 @@
 
 @media screen and (max-device-width: 576px) {
   .gallery-card-link{
-    display: none;
+    display: block;
   }
   
 }

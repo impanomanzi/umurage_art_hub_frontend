@@ -86,24 +86,28 @@ function GalleryCard(props) {
         >
           <Link
             to={`https://api.whatsapp.com/send?phone=${props.gallery.phone}`.trim()}
-            className="btn btn-primary"
+            className="btn btn-outline-tertiary"
+            style={{ borderRadius: "0px" }}
           >
             <i className="fas fa-cart-arrow-down"></i>&nbsp; Buy now
           </Link>
-          <button className="btn btn-secondary" onClick={share}>
+          <button
+            className="btn btn-outline-tertiary"
+            onClick={share}
+            style={{ borderRadius: "0px" }}
+          >
             <i class="fas fa-share-alt"></i>&nbsp; share
           </button>
           <button
-            className="btn btn-secondary"
+            className="btn btn-outline-tertiary"
             onClick={() => {
-              console.log(props.id);
               if (liked) {
                 dislike();
               } else {
                 like();
               }
             }}
-            style={{ backgroundColor: "#ed9b1f" }}
+            style={{ borderRadius: "0px" }}
           >
             <i className="fas fa-heart"></i>&nbsp;
             <span className="badge badge-light" style={{ color: "black" }}>

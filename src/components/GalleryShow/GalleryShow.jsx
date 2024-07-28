@@ -1,11 +1,15 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, lazy, Suspense } from "react";
 import { useParams } from "react-router-dom";
-import GalleryCard from "../GalleryCard/GalleryCard";
 import "./GalleryShow.css";
-import FormNavbar from "../NavBar/FormNavbar";
 import usePaintings from "../../hooks/usePaintings";
-import Viewer from "react-viewer";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary.jsx";
+import ErrorComponent from "../ErrorComponent/ErrorComponent.jsx";
+import Loading from "../loading/loading.jsx";
 function GalleryShow() {
+  const FormNavbar = lazy(() => import("../NavBar/FormNavbar"));
+  const GalleryCard = lazy(() => import("../GalleryCard/GalleryCard"));
+  const Viewer = lazy(() => import("react-viewer"));
+
   const { paintings } = usePaintings();
   const [visible, setVisible] = useState(false);
   const galleryOwner = useParams().name;
@@ -50,7 +54,11 @@ function GalleryShow() {
 
   return (
     <>
-      <FormNavbar />
+      <ErrorBoundary fallback={<ErrorComponent />}>
+        <Suspense fallback={<Loading />}>
+          <FormNavbar />
+        </Suspense>
+      </ErrorBoundary>
       <div className="gallery-shw">
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <span style={{ marginLeft: "1em" }}>
@@ -111,73 +119,40 @@ function GalleryShow() {
         <div className="row">
           {filteredGalleries.map((item, index) => {
             return (
-              <>
-                <GalleryCard
-                  gallery={item}
-                  key={index}
-                  likes={item.likes}
-                  onImageClicked={showImageViewer}
-                  id={item.id}
-                />
-              </>
+              <ErrorBoundary fallback={<ErrorComponent />}>
+                <Suspense fallback={<Loading />}>
+                  <GalleryCard
+                    gallery={item}
+                    key={index}
+                    likes={item.likes}
+                    onImageClicked={showImageViewer}
+                    id={item.id}
+                  />
+                </Suspense>
+              </ErrorBoundary>
             );
           })}
         </div>
       </div>
-      <Viewer
-        visible={visible}
-        onClose={() => setVisible(false)}
-        className="image-viewer"
-        images={[
-          {
-            src: imageUrl,
-            alt: "",
-          },
-        ]}
-        noFooter
-        noImgDetails
-        noNavbar
-        noToolbar
-        changeable
-      />
 
-      {/* {viewImageViewer && (
-        <div className="my-image-viewer">
-          <button className="btn btn-danger" onClick={closeImageViewer}>
-            <i className="fas fa-times"></i>
-          </button>
-          <div className="inner-image-viewer">
-            <img src={currentPainting.image} />
-          </div>
-          <div className="painting-description">
-            <h4>Description</h4>
-            <span className="desc-data">
-              <p className="lead">Name</p>
-              {currentPainting.name}
-            </span>
-            <span className="desc-data">
-              <p className="lead">Category</p>
-              {currentPainting.category}
-            </span>
-            <span className="desc-data">
-              <p className="lead">Owner</p>
-              {currentPainting.owner}
-            </span>
-            <span className="desc-data">
-              <p className="lead">Phone</p>
-              {currentPainting.phone}
-            </span>
-            <span className="desc-data">
-              <p className="lead">Created</p>
-              {currentPainting.created}
-            </span>
-            <span className="desc-data">
-              <p className="lead">Likes</p>
-              {currentPainting.likes}
-            </span>
-          </div>
-        </div>
-      )} */}
+      <ErrorBoundary fallback={<ErrorComponent />}>
+        <Suspense fallback={<Loading />}>
+          <Viewer
+            visible={visible}
+            onClose={() => setVisible(false)}
+            className="image-viewer"
+            images={[
+              {
+                src: imageUrl,
+                alt: "",
+              },
+            ]}
+            noImgDetails
+            noNavbar
+            changeable
+          />
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 }

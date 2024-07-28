@@ -1,7 +1,6 @@
-import { Carousel, Container, Row, Col } from "react-bootstrap";
+import { Carousel, Container } from "react-bootstrap";
 import "./HomeProjectsSlider.css";
 import "bootstrap/dist/css/bootstrap.css";
-import settings from "../settings.json";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function HomeProjectsSlider(props) {

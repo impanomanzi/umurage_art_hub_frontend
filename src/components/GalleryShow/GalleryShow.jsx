@@ -1,4 +1,4 @@
-import { useMemo, useState, lazy, Suspense } from "react";
+import { useMemo, useState, lazy, Suspense, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./GalleryShow.css";
 import usePaintings from "../../hooks/usePaintings";
@@ -6,7 +6,12 @@ import ErrorBoundary from "../ErrorBoundary/ErrorBoundary.jsx";
 import ErrorComponent from "../ErrorComponent/ErrorComponent.jsx";
 import Loading from "../loading/loading.jsx";
 import Viewer from "react-viewer";
+import { API } from "../../API/serverRequest.jsx";
+import useToast from "../../hooks/useToast.jsx";
+import ProfileViewer from "../ProfileViewer/ProfileViewer.jsx";
+
 function GalleryShow() {
+  const { setToast } = useToast();
   const FormNavbar = lazy(() => import("../NavBar/FormNavbar"));
   const GalleryCard = lazy(() => import("../GalleryCard/GalleryCard"));
   const { paintings } = usePaintings();
@@ -14,6 +19,20 @@ function GalleryShow() {
   const galleryOwner = useParams().name;
   const [currentPainting, setCurrentPainting] = useState({});
   const [query, setQuery] = useState("");
+  const [profile, setProfile] = useState({});
+  const [showProfile, setShowProfile] = useState(false);
+  const getProfile = async () => {
+    try {
+      const resp = await API.getProfile(galleryOwner);
+      if (resp.success) {
+        setProfile(resp.data);
+      } else {
+        setToast({ variant: "danger", message: resp.message });
+      }
+    } catch (error) {
+      setToast({ variant: "danger", message: error.message });
+    }
+  };
   const fixedGalleries = useMemo(
     () =>
       paintings.data.filter((item) => {
@@ -50,12 +69,21 @@ function GalleryShow() {
     setVisible(true);
     setCurrentPainting(painting);
   };
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   return (
     <>
       <ErrorBoundary fallback={<ErrorComponent />}>
         <Suspense fallback={<Loading />}>
-          <FormNavbar header={`${galleryOwner} Gallery`} />
+          <FormNavbar
+            header={`${galleryOwner} Gallery`}
+            profile={filteredGalleries[0]?.profile}
+            onProfileBtnClicked={() => {
+              setShowProfile(true);
+            }}
+          />
         </Suspense>
       </ErrorBoundary>
       <div className="gallery-shw">
@@ -145,6 +173,12 @@ function GalleryShow() {
         noImgDetails
         noNavbar
         changeable
+      />
+
+      <ProfileViewer
+        show={showProfile}
+        onHide={() => setShowProfile(false)}
+        profile={profile}
       />
     </>
   );

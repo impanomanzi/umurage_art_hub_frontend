@@ -22,7 +22,7 @@ function NavBar(props) {
     <div className="profile-top-nav-container home-navbar bg-light">
       <div className="home-navbar__logo " id="NavBarLogo">
         <Link to={"/"}>
-          <img src="/UMURAGE HEADER.png" alt="" />
+          <img src="/UMURAGE HEADER.png" alt="" width={"100px"} />
         </Link>
       </div>
       <span>

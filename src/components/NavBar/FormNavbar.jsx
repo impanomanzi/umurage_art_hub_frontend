@@ -1,7 +1,8 @@
 import "./HomeNavBar.css";
 import settings from "../settings.json";
 import { Link } from "react-router-dom";
-function FormNavbar({ header }) {
+import { LazyLoadImage } from "react-lazy-load-image-component";
+function FormNavbar({ header, profile, onProfileBtnClicked }) {
   return (
     <>
       <div
@@ -12,17 +13,36 @@ function FormNavbar({ header }) {
           <img className="navbar-brand" src="/UMURAGE HEADER.png" alt="" />
         </Link>
         <span>
-          <h5 className="nav-header">
-            {header ? (
-              <span style={{ marginLeft: "1em" }}>
-                <h3 className="h3">{header}</h3>
-              </span>
-            ) : (
-              settings.site_name.toUpperCase()
-            )}
-          </h5>
+          {header ? (
+            <span style={{ marginLeft: "1em" }}>
+              <h3>{header}</h3>
+            </span>
+          ) : (
+            settings.site_name.toUpperCase()
+          )}
         </span>
-        <span>&nbsp;</span>
+        <button
+          className="btn btn-tertiary"
+          style={{ zIndex: 1000 }}
+          onClick={onProfileBtnClicked}
+        >
+          {profile && (
+            <LazyLoadImage
+              src={profile}
+              effect="blur"
+              placeholderSrc="/placeholder.png"
+              width={"50px"}
+              height={"50px"}
+              style={{
+                verticalAlign: " middle",
+                width: "50px",
+                height: "50px",
+                borderRadius: "50% ",
+                border: "2px solid black",
+              }}
+            />
+          )}
+        </button>
       </div>
     </>
   );

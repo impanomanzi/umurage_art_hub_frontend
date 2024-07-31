@@ -14,10 +14,10 @@ function ProfileTopNav(props) {
   const [openMenu, setOpenMenu] = useState(false);
   const user = useUser();
   return (
-    <div className="profile-top-nav-container home-navbar">
+    <div className="profile-top-nav-container">
       <div className="home-navbar__logo" id="NavBarLogo">
         <Link to={"/"}>
-          <img src="/UMURAGE HEADER.png" alt="" />
+          <img src="/UMURAGE HEADER.png" alt="" width={"100px"} />
         </Link>
       </div>
       <Drawer

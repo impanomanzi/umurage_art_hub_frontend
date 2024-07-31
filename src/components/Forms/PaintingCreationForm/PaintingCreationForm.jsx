@@ -49,7 +49,7 @@ function PaintingCreationForm(props) {
     }
   }, [painting]);
   return (
-    <div className="payment-registration-form-container m-3">
+    <div className="payment-registration-form-container m-3 mb-5">
       <h2>ADD NEW PAINTING</h2>
       <form onSubmit={handleOnSubmit} className="painting-form" ref={formRef}>
         <div className="form-group">

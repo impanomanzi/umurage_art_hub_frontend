@@ -519,4 +519,19 @@ export const API = {
       throw new Error(error.message);
     }
   },
+
+  getProfile: async (username) => {
+    try {
+      const resp = await fetch(
+        `${settings.server_domain}/profile/${username}`,
+        {
+          method: "GET",
+        }
+      );
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
 };

@@ -6,12 +6,20 @@ import { validateFileType } from "../../FileValidation/FileValidation";
 import { API } from "../../API/serverRequest";
 import useUser from "../../hooks/useUser";
 import useToast from "../../hooks/useToast";
+import Modal from "react-bootstrap/Modal";
+import { TextareaAutosize } from "@mui/material";
 function ProfilePage(props) {
   const user = useUser();
   const [username, setUsername] = useState(user.user);
   const [profilePicture, setProfilePicture] = useState(user.picture);
   const [fullname, setFullname] = useState(user.fullname);
   const [phone, setPhone] = useState(user.phone);
+  const [bio, setBio] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [x, setX] = useState("");
+  const [facebook, setFacebook] = useState("");
+  const [tiktok, setTiktok] = useState("");
+  const [youtube, setYoutube] = useState("");
   const [viewEditProfile, setViewEditProfile] = useState(false);
   const [imagePreviewLink, setImagePreviewLink] = useState(user.picture);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +38,12 @@ function ProfilePage(props) {
       formData.append("username", username);
       formData.append("phonenumber", phone);
       formData.append("profilepicture", profilePicture);
+      formData.append("instagram", instagram);
+      formData.append("facebook", facebook);
+      formData.append("x", x);
+      formData.append("tiktok", tiktok);
+      formData.append("youtube", youtube);
+      formData.append("bio", bio);
       const resp = await API.updatePainter(formData);
       if (resp.success) {
         formRef.current.reset();
@@ -80,14 +94,15 @@ function ProfilePage(props) {
           </button>
         </div>
         {viewEditProfile && (
-          <div className="edit-profile-outer-container">
-            <div className="close-btn-container">
-              <button
-                className="btn btn-close"
-                onClick={() => setViewEditProfile(false)}
-              ></button>
-            </div>
-            <div className="edit-profile-page-container">
+          <Modal
+            show={viewEditProfile}
+            onHide={() => setViewEditProfile(false)}
+            dialogClassName="modal-dialog"
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Edit profile</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
               <form
                 onSubmit={handleOnSubmit}
                 className="update-form"
@@ -106,20 +121,22 @@ function ProfilePage(props) {
                       height={"100px"}
                     />
                   </div>
-                  <input
-                    type="file"
-                    className="btn btn-outline-dark"
-                    accept=".jpg, .png, .jpeg"
-                    onChange={(event) => {
-                      validateFileType(
-                        event,
-                        acceptedFileTypes,
-                        setProfilePicture,
-                        setImageValidated,
-                        setFileError
-                      );
-                    }}
-                  />
+                  <div className="form-group">
+                    <input
+                      type="file"
+                      className="btn btn-outline-dark"
+                      accept=".jpg, .png, .jpeg"
+                      onChange={(event) => {
+                        validateFileType(
+                          event,
+                          acceptedFileTypes,
+                          setProfilePicture,
+                          setImageValidated,
+                          setFileError
+                        );
+                      }}
+                    />
+                  </div>
                   {fileError && (
                     <div className="alert alert-danger">
                       {FILE_ERROR} <br />
@@ -163,17 +180,100 @@ function ProfilePage(props) {
                     className="form-control"
                   />
                 </div>
+                <div className="form-group mt-1">
+                  <label htmlFor="instagram">Bio</label>
+                  <TextareaAutosize
+                    onChange={(event) => {
+                      setBio(event.target.value);
+                    }}
+                    className="form-control"
+                  />
+                </div>
+                <div className="form-group mt-1">
+                  <div className="input-group">
+                    <label htmlFor="instagram" className="input-group-text">
+                      <i class="fa-brands fa-instagram"></i>
+                    </label>
+                    <input
+                      type="text"
+                      onChange={(event) => {
+                        setInstagram(event.target.value);
+                      }}
+                      className="form-control"
+                    />
+                  </div>
+                </div>
+                <div className="form-group mt-1">
+                  <div className="input-group">
+                    <label htmlFor="facebook" className="input-group-text">
+                      <i class="fa-brands fa-facebook"></i>
+                    </label>
+                    <input
+                      type="text"
+                      onChange={(event) => {
+                        setFacebook(event.target.value);
+                      }}
+                      className="form-control"
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group mt-1">
+                  <div className="input-group">
+                    <label htmlFor="x" className="input-group-text">
+                      <i class="fa-brands fa-x-twitter"></i>
+                    </label>
+                    <input
+                      type="text"
+                      onChange={(event) => {
+                        setX(event.target.value);
+                      }}
+                      className="form-control"
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group mt-1">
+                  <div className="input-group">
+                    <label htmlFor="tiktok" className="input-group-text">
+                      <i class="fa-brands fa-tiktok"></i>
+                    </label>
+                    <input
+                      type="text"
+                      onChange={(event) => {
+                        setTiktok(event.target.value);
+                      }}
+                      className="form-control"
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group mt-1">
+                  <div className="input-group">
+                    <label htmlFor="youtube" className="input-group-text">
+                      <i class="fa-brands fa-youtube"></i>
+                    </label>
+                    <input
+                      type="text"
+                      onChange={(event) => {
+                        setYoutube(event.target.value);
+                      }}
+                      className="form-control"
+                    />
+                  </div>
+                </div>
+
                 <div className="form-group">
                   <CustomLoadingButton
                     isLoading={isLoading}
                     onClick={null}
-                    text="Save"
+                    text="Update"
                     buttonType="submit"
                   />
                 </div>
               </form>
-            </div>
-          </div>
+            </Modal.Body>
+          </Modal>
         )}
       </div>
     </>

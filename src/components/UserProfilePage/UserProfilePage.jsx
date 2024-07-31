@@ -8,9 +8,9 @@ function UserProfilePage(props) {
       <ProfileTopNav />
 
       <div className="user user-main">
+        <ProfileBottomNav />
         <Outlet />
       </div>
-      <ProfileBottomNav />
     </div>
   );
 }

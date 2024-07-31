@@ -69,7 +69,7 @@ function Exhibitions() {
                 onMouseEnter={closeExDropdown}
                 style={{ borderRadius: "0px" }}
               >
-                <i className="fas fa-sort-amount-down"></i>&nbsp; {dropdownText}
+                <i className="fas fa-sort-amount-down"></i>
               </button>
               <div
                 className="dropdown-menu ex-dropdown-menu"
@@ -92,7 +92,7 @@ function Exhibitions() {
                     setExhibitions(FilteredExhibitionsbynames);
                   }}
                 >
-                  <i className="fas fa-sort-alpha-down"></i> &nbsp; Name
+                  Name
                 </button>
                 <button
                   className="dropdown-item"
@@ -111,7 +111,7 @@ function Exhibitions() {
                     setExhibitions(FilteredExhibitionsbynames);
                   }}
                 >
-                  <i className="fas fa-sort-numeric-down"></i> &nbsp;start Date
+                  Date
                 </button>
                 <button
                   className="dropdown-item"
@@ -126,7 +126,7 @@ function Exhibitions() {
                     setExhibitions(FilteredExhibitions);
                   }}
                 >
-                  <i className="fas fa-sort-numeric-down"></i> &nbsp;Price
+                  Price
                 </button>
               </div>
             </div>

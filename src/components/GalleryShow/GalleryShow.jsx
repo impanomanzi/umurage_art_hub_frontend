@@ -78,7 +78,7 @@ function GalleryShow() {
       <ErrorBoundary fallback={<ErrorComponent />}>
         <Suspense fallback={<Loading />}>
           <FormNavbar
-            header={`${galleryOwner} Gallery`}
+            header={`${galleryOwner}`}
             profile={filteredGalleries[0]?.profile}
             onProfileBtnClicked={() => {
               setShowProfile(true);

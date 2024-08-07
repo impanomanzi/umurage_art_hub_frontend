@@ -4,6 +4,14 @@
   margin-right: 1rem;
   overflow-x: scroll;
 }
+
+.exhibitions-container {
+  -ms-overflow-style: none;   
+  scrollbar-width: none;   
+}
+.exhibitions-container::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
 .exhibitions-outer-container {
   height: auto;
 }

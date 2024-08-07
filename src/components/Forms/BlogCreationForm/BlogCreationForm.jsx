@@ -26,7 +26,7 @@ function BlogCreationForm() {
         setToast({ variant: "danger", message: resp.message });
       }
     } catch (error) {
-      setToast({ variant: "danger", message: String(error) });
+      setToast({ variant: "danger", message: error.message });
     } finally {
       setIsLoading(false);
     }

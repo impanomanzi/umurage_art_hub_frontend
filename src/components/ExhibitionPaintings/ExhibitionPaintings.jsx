@@ -1,13 +1,14 @@
 import "./ExhibitionPaintings.css";
 import FormNavbar from "../NavBar/FormNavbar";
 import ExhibtionPaintingCard from "../ExhibtionPaintingCard/ExhibtionPaintingCard";
-import { toast } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { API } from "../../API/serverRequest";
 import { Spinner } from "react-bootstrap";
 import ThreeGallery from "../ThreeGallery/ThreeGallery";
+import useToast from "../../hooks/useToast";
 function ExhibitionPaintings() {
+  const { setToast } = useToast();
   const id = useParams().id;
   const navigate = useNavigate();
   const [verified, setVerified] = useState(false);
@@ -19,9 +20,11 @@ function ExhibitionPaintings() {
       if (data.success) {
         setVerified(true);
         setPaintings(data.data);
+      } else {
+        setToast({ variant: "danger", message: "Forbidden" });
       }
     } catch (error) {
-      toast.error(String(error));
+      setToast({ variant: "danger", message: error.message });
     } finally {
       setIsLoading(false);
     }
@@ -38,6 +41,9 @@ function ExhibitionPaintings() {
     <>
       <FormNavbar />
       <div className="exhibition-paintings-container">
+        <button className="btn btn-outline-secondary" onClick={logout}>
+          <i class="fa-solid fa-left-from-bracket"></i> Sign out
+        </button>
         {isLoading && (
           <div className="inner-exhibition-paintings-container">
             <Spinner animation="border" />

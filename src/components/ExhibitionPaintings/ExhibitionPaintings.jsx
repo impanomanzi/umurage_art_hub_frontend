@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { API } from "../../API/serverRequest";
 import { Spinner } from "react-bootstrap";
+import ThreeGallery from "../ThreeGallery/ThreeGallery";
 function ExhibitionPaintings() {
   const id = useParams().id;
   const navigate = useNavigate();
@@ -43,9 +44,10 @@ function ExhibitionPaintings() {
           </div>
         )}
 
-        {verified && (
-          <div>
-            <div
+        {
+          verified && <ThreeGallery />
+          // <div/>
+          /* <div
               className="logout-container"
               style={{
                 display: "flex",
@@ -69,8 +71,8 @@ function ExhibitionPaintings() {
                 );
               })}
             </div>
-          </div>
-        )}
+          </div> */
+        }
       </div>
     </>
   );

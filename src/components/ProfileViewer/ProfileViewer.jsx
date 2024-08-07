@@ -1,7 +1,6 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 function ProfileViewer({ show, profile, onHide }) {
-  console.log(profile);
   return (
     <Modal show={show} onHide={onHide} dialogClassName="modal-dialog">
       <Modal.Header closeButton>

@@ -1,0 +1,70 @@
+.home-page-section {
+  height: 75vh;  
+  width: 100vw;  
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  color: white;
+  text-align: center;
+}
+
+mark.highlight {
+  background-color: rgba(255, 255, 0, 0.3); 
+  color: black; 
+  padding: 0 3px; 
+  border-radius: 2px;
+}
+.home-page-section a{
+  text-decoration: none;
+}
+
+.content {
+  max-width: 900px;  
+  background: rgba(0, 0, 0, 0.6);  
+  padding: 30px;  
+  border-radius: 0px; 
+}
+
+.title {
+  font-size: 4rem; /* Larger title */
+  margin-bottom: 25px;
+  color: #ed9b1f;
+}
+
+.description {
+  font-size: 1.5rem; /* Larger paragraph text */
+  margin-bottom: 35px;
+}
+
+.learn-more-btn {
+  display: inline-block;
+  padding: 15px 30px; /* Larger button */
+  font-size: 1.25rem; /* Larger button text */
+  color: white;
+  background-color: #007bff;
+  border-radius: 0px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.learn-more-btn:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .description {
+    font-size: 1.25rem;
+  }
+
+  .learn-more-btn {
+    font-size: 1rem;
+  }
+}

@@ -2,7 +2,7 @@
  
 .exhibition-section {
   height: 80vh;
-  background: url("/background.png");
+  background: url('/images/home.jpg');
   background-repeat: no-repeat;
   background-size: cover;
 }

@@ -54,7 +54,7 @@ function RefreshLayout() {
         flexDirection: "column",
       }}
     >
-      <ProgressBar now={progress} variant="progress" />
+      {/* <ProgressBar now={progress} variant="progress" /> */}
       <div
         style={{
           display: "flex",

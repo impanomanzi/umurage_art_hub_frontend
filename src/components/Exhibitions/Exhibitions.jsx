@@ -28,7 +28,7 @@ function Exhibitions() {
   return (
     <>
       <div className="exhibitions-outer-container">
-        <div className="header">
+        {/* <div className="header">
           <div className="my-btn-group">
             <div
               className="btn-group"
@@ -56,8 +56,8 @@ function Exhibitions() {
               >
                 <i className="fas fa-search"></i>
               </button>
-            </div>
-            <div className="dropdown">
+            </div> */}
+        {/* <div className="dropdown">
               <button
                 className="btn btn-secondary dropdown-toggle"
                 type="button"
@@ -129,9 +129,9 @@ function Exhibitions() {
                   Price
                 </button>
               </div>
-            </div>
-          </div>
-        </div>
+            </div> */}
+        {/* </div>
+        </div> */}
 
         <div className="exhibitions-container" id="exhibitions-container">
           {filteredExhibitions?.map((exhibition, index) => {

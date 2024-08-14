@@ -163,6 +163,25 @@ export const API = {
       throw new Error(error.message);
     }
   },
+  addComment: async (jsonData) => {
+    try {
+      const resp = await fetch(
+        `${settings.server_domain}/comment/add_new_comment`,
+        {
+          method: "POST",
+          body: jsonData,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
   getBlogs: async () => {
     try {
       const response = await fetch(`${settings.server_domain}/blog/get_blogs`);

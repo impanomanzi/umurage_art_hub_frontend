@@ -10,6 +10,9 @@ function CustomLoadingButton(props) {
       disabled={isLoading ? true : false}
       onClick={handleOnclick}
       type={buttonType}
+      style={{
+        borderRadius: "0px",
+      }}
     >
       {isLoading && (
         <div className="spinner-border" role="status">

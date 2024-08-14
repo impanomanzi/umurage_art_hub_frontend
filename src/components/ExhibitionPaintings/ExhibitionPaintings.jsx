@@ -7,7 +7,9 @@ import { API } from "../../API/serverRequest";
 import { Spinner } from "react-bootstrap";
 import ThreeGallery from "../ThreeGallery/ThreeGallery";
 import useToast from "../../hooks/useToast";
+import CommentForm from "../Comment/Comment";
 function ExhibitionPaintings() {
+  const [show, setShow] = useState(false);
   const { setToast } = useToast();
   const id = useParams().id;
   const navigate = useNavigate();
@@ -25,6 +27,7 @@ function ExhibitionPaintings() {
       }
     } catch (error) {
       setToast({ variant: "danger", message: error.message });
+      navigate("/");
     } finally {
       setIsLoading(false);
     }
@@ -39,11 +42,27 @@ function ExhibitionPaintings() {
 
   return (
     <>
-      <FormNavbar />
       <div className="exhibition-paintings-container">
-        <button className="btn btn-outline-secondary" onClick={logout}>
-          <i class="fa-solid fa-left-from-bracket"></i> Sign out
-        </button>
+        <div className="exhibition-controls">
+          <button
+            className="btn btn-outline-tertiary btn-danger"
+            onClick={() => logout()}
+            style={{
+              borderRadius: "0px",
+            }}
+          >
+            <i class="fa-solid fa-power-off"></i>
+          </button>
+          <button
+            className="btn btn-outline-secondary-tertiary"
+            onClick={() => setShow(!show)}
+            style={{
+              color: "#ed9b1f",
+            }}
+          >
+            <i class="fa-regular fa-comment"></i>
+          </button>
+        </div>
         {isLoading && (
           <div className="inner-exhibition-paintings-container">
             <Spinner animation="border" />
@@ -52,6 +71,7 @@ function ExhibitionPaintings() {
 
         {
           verified && <ThreeGallery />
+          // <ThreeGallery />
           // <div/>
           /* <div
               className="logout-container"
@@ -80,6 +100,11 @@ function ExhibitionPaintings() {
           </div> */
         }
       </div>
+      <CommentForm
+        show={show}
+        onHide={() => setShow(false)}
+        exId={useParams().id}
+      />
     </>
   );
 }

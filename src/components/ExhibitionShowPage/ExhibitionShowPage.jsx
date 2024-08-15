@@ -28,7 +28,7 @@ function ExhibitionShowPage() {
               justifyContent: "center",
             }}
           >
-            <h2>{wanted?.name.toUpperCase()}</h2>
+            <h2 id="customer-form-header">{wanted?.name.toUpperCase()}</h2>
             <LazyLoadImage
               src={`${wanted?.image.replace(
                 "http://localhost:5000",

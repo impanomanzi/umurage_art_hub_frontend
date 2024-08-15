@@ -42,7 +42,14 @@ function ExhibitionPaintings() {
 
   return (
     <>
-      <div className="exhibition-paintings-container">
+      <div
+        className="exhibition-paintings-container"
+        style={{
+          position: "relative",
+          backgroundColor: "rgba(0, 0, 0, 0.7)",
+          minHeight: "100vh",
+        }}
+      >
         <div className="exhibition-controls">
           <button
             className="btn btn-outline-tertiary btn-danger"
@@ -51,7 +58,7 @@ function ExhibitionPaintings() {
               borderRadius: "0px",
             }}
           >
-            <i class="fa-solid fa-power-off"></i>
+            <i className="fa-solid fa-power-off"></i>
           </button>
           <button
             className="btn btn-outline-secondary-tertiary"
@@ -60,45 +67,36 @@ function ExhibitionPaintings() {
               color: "#ed9b1f",
             }}
           >
-            <i class="fa-regular fa-comment"></i>
+            <i className="fa-regular fa-comment"></i>
           </button>
         </div>
+
         {isLoading && (
-          <div className="inner-exhibition-paintings-container">
+          <div
+            className="inner-exhibition-paintings-container"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "#fff", // Spinner color
+            }}
+          >
             <Spinner animation="border" />
           </div>
         )}
 
-        {
-          verified && <ThreeGallery />
-          // <ThreeGallery />
-          // <div/>
-          /* <div
-              className="logout-container"
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                marginRight: "1em",
-              }}
-            >
-              <button className="btn btn-outline-primary" onClick={logout}>
-                <i className="fas fa-logout"></i> Sign out
-              </button>
-            </div>
-
-            <div className="inner-exhibition-paintings-container">
-              {paintings.map((item, index) => {
-                return (
-                  <ExhibtionPaintingCard
-                    item={item}
-                    key={index}
-                    exhibition={id}
-                  />
-                );
-              })}
-            </div>
-          </div> */
-        }
+        {verified && (
+          <div
+            style={{ display: isLoading ? "none" : "block" }}
+            onLoad={() => setIsLoading(false)}
+          >
+            <ThreeGallery />
+          </div>
+        )}
       </div>
       <CommentForm
         show={show}

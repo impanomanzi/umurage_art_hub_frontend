@@ -148,6 +148,10 @@ button:focus-visible {
 .my-modal-dialog{
   border-radius: 0px !important;
 }
+
+#customer-form-header{
+  font-size: 1.5rem;
+}
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

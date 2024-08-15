@@ -43,8 +43,9 @@ function PayementRegistrationForm() {
     },
   };
   const handleFlutterPayment = useFlutterwave(config);
+
   const paymentCallback = async (customer, response) => {
-    if (response.status == "successful") {
+    if (response.status === "successful") {
       const formData = new FormData();
       formData.append("customer_id", customer.id);
       formData.append("current_status", "pending");
@@ -65,17 +66,20 @@ function PayementRegistrationForm() {
         setToast({ variant: "danger", message: error.message });
       }
     }
+    setIsLoading(false);
     closePaymentModal();
   };
+
   const handleOnChange = (value) => {
     setPhoneNumber(value);
   };
+
   const handleOnSubmit = async (event) => {
     try {
       setIsLoading(true);
       event.preventDefault();
       if (!isPossiblePhoneNumber("+" + phoneNumber)) {
-        throw new Error("phone number is invalid");
+        throw new Error("Phone number is invalid");
       }
       const formData = new FormData();
       formData.append("firstname", firstName);
@@ -94,15 +98,16 @@ function PayementRegistrationForm() {
 
         handleFlutterPayment({
           callback: (response) => paymentCallback(resp.data[0], response),
-          onClose: () => {},
+          onClose: () => {
+            setIsLoading(false); // Ensure loading stops if modal is closed
+          },
         });
       } else {
         throw new Error(resp.message);
       }
     } catch (error) {
       setToast({ variant: "danger", message: error.message });
-    } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Stop loading in case of error
     }
   };
 
@@ -112,7 +117,7 @@ function PayementRegistrationForm() {
       <div className="form-outer-container">
         <div className="form-inner-container">
           <div>
-            <h2>COMPLETE INFORMATION</h2>
+            <h2 id="customer-form-header">PAYMENT INFORMATION</h2>
             <MultiStepProgressBar activeElement={activeTab} options={options} />
           </div>
           <form onSubmit={handleOnSubmit} ref={formRef}>

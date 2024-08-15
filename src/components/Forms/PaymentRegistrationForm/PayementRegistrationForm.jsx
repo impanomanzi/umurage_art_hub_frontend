@@ -39,7 +39,7 @@ function PayementRegistrationForm() {
     customizations: {
       title: `${exhibition?.name}`,
       description: `Payment for an exhibition`,
-      logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
+      logo: "https://res.cloudinary.com/dqlv0vkoe/image/upload/v1723699741/amagara/e3biqv7qr11eodteuzpa.png",
     },
   };
   const handleFlutterPayment = useFlutterwave(config);

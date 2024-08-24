@@ -1,5 +1,5 @@
 import "./Home.css";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useRef, useEffect } from "react";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary.jsx";
 import Loading from "../loading/loading.jsx";
 import ErrorComponent from "../ErrorComponent/ErrorComponent.jsx";
@@ -13,6 +13,41 @@ function Home() {
   const Exhibitions = lazy(() => import("../Exhibitions/Exhibitions.jsx"));
   const Moto = lazy(() => import("../Moto/Moto.jsx"));
   const { exhibitions } = useExhibitions();
+
+  const exhibitionRef = useRef(null);
+  const galleryRef = useRef(null);
+  const motoRef = useRef(null);
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.5, // Adjust this threshold as needed
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Only scroll into view if the user has interacted (scrolled to this section)
+          if (entry.target.dataset.hasBeenVisible) {
+            entry.target.scrollIntoView({ behavior: "smooth" });
+          } else {
+            entry.target.dataset.hasBeenVisible = true;
+          }
+        }
+      });
+    }, options);
+
+    if (exhibitionRef.current) observer.observe(exhibitionRef.current);
+    if (galleryRef.current) observer.observe(galleryRef.current);
+    if (motoRef.current) observer.observe(motoRef.current);
+
+    return () => {
+      if (exhibitionRef.current) observer.unobserve(exhibitionRef.current);
+      if (galleryRef.current) observer.unobserve(galleryRef.current);
+      if (motoRef.current) observer.unobserve(motoRef.current);
+    };
+  }, []);
 
   return (
     <div className="home">
@@ -29,7 +64,11 @@ function Home() {
         </ErrorBoundary>
       </div>
       <div className="home-main-container">
-        <div className="exhibition-section">
+        <div
+          className="exhibition-section"
+          ref={exhibitionRef}
+          data-has-been-visible="false"
+        >
           {exhibitions?.length ? (
             <>
               <header>
@@ -55,7 +94,12 @@ function Home() {
             </>
           )}
         </div>
-        <div className="gallery-section" id="galleries">
+        <div
+          className="gallery-section"
+          id="galleries"
+          ref={galleryRef}
+          data-has-been-visible="false"
+        >
           <header>
             <h2 className="index-header">Galleries</h2>
           </header>
@@ -65,7 +109,12 @@ function Home() {
             </Suspense>
           </ErrorBoundary>
         </div>
-        <div className="moto-section" id="about">
+        <div
+          className="moto-section"
+          id="about"
+          ref={motoRef}
+          data-has-been-visible="false"
+        >
           <header>
             <h2 className="index-header">About us</h2>
           </header>

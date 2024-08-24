@@ -7,6 +7,7 @@ import "./ExhibitionShowPage.css";
 import { useMemo } from "react";
 import useExhibitions from "../../hooks/useExhibitions";
 import ReactMarkdown from "react-markdown";
+import { Helmet } from "react-helmet-async";
 
 function ExhibitionShowPage() {
   const { exhibitions } = useExhibitions();
@@ -18,6 +19,17 @@ function ExhibitionShowPage() {
 
   return (
     <>
+      <Helmet>
+        <title>{wanted?.name}</title>
+        <meta
+          name="description"
+          content={`Explore the ${wanted?.name}, a virtual exhibition showcasing. Join us online to experience a unique digital art event featuring works from various artists.`}
+        />
+        <meta
+          name="keywords"
+          content={`${wanted?.name}, Virtual Exhibition, Online Art Event, Digital Art Showcase,Art Exhibition`}
+        />
+      </Helmet>
       <FormNavbar />
       <div className="form-outer-container">
         <div className="form-inner-container">
@@ -28,7 +40,9 @@ function ExhibitionShowPage() {
               justifyContent: "center",
             }}
           >
-            <h2 id="customer-form-header">{wanted?.name.toUpperCase()}</h2>
+            <h1 id="customer-form-header" className="main-title">
+              {wanted?.name.toUpperCase()} by {wanted?.host}
+            </h1>
             <LazyLoadImage
               src={`${wanted?.image.replace(
                 "http://localhost:5000",

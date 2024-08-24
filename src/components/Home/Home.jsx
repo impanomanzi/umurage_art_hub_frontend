@@ -5,6 +5,7 @@ import Loading from "../loading/loading.jsx";
 import ErrorComponent from "../ErrorComponent/ErrorComponent.jsx";
 import Features from "../Features/Features.jsx";
 import useExhibitions from "../../hooks/useExhibitions.jsx";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 function Home() {
   const HomeNavBar = lazy(() => import("../NavBar/HomeNavBar.jsx"));
@@ -22,13 +23,12 @@ function Home() {
     const options = {
       root: null,
       rootMargin: "0px",
-      threshold: 0.5, // Adjust this threshold as needed
+      threshold: 0.5,
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // Only scroll into view if the user has interacted (scrolled to this section)
           if (entry.target.dataset.hasBeenVisible) {
             entry.target.scrollIntoView({ behavior: "smooth" });
           } else {
@@ -50,82 +50,95 @@ function Home() {
   }, []);
 
   return (
-    <div className="home">
-      <ErrorBoundary fallback={<ErrorComponent />}>
-        <Suspense fallback={<Loading />}>
-          <HomeNavBar />
-        </Suspense>
-      </ErrorBoundary>
-      <div>
+    <>
+      <Helmet>
+        <title>Umurage Art Hub - Virtual Art Gallery</title>
+        <meta
+          name="description"
+          content="Explore Umurage Art Hub's virtual art exhibitions and digital showcases."
+        />
+        <meta
+          name="keywords"
+          content="Virtual Art Gallery, Online Art Exhibitions, Digital Art Gallery, Virtual Exhibition Space, Rwandan Art, Umurage Art Hub"
+        />
+      </Helmet>
+      <div className="home">
         <ErrorBoundary fallback={<ErrorComponent />}>
           <Suspense fallback={<Loading />}>
-            <Announcement />
+            <HomeNavBar />
           </Suspense>
         </ErrorBoundary>
-      </div>
-      <div className="home-main-container">
-        <div
-          className="exhibition-section"
-          ref={exhibitionRef}
-          data-has-been-visible="false"
-        >
-          {exhibitions?.length ? (
-            <>
-              <header>
-                <h2 className="index-header">Exhibitions</h2>
-              </header>
-              <div className="home-exhibition-container">
-                <ErrorBoundary fallback={<ErrorComponent />}>
-                  <Suspense fallback={<Loading />}>
-                    <Exhibitions />
-                  </Suspense>
-                </ErrorBoundary>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="home-exhibition-container">
-                <ErrorBoundary fallback={<ErrorComponent />}>
-                  <Suspense fallback={<Loading />}>
-                    <Features />
-                  </Suspense>
-                </ErrorBoundary>
-              </div>
-            </>
-          )}
-        </div>
-        <div
-          className="gallery-section"
-          id="galleries"
-          ref={galleryRef}
-          data-has-been-visible="false"
-        >
-          <header>
-            <h2 className="index-header">Galleries</h2>
-          </header>
+        <div>
           <ErrorBoundary fallback={<ErrorComponent />}>
             <Suspense fallback={<Loading />}>
-              <Gallery />
+              <Announcement />
             </Suspense>
           </ErrorBoundary>
         </div>
-        <div
-          className="moto-section"
-          id="about"
-          ref={motoRef}
-          data-has-been-visible="false"
-        >
-          <header>
-            <h2 className="index-header">About us</h2>
-          </header>
-          <ErrorBoundary fallback={<ErrorComponent />}>
-            <Suspense fallback={<Loading />}>
-              <Moto />
-            </Suspense>
-          </ErrorBoundary>
+        <div className="home-main-container">
+          <div
+            className="exhibition-section"
+            ref={exhibitionRef}
+            data-has-been-visible="false"
+          >
+            {exhibitions?.length ? (
+              <>
+                <header>
+                  <h2 className="index-header">Exhibitions</h2>
+                </header>
+                <div className="home-exhibition-container">
+                  <ErrorBoundary fallback={<ErrorComponent />}>
+                    <Suspense fallback={<Loading />}>
+                      <Exhibitions />
+                    </Suspense>
+                  </ErrorBoundary>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="home-exhibition-container">
+                  <ErrorBoundary fallback={<ErrorComponent />}>
+                    <Suspense fallback={<Loading />}>
+                      <Features />
+                    </Suspense>
+                  </ErrorBoundary>
+                </div>
+              </>
+            )}
+          </div>
+          <div
+            className="gallery-section"
+            id="galleries"
+            ref={galleryRef}
+            data-has-been-visible="false"
+          >
+            <header>
+              <h2 className="index-header">Galleries</h2>
+            </header>
+            <ErrorBoundary fallback={<ErrorComponent />}>
+              <Suspense fallback={<Loading />}>
+                <Gallery />
+              </Suspense>
+            </ErrorBoundary>
+          </div>
+          <div
+            className="moto-section"
+            id="about"
+            ref={motoRef}
+            data-has-been-visible="false"
+          >
+            <header>
+              <h2 className="index-header">About us</h2>
+            </header>
+            <ErrorBoundary fallback={<ErrorComponent />}>
+              <Suspense fallback={<Loading />}>
+                <Moto />
+              </Suspense>
+            </ErrorBoundary>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

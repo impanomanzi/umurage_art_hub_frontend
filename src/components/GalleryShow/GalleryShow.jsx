@@ -9,6 +9,7 @@ import Viewer from "react-viewer";
 import { API } from "../../API/serverRequest.jsx";
 import useToast from "../../hooks/useToast.jsx";
 import ProfileViewer from "../ProfileViewer/ProfileViewer.jsx";
+import { Helmet } from "react-helmet-async";
 
 function GalleryShow() {
   const { setToast } = useToast();
@@ -75,6 +76,23 @@ function GalleryShow() {
 
   return (
     <>
+      <Helmet>
+        <title>{useParams().name} - Gallery</title>
+        <meta
+          name="description"
+          content={`Explore the virtual gallery of ${
+            useParams().name
+          }, showcasing a stunning collection of portrait paintings and diverse artworks. Discover and buy original pieces from this talented artist.`}
+        />
+        <meta
+          name="keywords"
+          content={`${
+            useParams().name
+          }, Virtual Gallery, Portrait Paintings, Artworks, Online Art Exhibition, Digital Art Gallery, Buy Art Online,  ${
+            useParams().name
+          } Collection`}
+        />
+      </Helmet>
       <ErrorBoundary fallback={<ErrorComponent />}>
         <Suspense fallback={<Loading />}>
           <FormNavbar

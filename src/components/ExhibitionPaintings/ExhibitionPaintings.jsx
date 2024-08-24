@@ -82,7 +82,7 @@ function ExhibitionPaintings() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              color: "#fff", // Spinner color
+              color: "#fff",
             }}
           >
             <Spinner animation="border" />

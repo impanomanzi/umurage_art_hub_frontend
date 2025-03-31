@@ -1,0 +1,77 @@
+@font-face {
+    font-display: swap;  
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 350;
+    src: url('fonts/roboto-v32-latin-500.woff2') format('woff2');  
+  }
+
+
+  
+:root{
+ 
+    --font-family:'Roboto','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --background-color:rgb(2, 11, 20);
+    --secondary-font-color: #fff;
+    --tertiary-font-color:#334455;
+    --primary-site-color: #ed9b1f;
+    --primary-background-color:whitesmoke;
+    --font-size-sm:1rem;
+    --font-size-md:1.3rem;
+    --font-size-lg:1.5rem;
+    --font-size-xlg:2rem;
+    --font-weight-strong:900;
+    --font-weight-lighter:400;
+    --primary-button-color:#007bff;
+    --danger-button-color:red;
+    --secondary-background-color:rgba(245, 233, 227, 0.6);
+    --tertiary-background-color: rgba(171, 216, 248, 0.2);
+    --primary-hover-color: rgba(237, 155, 31, 0.5);
+   
+  }
+  button .btn .primary{
+    background-color: black !important;
+  }
+
+  .stack-toolbar{
+    position: fixed;
+    position-anchor:  --list-title;
+    top: anchor(calc(bottom + 10%));  
+    width: inherit;  
+    z-index: 1000;  
+    margin-top: 0.2em;
+    background-color: var( --background-color) !important;
+    margin: 0.7em;
+    padding: 0.7em;
+    border-radius: 10px;
+    
+  }
+
+
+  .stack-toolbar *{
+    color: var(--primary-site-color);
+    font-weight: 900;
+    font-size: var(--font-size-lg);
+
+  }
+
+  .section-description{
+    font-size: var(--font-size-md);
+    text-align: center;
+    padding-inline: 6rem;
+    padding-bottom: 2rem;
+    opacity: 0.7;
+  }
+
+  
+@media (max-width: 768px) {
+
+  .section-description{
+    font-size: var(--font-size-sm);
+    text-align: center;
+    padding-inline: 3rem;
+    padding-bottom: 1rem;
+    opacity: 0.7;
+  }
+
+}

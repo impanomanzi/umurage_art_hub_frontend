@@ -1,5 +1,15 @@
 
- 
+.scroller-container{
+    position-anchor: --navbar;
+    top:  anchor(bottom); 
+    position: fixed;
+    z-index: 12001;  
+    margin-top: 0.1em;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    anchor-name: --announcement;
+}
 .scroller-container ul{
     list-style: none;
 }
@@ -10,19 +20,15 @@
     padding-left: 1em;
     padding-right: 1em;
     width: max-content;
-    color: #ed9b1f
+    color:var(--primary-site-color)
 
 }
 .scroller-container .scroller{
-    max-width:600px;
+    max-width:1200px;
      
     
 }
-.scroller-container{
-    display: flex;
-    justify-content: center;
-    
-}
+ 
 .scroller-container .inner-scroller{
     display: flex;
     gap: 0.5em;

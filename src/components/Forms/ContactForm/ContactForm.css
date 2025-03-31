@@ -1,0 +1,10 @@
+#send-btn{
+    background:linear-gradient(45deg, var(--primary-site-color), rgba(0, 0, 0, 0.599));
+    border-color: inherit;
+}
+
+#send-btn:hover{
+    background:linear-gradient(45deg, var(--primary-site-color), rgba(0, 0, 0, 0.227));
+    border-color: inherit;
+    color: black;
+}

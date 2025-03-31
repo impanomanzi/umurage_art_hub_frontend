@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+
+
 import "./Footer.css";
 
 function Footer() {
+  
   return (
     <div className="footer-outer gutters">
+     
       {isVisible && (
         <a
           className="btn btn-primary"
@@ -22,6 +25,8 @@ function Footer() {
           <i className="fas fa-arrow-up"></i>
         </a>
       )}
+      
+     
       <div className="footer-container">
         <div className="footer">
           <span>

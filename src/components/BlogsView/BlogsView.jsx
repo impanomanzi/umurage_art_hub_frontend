@@ -5,11 +5,19 @@ import { API } from "../../API/serverRequest";
 import { blogKeywords } from "../KeyWords/Keywords";
 import StatusButton from "../StatusButton/StatusButton";
 import useToast from "../../hooks/useToast";
+import EditButton from "../EditButton/EditButton";
+import DeleteConfirmDialog from "../Dialogs/DeleteConfirmDialog/DeleteConfirmDialog";
+import EditBlogForm from "../Forms/BlogCreationForm/BlogEditForm";
 function BlogsView() {
   const [blogs, setBlogs] = useState([]);
   const [interactedBlog, setInteractedBlog] = useState("");
+  const [currentBlogId, setCurrentBlogId]= useState(null);
+  const [currentBlogData, setCurrentBlogData]= useState({})
+  const[showDeleteConfirm, setShowDeleteConfirm]= useState(false)
   const [isLoading, setIsLoading] = useState(true);
   const { setToast } = useToast();
+  const [showEditForm, setShowEditForm] = useState(false);
+
   const getBlogs = async () => {
     try {
       const resp = await API.getBlogs();
@@ -21,12 +29,12 @@ function BlogsView() {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     try {
-      const resp = await API.deleteBlog(id);
+      const resp = await API.deleteBlog(currentBlogId);
       if (resp.success) {
         setToast({ variant: "success", message: "Blog deleted" });
-        setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
+        setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== currentBlogId));
       } else {
         setToast({ variant: "danger", message: resp.message });
       }
@@ -36,11 +44,32 @@ function BlogsView() {
   };
   const handleActionButtonClicked = async (id, index) => {
     setInteractedBlog(String(id) + index);
-    await handleDelete(id);
+    setCurrentBlogId(id);
+    setShowDeleteConfirm(true);
     setInteractedBlog("");
   };
 
-  const generateActions = (id) => {
+
+  const handleEditBlog = async (id, formData) => {
+    const resp = await API.updateBlog(id, formData);
+    if (resp.success) {
+      setBlogs((prevBlogs) =>
+        prevBlogs.map((blog) =>
+          blog.id === currentBlogData.id ? { ...resp.data } : blog
+        )
+      );
+      setToast({ variant: "success", message: "Blog updated" });
+    } else {
+      setToast({ variant: "danger", message: resp.message });
+    }
+  };
+
+  const showEditBlogForm = (data) => {
+    setShowEditForm(true);
+    setCurrentBlogData(data);
+  };
+
+  const generateActions = (id, data) => {
     return [
       <StatusButton
         key={`delete-${id}`}
@@ -49,12 +78,16 @@ function BlogsView() {
         text={"Delete"}
         variant={"danger"}
       />,
+      <EditButton
+      action={() => showEditBlogForm(data)}
+      variant={"outline-primary"}
+    />,
     ];
   };
   const preprocessedData = useMemo(() => {
     return blogs.map((blog) => ({
       ...blog,
-      actions: generateActions(blog.id),
+      actions: generateActions(blog.id, blog),
     }));
   }, [blogs, interactedBlog]);
   const listItems = {
@@ -77,6 +110,13 @@ function BlogsView() {
         </Breadcrumb.Item>
       </Breadcrumb>
       <Outlet context={[listItems]} />
+      <EditBlogForm
+        blogData={currentBlogData}
+        onHide={() => setShowEditForm(!showEditForm)}
+        show={showEditForm}
+        onSubmit={handleEditBlog}
+      />
+      {showDeleteConfirm&&<DeleteConfirmDialog showModal={showDeleteConfirm} onClick={handleDelete} onClose={()=>setShowDeleteConfirm(!showDeleteConfirm)} itemName={"Blog"}/>}
     </>
   );
 }

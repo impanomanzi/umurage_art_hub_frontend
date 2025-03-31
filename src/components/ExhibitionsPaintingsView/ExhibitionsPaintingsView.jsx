@@ -4,10 +4,14 @@ import { Link, Outlet } from "react-router-dom";
 import { API } from "../../API/serverRequest";
 import StatusButton from "../StatusButton/StatusButton";
 import useToast from "../../hooks/useToast";
+import LazyImageViewer from "../LazyImageViewer/LazyImageViewer";
+import DeleteConfirmDialog from "../Dialogs/DeleteConfirmDialog/DeleteConfirmDialog";
 
 function ExhibitionsPaintingsView() {
   const [exhibitionPaintings, setExhibitionPaintings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const[showDeleteConfirm, setShowDeleteConfirm]= useState(false)
+  const [currentPaintingId, setCurrentPaintingId]= useState(null);
   const [interactedExhibiton, setInteractedExhibition] = useState("");
   const { setToast } = useToast();
   const getExhibitionsPaintings = async () => {
@@ -23,17 +27,16 @@ function ExhibitionsPaintingsView() {
       setIsLoading(false);
     }
   };
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     try {
-      const resp = await API.deleteExhibitionPainting(id);
-      console.log(resp);
-      if (resp.success) {
+      const resp = await API.deleteExhibitionPainting(currentPaintingId);
+      if (resp) {
         setToast({
           variant: "success",
           message: "Painting deleted",
         });
         setExhibitionPaintings((exhibitionPaintings) =>
-          exhibitionPaintings.filter((painting) => painting.id !== id)
+          exhibitionPaintings.filter((painting) => painting.id !== currentPaintingId)
         );
       } else {
         setToast({
@@ -48,8 +51,14 @@ function ExhibitionsPaintingsView() {
 
   const handleActionButtonClicked = async (id, index) => {
     setInteractedExhibition(String(id) + index);
-    await handleDelete(id);
+    setCurrentPaintingId(id);
+    setShowDeleteConfirm(true);
     setInteractedExhibition("");
+  };
+
+  const innerCopy = (text) => {
+    navigator.clipboard.writeText(text);
+    setToast({ variant: "success", message: "Text copied" });
   };
 
   const generateActions = (id) => {
@@ -66,7 +75,21 @@ function ExhibitionsPaintingsView() {
 
   const preprocessedData = useMemo(() => {
     return exhibitionPaintings?.map((painting) => {
-      return { ...painting, actions: generateActions(painting.id) };
+      return { ...painting,
+         actions: generateActions(painting.id), 
+         id: <span>
+         {painting.id}
+          <button
+            className="btn btn-outline-primary"
+            onClick={() => innerCopy(painting.id)}
+          >
+            <i className="fas fa-copy"></i>
+          </button>
+      </span>,
+         audio:<audio src={painting.audio} controls></audio>,
+         image:   <LazyImageViewer url={painting.image}/>
+
+        };
     });
   }, [exhibitionPaintings, interactedExhibiton]);
 
@@ -93,6 +116,7 @@ function ExhibitionsPaintingsView() {
         </Breadcrumb.Item>
       </Breadcrumb>
       <Outlet context={[listItems]} />
+      {showDeleteConfirm&&<DeleteConfirmDialog showModal={showDeleteConfirm} onClick={handleDelete} onClose={()=>setShowDeleteConfirm(!showDeleteConfirm)} itemName={"Painting"}/>}
     </>
   );
 }

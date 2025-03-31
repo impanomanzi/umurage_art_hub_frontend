@@ -1,6 +1,13 @@
-import "./Moto.css";
 import { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import ContactForm from "../Forms/ContactForm/ContactForm";
+import "./Moto.css";
+import useMoto from "../../hooks/useMoto";
 function Moto() {
+  const{viewMoto}= useMoto()
+  const [showModal, setShowModal] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -19,49 +26,39 @@ function Moto() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  return (
-    <div className="moto-container">
-      <span>
-        <img src="/images/moto.png" alt="" />
-      </span>
-      <div>
-        {isVisible && (
-          <a
-            className="btn btn-primary rounded-circle"
-            href="#"
-            onClick={scrollToTop}
-            style={{
-              position: "fixed",
-              bottom: "12%",
-              right: "1vw",
-              zIndex: "1",
-              width: "50px",
-              height: "50px",
-            }}
-          >
-            <i className="fas fa-arrow-up"></i>
-          </a>
-        )}
+  return  viewMoto&&<footer className="moto-container">
+  <ContactForm showModal={showModal} onClose={()=>setShowModal(!showModal)} />
+   <Button className="message-button float-button" variant="primary"  onClick={()=>setShowModal(!showModal)} aria-label="message-button"  >
+    <FontAwesomeIcon icon={faEnvelope} />
+  </Button>
+ 
+    {isVisible && (
+      <a
+        className="top-btn"
+        href="#"
+        onClick={scrollToTop}
+        style={{
+          position: "fixed",
+          bottom: "12%",
+          right: "1vw",
+          zIndex: "1",
+          width: "50px",
+          height: "50px",
+          zIndex:1000
+        }}
+      >
+        <i className="fas fa-arrow-up"></i>
+      </a>
+    )}
 
-        <div className="links">
-          <a href="https://www.instagram.com/_isaiee_?gsh=MzRIODBiNWFIZA==">
-            <i class="fab fa-instagram"></i>
-          </a>
-
-          <a href="https://wa.me/+254724299950">
-            <i class="fab fa-whatsapp"></i>
-          </a>
-
-          <a href="mailto:niyomugaboisaie05@gmail.com">
-            <i class="far fa-envelope"></i>
-          </a>
-
-          <a href="/privacy.html">Privacy policy</a>
-        </div>
-      </div>
-      <p>&copy; Umurage Art Hub 2024</p>
+    <div className="copyright">
+      &copy; Copyright <strong>Umurage Art Hub.</strong> All Rights Reserved
     </div>
-  );
+    <div className="credits">
+      Designed by IMPANO MANZI Enock
+    </div>
+  
+</footer>
 }
 
 export default Moto;

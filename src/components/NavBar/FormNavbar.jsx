@@ -18,7 +18,11 @@ function FormNavbar({ header, profile, onProfileBtnClicked }) {
               <h3>{header}</h3>
             </span>
           ) : (
-            settings.site_name.toUpperCase()
+
+            <span style={{ marginLeft: "1em" }}>
+              <h3>{settings.site_name.toUpperCase()}</h3>
+            </span>
+            
           )}
         </span>
         <button

@@ -1,0 +1,66 @@
+  
+ .check-main-section{
+    height: 100vh;
+    background: url('/images/home.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+   
+   }
+  
+   
+   .check-form-group *{
+    width: 100%;
+    
+   }
+   .check-form-group{
+    margin-block: 0.6em;
+   }
+   .check-form-group label,.check-form-container p{
+    color: white;
+   }
+  .check-form-container .alert p{
+    color: black;
+  }
+   .check-form-group input, .react-tel-input{
+    height: 2.5rem;
+    font-size: var(--font-size-sm);
+   }
+  
+   .check-form-group button{
+    height: 2.5rem !important;
+    font-size: var(--font-size-sm);
+   }
+   
+   
+    
+   
+    
+    .check-form-inner-container{
+   
+      width: min(500px, 100%);
+      height: max(800px, 100vh);
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.619);
+    }
+    .check-form-container{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+  
+    }
+    
+    
+    
+    
+ 
+    
+
+
+ 
+ 
+ 
+
+ 

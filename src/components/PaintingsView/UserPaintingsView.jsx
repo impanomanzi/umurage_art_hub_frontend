@@ -7,9 +7,13 @@ import StatusButton from "../StatusButton/StatusButton";
 import { useMemo } from "react";
 import useToast from "../../hooks/useToast";
 import useUser from "../../hooks/useUser";
+import DeleteConfirmDialog from "../Dialogs/DeleteConfirmDialog/DeleteConfirmDialog";
+import LazyImageViewer from "../LazyImageViewer/LazyImageViewer";
 function UserPaintingsView() {
   const [paintings, setPaintings] = useState([]);
   const [interactedPainting, setInteractedPainting] = useState("");
+  const[showDeleteConfirm, setShowDeleteConfirm]= useState(false)
+  const [currentPaintingId, setCurrentPaintingId]= useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { setToast } = useToast();
   const user = useUser();
@@ -22,9 +26,9 @@ function UserPaintingsView() {
     }
     setIsLoading(false);
   };
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     try {
-      const resp = await API.deletePainting(id);
+      const resp = await API.deletePainting(currentPaintingId);
       if (resp.success) {
         setToast({ variant: "success", message: "Painting deleted" });
         setPaintings(resp.data);
@@ -33,13 +37,17 @@ function UserPaintingsView() {
       }
     } catch (error) {
       setToast({ variant: "danger", message: "Deleting painting failed" });
-      console.log(error);
     }
   };
   const handleActionButtonClicked = async (id, index) => {
     setInteractedPainting(String(id) + index);
-    await handleDelete(id);
+    setCurrentPaintingId(id);
+    setShowDeleteConfirm(true);
     setInteractedPainting("");
+  };
+  const innerCopy = (text) => {
+    navigator.clipboard.writeText(text);
+    setToast({ variant: "success", message: "Text copied" });
   };
 
   const generateActions = (id) => {
@@ -55,7 +63,17 @@ function UserPaintingsView() {
   };
   const preprocessedData = useMemo(() => {
     return paintings.map((painting) => {
-      return { ...painting, actions: generateActions(painting.id) };
+      return { ...painting, actions: generateActions(painting.id) ,  
+        id: <span>
+        {painting.id}
+         <button
+           className="btn btn-outline-primary"
+           onClick={() => innerCopy(painting.id)}
+         >
+           <i className="fas fa-copy"></i>
+         </button>
+     </span>, 
+       image:  <LazyImageViewer url={painting.image}/>};
     });
   }, [paintings, interactedPainting]);
 
@@ -80,6 +98,7 @@ function UserPaintingsView() {
         </Breadcrumb.Item>
       </Breadcrumb>
       <Outlet context={[listItems]} />
+      {showDeleteConfirm&&<DeleteConfirmDialog showModal={showDeleteConfirm} onClick={handleDelete} onClose={()=>setShowDeleteConfirm(!showDeleteConfirm)} itemName={"Painting"}/>}
     </>
   );
 }

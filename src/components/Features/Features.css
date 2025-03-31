@@ -1,58 +1,76 @@
-.home-page-section {
-  height: 75vh;  
+.home-page-section { 
   width: 100vw;  
   background-size: cover;
   background-position: center;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 20px;
   box-sizing: border-box;
-  color: white;
+  color: rgba(0, 0, 0, 0.801);
   text-align: center;
+  z-index: 1000;
+  font-weight: 900;
+  
 }
-
-mark.highlight {
-  background-color: rgba(255, 255, 0, 0.3); 
-  color: black; 
-  padding: 0 3px; 
-  border-radius: 2px;
-}
+ 
+ 
 .home-page-section a{
   text-decoration: none;
 }
 
 .content {
   max-width: 900px;  
-  background: rgba(0, 0, 0, 0.6);  
+  background:var(--primary-font-color);  
   padding: 30px;  
-  border-radius: 0px; 
+  border-radius: 0px;
+  z-index: 1200; 
 }
-
-.title {
-  font-size: 4rem; /* Larger title */
-  margin-bottom: 25px;
-  color: #ed9b1f;
+ 
+.number{
+  color:rgba(21, 75, 157, 0.8);
+  font-size: var(--font-size-xlg);
+  font-weight: 900;
 }
 
 .description {
-  font-size: 1.5rem; /* Larger paragraph text */
-  margin-bottom: 35px;
+  font-size: var(--font-size-xlg);
+  
+
+}
+#hero-header{
+  margin-block: 30px;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+  text-transform: uppercase;
+  background: linear-gradient(-45deg, var(--primary-site-color),rgba(21, 75, 157, 0.8), rgba(0, 0, 0, 0.599));
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.learn-more-btn {
+#learn-more-btn {
   display: inline-block;
-  padding: 15px 30px; /* Larger button */
-  font-size: 1.25rem; /* Larger button text */
-  color: white;
-  background-color: #007bff;
-  border-radius: 0px;
+  padding: 10px 20px;  
+  font-size: var(--font-size-md);
+  
+  background:linear-gradient(45deg, var(--primary-site-color), rgba(0, 0, 0, 0.599));
+  color: var(--background-color);
+  border-radius: 50px;
   text-decoration: none;
   transition: background-color 0.3s ease;
+  margin-top: 1rem;
 }
 
-.learn-more-btn:hover {
-  background-color: #0056b3;
+#learn-more-btn:hover {
+  color: var(--primary-site-color);
+  background-color: var(--background-color);
+  
+
+}
+#more-content{
+  display: inline;
 }
 
 @media (max-width: 768px) {
@@ -61,10 +79,30 @@ mark.highlight {
   }
 
   .description {
-    font-size: 1.25rem;
+    font-size: var(--font-size-md);
   }
 
-  .learn-more-btn {
-    font-size: 1rem;
+  #learn-more-btn {
+    font-size: var(--font-size-md);
+    width: 100%;
+  }
+
+  .number{
+    color: var(--primary-site-color);
+    font-size: var(--font-size-lg);
+    font-weight: 900;
+  }
+  #more-content{
+    display: none;
+  }
+  .content {
+    max-width: inherit;  
+     
+  }
+
+  #hero-header{
+ 
+    font-size: 24px;
+   
   }
 }

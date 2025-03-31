@@ -1,11 +1,11 @@
 .exhibition-painting-card {
   margin: 0.5rem;
-  color: black;
+  color: var(--primary-font-color);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   box-shadow:5px 5px 5px #7055034d,-5px -5px 5px #4949054d;
-  background-color: white;
+  background-color: var(--primary-background-color);
   
 }
  
@@ -21,7 +21,7 @@
 .exhibition-painting-card .card-title{
   width: 250px;
   font-size: 1.1rem;
-  font-weight: 400;
+  font-weight: var(--font-weight-lighter);
   font-style: normal;
   border: none;
 }

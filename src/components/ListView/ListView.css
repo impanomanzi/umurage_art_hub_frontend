@@ -1,5 +1,5 @@
 .my-list-item:hover{
-    background-color: rgba(171, 216, 248, 0.2);
+    background-color: var(--tertiary-background-color);
      
 } 
 .my-list-item{
@@ -37,7 +37,25 @@
     align-items: start;
 }
  
-
+.search-box-container {
+    z-index: 1000;  
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1em;
+  }
+  .list-title{
+    position: fixed;
+    anchor-name: --list-title;
+    position-anchor: --navbar;
+    top: anchor(bottom);  
+    width: inherit; 
+    margin-right: 0px !important;
+    z-index: 1000;  
+    margin-top: 0.2em;
+    background-color: var( --background-color) !important;
+  }
+  
 @media screen and (max-device-width: 676px) {
     .list-items-container{
         display: flex;
@@ -47,6 +65,7 @@
         width: 100%;
         word-break: break-all;
     }
+    
 
 }
 

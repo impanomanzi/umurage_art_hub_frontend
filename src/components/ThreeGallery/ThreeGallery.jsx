@@ -1,8 +1,10 @@
-function ThreeGallery({ onLoad }) {
+import settings from "../settings.json"
+
+function ThreeGallery({ onLoad, id, custId}) {
   return (
     <div style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
       <iframe
-        src="https://umurage-gallery.onrender.com/"
+        src={`${settings.gallery}?id=${id}&key=${custId}`}
         width="100%"
         height="100%"
         style={{

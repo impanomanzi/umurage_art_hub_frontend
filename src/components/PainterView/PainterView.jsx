@@ -5,9 +5,13 @@ import { API } from "../../API/serverRequest";
 import { painterKeywords } from "../KeyWords/Keywords";
 import StatusButton from "../StatusButton/StatusButton";
 import useToast from "../../hooks/useToast";
+import LazyImageViewer from "../LazyImageViewer/LazyImageViewer";
+import DeleteConfirmDialog from "../Dialogs/DeleteConfirmDialog/DeleteConfirmDialog";
 function PainterView() {
   const [painters, setPainters] = useState([]);
   const [interactedPainter, setInteractedPainter] = useState("");
+  const [currentPainterId, setCurrentPainterId]= useState(null);
+  const[showDeleteConfirm, setShowDeleteConfirm]= useState(false)
   const [isLoading, setIsLoading] = useState(true);
   const { setToast } = useToast();
   const getPainters = async () => {
@@ -16,13 +20,13 @@ function PainterView() {
     setIsLoading(false);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     try {
-      const data = await API.deletePainter(id);
+      const data = await API.deletePainter(currentPainterId);
       if (data.success) {
         setToast({ variant: "success", message: "Painter account deleted" });
         setPainters((prevPainters) =>
-          prevPainters.filter((painter) => painter.id !== id)
+          prevPainters.filter((painter) => painter.id !== currentPainterId)
         );
       } else {
         throw new Error(data.message);
@@ -37,9 +41,15 @@ function PainterView() {
   };
   const handleActionButtonClicked = async (id, index) => {
     setInteractedPainter(String(id) + index);
-    await handleDelete(id);
+    setCurrentPainterId(id);
     setInteractedPainter("");
+    setShowDeleteConfirm(true);
   };
+  const innerCopy = (text) => {
+    navigator.clipboard.writeText(text);
+    setToast({ variant: "success", message: "Text copied" });
+  };
+
 
   const generateActions = (id) => {
     return [
@@ -55,6 +65,16 @@ function PainterView() {
   const preprocessedData = useMemo(() => {
     return painters.map((painter) => ({
       ...painter,
+      id: <span>
+      {painter.id}
+       <button
+         className="btn btn-outline-primary"
+         onClick={() => innerCopy(painter.id)}
+       >
+         <i className="fas fa-copy"></i>
+       </button>
+   </span>,
+      image:  <LazyImageViewer url={painter.image}/>,
       actions: generateActions(painter.id),
     }));
   }, [painters, interactedPainter]);
@@ -79,6 +99,7 @@ function PainterView() {
         </Breadcrumb.Item>
       </Breadcrumb>
       <Outlet context={[listItems]} />
+      {showDeleteConfirm&&<DeleteConfirmDialog showModal={showDeleteConfirm} onClick={handleDelete} onClose={()=>setShowDeleteConfirm(!showDeleteConfirm)} itemName={"Painter"}/>}
     </>
   );
 }

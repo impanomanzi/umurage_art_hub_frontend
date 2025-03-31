@@ -1,54 +1,26 @@
 import "./Home.css";
-import { lazy, Suspense, useRef, useEffect } from "react";
+import { lazy, Suspense, useRef} from "react";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary.jsx";
 import Loading from "../loading/loading.jsx";
 import ErrorComponent from "../ErrorComponent/ErrorComponent.jsx";
 import Features from "../Features/Features.jsx";
 import useExhibitions from "../../hooks/useExhibitions.jsx";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 
 function Home() {
-  const HomeNavBar = lazy(() => import("../NavBar/HomeNavBar.jsx"));
+  const NavBar = lazy(() => import("../FantasticHomeNavbar/FantasticHomeNavbar.jsx"));
   const Announcement = lazy(() => import("../Announcement/Announcement.jsx"));
   const Gallery = lazy(() => import("../Gallery/Gallery.jsx"));
   const Exhibitions = lazy(() => import("../Exhibitions/Exhibitions.jsx"));
-  const Moto = lazy(() => import("../Moto/Moto.jsx"));
+  const Painters= lazy(()=>import( "../Painters/Painters.jsx"))
+  const AboutUs= lazy(()=>import("../AboutUs/AboutUs.jsx"))
+  const Contacts= lazy(()=>import( "../Contacts/Contacts.jsx"))
   const { exhibitions } = useExhibitions();
-
-  const exhibitionRef = useRef(null);
+  const heroRef = useRef(null);
   const galleryRef = useRef(null);
-  const motoRef = useRef(null);
-
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.5,
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          if (entry.target.dataset.hasBeenVisible) {
-            entry.target.scrollIntoView({ behavior: "smooth" });
-          } else {
-            entry.target.dataset.hasBeenVisible = true;
-          }
-        }
-      });
-    }, options);
-
-    if (exhibitionRef.current) observer.observe(exhibitionRef.current);
-    if (galleryRef.current) observer.observe(galleryRef.current);
-    if (motoRef.current) observer.observe(motoRef.current);
-
-    return () => {
-      if (exhibitionRef.current) observer.unobserve(exhibitionRef.current);
-      if (galleryRef.current) observer.unobserve(galleryRef.current);
-      if (motoRef.current) observer.unobserve(motoRef.current);
-    };
-  }, []);
-
+  const paintersRef= useRef(null);
+  const aboutRef = useRef(null);
+ 
   return (
     <>
       <Helmet>
@@ -62,82 +34,140 @@ function Home() {
           content="Virtual Art Gallery, Online Art Exhibitions, Digital Art Gallery, Virtual Exhibition Space, Rwandan Art, Umurage Art Hub"
         />
       </Helmet>
-      <div className="home">
+
+       {/* header */}
+      <header id="header">
+        {/* navbar section */}
+       <div id="navbar" className="home-navbar-container">
         <ErrorBoundary fallback={<ErrorComponent />}>
           <Suspense fallback={<Loading />}>
-            <HomeNavBar />
+            <NavBar/>
           </Suspense>
         </ErrorBoundary>
-        <div>
+        </div>
+
+        <div  id={"announcement"}>
           <ErrorBoundary fallback={<ErrorComponent />}>
             <Suspense fallback={<Loading />}>
               <Announcement />
             </Suspense>
           </ErrorBoundary>
         </div>
-        <div className="home-main-container">
+      </header>
+
+      {/* end header */}
+
+      {/* hero section */}
+        <section id="hero" ref={heroRef}>
           <div
-            className="exhibition-section"
-            ref={exhibitionRef}
+            className="hero-container"
             data-has-been-visible="false"
           >
             {exhibitions?.length ? (
-              <>
-                <header>
-                  <h2 className="index-header">Exhibitions</h2>
-                </header>
-                <div className="home-exhibition-container">
-                  <ErrorBoundary fallback={<ErrorComponent />}>
+                
+                  <section className="exhibitions">
+                  
+                    <ErrorBoundary fallback={<ErrorComponent />}>
                     <Suspense fallback={<Loading />}>
                       <Exhibitions />
                     </Suspense>
                   </ErrorBoundary>
-                </div>
-              </>
+                  </section>
+                
+            
             ) : (
-              <>
-                <div className="home-exhibition-container">
+            
+                
                   <ErrorBoundary fallback={<ErrorComponent />}>
                     <Suspense fallback={<Loading />}>
                       <Features />
                     </Suspense>
                   </ErrorBoundary>
-                </div>
-              </>
+                
+              
             )}
           </div>
-          <div
-            className="gallery-section"
-            id="galleries"
+          </section>
+          {/* end hero section */}
+
+          {/* main */}
+          <main id="main">
+
+            {/* gallery section */}
+          <section
+            id="gallery"
             ref={galleryRef}
             data-has-been-visible="false"
           >
-            <header>
+             
               <h2 className="index-header">Galleries</h2>
-            </header>
+           
             <ErrorBoundary fallback={<ErrorComponent />}>
               <Suspense fallback={<Loading />}>
                 <Gallery />
               </Suspense>
             </ErrorBoundary>
-          </div>
-          <div
-            className="moto-section"
-            id="about"
-            ref={motoRef}
+          </section>
+          {/* End gallery section */}
+
+
+          {/* painters section */}
+          <section
+            id="painters"
+            ref={paintersRef}
             data-has-been-visible="false"
           >
-            <header>
-              <h2 className="index-header">About us</h2>
-            </header>
+             
+              <h2 className="index-header">Painters</h2>
+          
             <ErrorBoundary fallback={<ErrorComponent />}>
               <Suspense fallback={<Loading />}>
-                <Moto />
+                <Painters/>
               </Suspense>
             </ErrorBoundary>
-          </div>
-        </div>
-      </div>
+          </section>
+          {/* end painters section */}
+
+          {/*about section  */}
+          <section
+            id="about"
+            ref={aboutRef}
+            data-has-been-visible="false"
+          >
+              <h2 className="index-header">About us</h2>
+            
+            <ErrorBoundary fallback={<ErrorComponent />}>
+              <Suspense fallback={<Loading />}>
+                <AboutUs/>
+              </Suspense>
+            </ErrorBoundary>
+            
+          </section>
+
+          {/* end about section */}
+
+          {/*Contact section  */}
+          <section
+            id="contact"
+            ref={aboutRef}
+            data-has-been-visible="false"
+          >
+              <h2 className="index-header">Contact</h2>
+            
+            <ErrorBoundary fallback={<ErrorComponent />}>
+              <Suspense fallback={<Loading />}>
+                <Contacts/>
+              </Suspense>
+            </ErrorBoundary>
+            
+          </section>
+
+          {/* end contact section */}
+          </main>
+          {/* end main */}
+ 
+        
+      
     </>
   );
 }

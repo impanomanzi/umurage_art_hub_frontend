@@ -2,7 +2,12 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 function ProfileViewer({ show, profile, onHide }) {
   return (
-    <Modal show={show} onHide={onHide} dialogClassName="modal-dialog">
+    <Modal
+      show={show}
+      onHide={onHide}
+      dialogClassName="modal-dialog"
+      style={{ zIndex: 12002 }}
+    >
       <Modal.Header closeButton>
         <Modal.Title>{profile.username}</Modal.Title>
       </Modal.Header>

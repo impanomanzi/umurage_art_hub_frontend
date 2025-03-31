@@ -10,10 +10,8 @@ function ProfileBottomNav(props) {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
     if (scrollTop > lastScrollTop) {
-      // Scrolling down
       setIsVisible(false);
     } else {
-      // Scrolling up
       setIsVisible(true);
     }
 
@@ -23,11 +21,10 @@ function ProfileBottomNav(props) {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
 
-    // Clean up the event listener on component unmount
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []); // Empty dependency array to run only on mount
+  }, []);  
 
   return (
     <div

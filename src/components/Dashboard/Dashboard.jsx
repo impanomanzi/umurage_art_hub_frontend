@@ -1,28 +1,25 @@
-import React from "react";
 import "./Dashboard.css";
 
 function Dashboard() {
   return (
     <div className="dashboard-container">
-      <div className="dashboard-exhibition-card">
+      <div className="dashboard-card dashboard-exhibition-card">
         <span>Exhibitions</span>
-        <span className="badge badge-warning">
-          {localStorage.getItem("exhibitions")}{" "}
+        <span className="badge">
+          {localStorage.getItem("exhibitions") || 0}
         </span>
       </div>
-      <div className="dashboard-gallery-card">
+      <div className="dashboard-card dashboard-gallery-card">
         <span>Paintings</span>
-        <span className="badge badge-warning">
-          {localStorage.getItem("paintings")}
-        </span>
+        <span className="badge">{localStorage.getItem("paintings") || 0}</span>
       </div>
-      <div className="dashboard-painter-card">
-        <span>painters</span>
-        <span className="badge badge-warning">{null}</span>
+      <div className="dashboard-card dashboard-painter-card">
+        <span>Painters</span>
+        <span className="badge">{localStorage.getItem("painters") || 0}</span>
       </div>
-      <div className="dashboard-analytics-card">
+      <div className="dashboard-card dashboard-analytics-card">
         <span>Analytics</span>
-        <span className="badge badge-warning">{null}</span>
+        <span className="badge">{localStorage.getItem("analytics") || 0}</span>
       </div>
     </div>
   );

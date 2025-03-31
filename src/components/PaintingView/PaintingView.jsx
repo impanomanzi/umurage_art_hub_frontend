@@ -1,14 +1,15 @@
-import Viewer from "react-viewer";
 import { useEffect, useMemo, useState } from "react";
 import FormNavbar from "../NavBar/FormNavbar";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { API } from "../../API/serverRequest";
 import Spinner from "react-bootstrap/Spinner";
+import useImageViewer from "../../hooks/useImageViewer";
+
+
 function PaintingView() {
-  const [visible, setVisible] = useState(true);
+  const{setImageUrl}= useImageViewer()
   const [painting, setPainting] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
   const name = useParams().name;
   const id = useParams().id;
   const getPainting = async () => {
@@ -39,41 +40,22 @@ function PaintingView() {
   useEffect(() => {
     getPainting();
   }, []);
+
+  useEffect(()=>{
+    setImageUrl(imageUrl)
+  },[imageUrl])
   return (
     <>
       <FormNavbar />
+      
 
       <div>
-        {isLoading && (
+        {isLoading ? (
           <div className="d-flex justify-content-center">
             <Spinner />
           </div>
-        )}
-        {!isLoading && painting.image && (
-          <>
-            <Viewer
-              className="image-viewer"
-              visible={visible}
-              onClose={() => {
-                setVisible(false);
-                navigate(`/gallery/${name}`);
-              }}
-              images={[
-                {
-                  src: imageUrl,
-                  alt: "",
-                },
-              ]}
-              noFooter
-              noImgDetails
-              noNavbar
-              noToolbar
-            />
-            <div style={{ zIndex: 3000, position: "fixed", top: "1%" }}>
-              {/* <audio src={paintingInfo.get("a")} controls></audio> */}
-            </div>
-          </>
-        )}
+        ):<h1><a className="btn btn-primary" href={`"/gallery/${name}"`}>Go to {name} Gallery</a></h1>}
+       
       </div>
     </>
   );

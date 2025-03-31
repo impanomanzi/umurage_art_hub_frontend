@@ -1,8 +1,27 @@
 .profile-main {
   height: 100%;
-  margin-left: 5%;
-  margin-right: 3%;
+  /* margin-left: 3%;
+  margin-right: 3%; */
+  position: relative;
+  z-index: 5;  
+  margin-top: 35px;
+  overflow-y: auto;
 }
 .profile-container {
   width: 100%;
+}
+
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-container {
+  margin-top: 70px;  
+}
+
+.profile-main {
+  padding-top: 20px;  
+  overflow-y: auto; 
 }

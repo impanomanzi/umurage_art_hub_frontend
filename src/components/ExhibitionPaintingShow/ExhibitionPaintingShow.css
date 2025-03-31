@@ -1,6 +1,5 @@
 .exhibition-painting-show-container {
   display: flex;
-  /* font-family: roboto; */
   flex-direction: column;
   align-items: center;
   justify-content: center;

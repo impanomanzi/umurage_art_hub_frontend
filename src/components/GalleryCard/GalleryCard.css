@@ -9,6 +9,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  box-shadow:2px 2px 2px #7055034d,-2px -2px 2px #4949054d;
 }
 
 

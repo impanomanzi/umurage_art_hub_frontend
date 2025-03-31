@@ -1,22 +1,47 @@
 .galleries-container {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  gap: 1rem;
   
+}
+.gallery-nav{
+  anchor-name: --gallery-nav;
+}
+.gallery-filter{
+  position: fixed;
+  z-index: 12020;  
+  margin-top: 25px;
+  
+  display: flex;
+justify-content: center;
 }
 .gallery-shw{
   margin-right: 3%;
   margin-left: 3%;
+  position-anchor: --gallery-nav;
+  top:  anchor(bottom); 
 }
+ 
 .my-image-viewer .painting-description{
   background-color: white;
 }
- 
+ .main-section{
+  height: 100%;
+      
+  position: relative;
+  z-index: 1;  
+  margin-top: 80px;
+  overflow-y: auto;   height: 100%;
+      
+  position: relative;
+  z-index: 1;  
+  margin-top: 80px;
+  overflow-y: auto;
+ }
 .useful {
   display: flex;
   flex-direction: column;
 }
+ 
 
 .inner-image-viewer{
   height: 100%;

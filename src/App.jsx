@@ -9,16 +9,20 @@ import Loading from "./components/loading/loading.jsx";
 import { AuthProvider } from "./Contexts/AuthContext.jsx";
 import { ExhibitionsProvider } from "./Contexts/ExhibitionsContext.jsx";
 import { PaintingsProvider } from "./Contexts/PaintingsContext.jsx";
-import RefreshLayout from "./Layouts/RefreshLayout.jsx";
 import { AnnouncementsProvider } from "./Contexts/AnncouncementsContext.jsx";
+import { ToastProvider } from "./Contexts/ToastContext.jsx";
+import { HelmetProvider } from "react-helmet-async";
+import { ImageViewerProvider } from "./Contexts/ImageViewerContext.jsx";
+import { MotoProvider } from "./Contexts/MotoContext.jsx";
+import RefreshLayout from "./Layouts/RefreshLayout.jsx";
 import Logout from "./Layouts/Logout.jsx";
 import LoginRequired from "./Layouts/LoginRequired.jsx";
 import AdminRequired from "./Layouts/AdminRequired.jsx";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.jsx";
 import ErrorComponent from "./components/ErrorComponent/ErrorComponent.jsx";
-import { ToastProvider } from "./Contexts/ToastContext.jsx";
 import Toaster from "./components/Toaster/Toaster.jsx";
-import { HelmetProvider } from "react-helmet-async";
+import ImageViewer from "./components/ImageViewer/ImageViewer.jsx";
+
 
 function App() {
   const Home = lazy(() => import("./components/Home/Home.jsx"));
@@ -102,12 +106,17 @@ function App() {
   const PaintingView = lazy(() =>
     import("./components/PaintingView/PaintingView.jsx")
   );
+  const Moto= lazy(()=>import("./components/Moto/Moto.jsx"));
 
-  return (
+  return <>
     <BrowserRouter>
+    <ToastProvider>
+    <Toaster />
+    <MotoProvider>
       <HelmetProvider>
-        <ToastProvider>
-          <Toaster />
+      
+         <ImageViewerProvider>
+          <ImageViewer/>
           <ExhibitionsProvider>
             <PaintingsProvider>
               <AnnouncementsProvider>
@@ -638,10 +647,20 @@ function App() {
               </AnnouncementsProvider>
             </PaintingsProvider>
           </ExhibitionsProvider>
-        </ToastProvider>
+          </ImageViewerProvider>
+       
       </HelmetProvider>
+      <ErrorBoundary fallback={<ErrorComponent />}>
+      <Suspense fallback={<Loading />}>
+        <Moto/>
+        </Suspense>
+    </ErrorBoundary>
+      </MotoProvider>
+      </ToastProvider>
     </BrowserRouter>
-  );
+    
+    
+  </>
 }
 
 export default App;

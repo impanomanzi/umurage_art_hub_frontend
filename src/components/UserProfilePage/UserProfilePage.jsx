@@ -2,15 +2,24 @@ import ProfileTopNav from "../ProfileTopNav/ProfileTopNav";
 import ProfileBottomNav from "../ProfileBottomNav/ProfileBottomNav";
 import "./UserProfilePage.css";
 import { Outlet } from "react-router-dom";
+import useMoto from "../../hooks/useMoto";
+import { useEffect } from "react";
 function UserProfilePage(props) {
-  return (
-    <div className="home-main-container">
-      <ProfileTopNav />
+  const{setViewMoto}= useMoto()
+  useEffect(()=>{
+    setViewMoto(false)
+  },[])
 
-      <div className="user user-main">
+  return (
+    <div className="dashboard-container">
+      <div className="profile-container">
+      <ProfileTopNav />
+      <div className="profile-main">
         <ProfileBottomNav />
         <Outlet />
       </div>
+      </div>
+      
     </div>
   );
 }

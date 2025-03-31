@@ -5,13 +5,34 @@
   display: flex;
   justify-content: space-between;
 }
+.profile-top-nav-container {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  anchor-name: --navbar;
+  height: 80px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  
+}
+
+.home-navbar__logo {
+  display: flex;
+  align-items: center;
+}
+
 .navbar {
   height: fit-content;
   display: flex;
   margin-bottom: 1rem;
   align-items: center;
   height: 15vh;
-  background-color: #cbcfd4;
+  background-color: var(--tertiary-background-color);
 }
 .mobile-nav {
   display: none;

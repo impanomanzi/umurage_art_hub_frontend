@@ -5,12 +5,14 @@
 }
 .carousel-container {
   display: flex;
-  box-shadow:5px 5px 5px #7055034d,-5px -5px 5px #4949054d;
+
+  /* box-shadow:5px 5px 5px #7055034d,-5px -5px 5px #4949054d; */
 }
 
 .carousel-item img {
    
-  border-radius: .4rem;
+  border-radius: 24px;
+  
 }
 .carousel-container {
   border-radius: .4rem;

@@ -208,6 +208,26 @@ export const API = {
       throw new Error(error.message);
     }
   },
+  updateBlog:async(blogId, formData)=>{
+    try {
+      const resp = await fetch(
+        `${settings.server_domain}/blog/update_blog`,
+        {
+          method: "PUT",
+          headers: {
+            encType: "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: formData,
+        }
+      );
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+
+  },
   getPainters: async () => {
     const response = await fetch(`${settings.server_domain}/get_painters`, {
       method: "GET",
@@ -225,7 +245,7 @@ export const API = {
   getExhibitionPaintings: async (id) => {
     try {
       const resp = await fetch(
-        `${settings.server_domain}/get_exhibition_paintings/${id}`,
+        `${settings.server_domain}/get_exhibition_paintings/${id}?id=${id}&key=${localStorage.getItem("clientId")}`,
         {
           method: "GET",
           headers: {
@@ -413,6 +433,28 @@ export const API = {
       toast.error(String(error));
     }
   },
+  changeCustomerStatusAdmin: async (id, status, exId) => {
+    try {
+      const formData = new FormData();
+      formData.append("customer_id", id);
+      formData.append("current_status", status);
+      formData.append("e_name", exId);
+      const response = await fetch(
+        `${settings.server_domain}/admin_update_customer_status`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      toast.error(String(error));
+    }
+  },
   changeExhibitionStatus: async (id, status) => {
     try {
       const formData = new FormData();
@@ -456,6 +498,25 @@ export const API = {
         },
         body: formData,
       });
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+  updateExhibition: async (id, formData) => {
+    try {
+      const resp = await fetch(
+        `${settings.server_domain}/update_exhibition/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            encType: "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: formData,
+        }
+      );
       const data = await resp.json();
       return data;
     } catch (error) {
@@ -543,6 +604,21 @@ export const API = {
     try {
       const resp = await fetch(
         `${settings.server_domain}/profile/${username}`,
+        {
+          method: "GET",
+        }
+      );
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+
+  getProfiles: async () => {
+    try {
+      const resp = await fetch(
+        `${settings.server_domain}/profiles`,
         {
           method: "GET",
         }

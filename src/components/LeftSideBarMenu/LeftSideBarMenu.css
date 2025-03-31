@@ -3,11 +3,11 @@
   grid-template-columns: 100%;
 }
 .left-sidebar-menu button {
-  border-color: #334455;
+  border-color: var(--tertiary-font-color);
   margin-top: 0.5rem;
 }
 .left-sidebar-menu button:hover {
-  background-color: #334455;
+  background-color:var(--tertiary-font-color);
 }
 
 @media screen and (max-device-width: 576px) {

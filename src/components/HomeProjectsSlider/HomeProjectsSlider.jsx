@@ -3,12 +3,11 @@ import "./HomeProjectsSlider.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-function HomeProjectsSlider(props) {
+function HomeProjectsSlider({projects, onClick}) {
   return (
     <Container className="carousel-container" style={{ borderRadius: "0px" }}>
-      <div className="carousel-left"></div>
-      <Carousel className="carousel" slide={false} fade>
-        {props.projects.map((project, _) => {
+      <Carousel className="carousel" slide={false} fade onClick={onClick}>
+        {projects.map((project, _) => {
           let imageUrl = project.image;
           let index1 = imageUrl.indexOf("upload/") + "upload/".length;
           let newUrl =
@@ -16,7 +15,7 @@ function HomeProjectsSlider(props) {
             "q_auto:best/" +
             imageUrl.substring(index1, imageUrl.length);
           return (
-            <Carousel.Item interval={1500} a>
+            <Carousel.Item interval={5000} key={index1+ Math.random()}>
               <LazyLoadImage
                 src={newUrl}
                 effect="blur"

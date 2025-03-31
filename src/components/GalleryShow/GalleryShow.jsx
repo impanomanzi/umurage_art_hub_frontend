@@ -5,7 +5,6 @@ import usePaintings from "../../hooks/usePaintings";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary.jsx";
 import ErrorComponent from "../ErrorComponent/ErrorComponent.jsx";
 import Loading from "../loading/loading.jsx";
-import Viewer from "react-viewer";
 import { API } from "../../API/serverRequest.jsx";
 import useToast from "../../hooks/useToast.jsx";
 import ProfileViewer from "../ProfileViewer/ProfileViewer.jsx";
@@ -16,12 +15,11 @@ function GalleryShow() {
   const FormNavbar = lazy(() => import("../NavBar/FormNavbar"));
   const GalleryCard = lazy(() => import("../GalleryCard/GalleryCard"));
   const { paintings } = usePaintings();
-  const [visible, setVisible] = useState(false);
   const galleryOwner = useParams().name;
-  const [currentPainting, setCurrentPainting] = useState({});
   const [query, setQuery] = useState("");
   const [profile, setProfile] = useState({});
   const [showProfile, setShowProfile] = useState(false);
+  
   const getProfile = async () => {
     try {
       const resp = await API.getProfile(galleryOwner);
@@ -48,14 +46,7 @@ function GalleryShow() {
       [fixedGalleries, query]
     )
   );
-  const imageUrl = useMemo(() => {
-    let index1 = currentPainting?.image?.indexOf("upload/") + "upload/".length;
-    let newUrl =
-      currentPainting?.image?.substring(0, index1) +
-      "q_auto:best/" +
-      currentPainting?.image?.substring(index1, currentPainting?.image?.length);
-    return newUrl;
-  }, [currentPainting]);
+  
 
   const closeFilterDropdown = () => {
     if (document.querySelector(".f-dropdown-menu").style.display === "none") {
@@ -65,11 +56,7 @@ function GalleryShow() {
     }
   };
 
-  const showImageViewer = (event, painting) => {
-    event.preventDefault();
-    setVisible(true);
-    setCurrentPainting(painting);
-  };
+
   useEffect(() => {
     getProfile();
   }, []);
@@ -95,17 +82,22 @@ function GalleryShow() {
       </Helmet>
       <ErrorBoundary fallback={<ErrorComponent />}>
         <Suspense fallback={<Loading />}>
-          <FormNavbar
-            header={`${galleryOwner}`}
+         <div className="gallery-nav">
+         <FormNavbar
+            header={`${useParams().name} - Gallery`}
             profile={filteredGalleries[0]?.profile}
             onProfileBtnClicked={() => {
               setShowProfile(true);
             }}
           />
+         </div>
         </Suspense>
       </ErrorBoundary>
-      <div className="gallery-shw">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className="gallery-shw main-section">
+        <div
+          style={{ display: "flex", justifyContent: "space-between" }}
+          className="gallery-filter"
+        >
           <div
             className="btn-group"
             role="group"
@@ -162,14 +154,14 @@ function GalleryShow() {
         <div className="row">
           {filteredGalleries.map((item, index) => {
             return (
-              <ErrorBoundary fallback={<ErrorComponent />}>
+              <ErrorBoundary fallback={<ErrorComponent />} key={index}>
                 <Suspense fallback={<Loading />}>
                   <GalleryCard
                     gallery={item}
                     key={index}
                     likes={item.likes}
-                    onImageClicked={showImageViewer}
                     id={item.id}
+                    
                   />
                 </Suspense>
               </ErrorBoundary>
@@ -177,21 +169,6 @@ function GalleryShow() {
           })}
         </div>
       </div>
-
-      <Viewer
-        visible={visible}
-        onClose={() => setVisible(false)}
-        className="image-viewer"
-        images={[
-          {
-            src: imageUrl,
-            alt: "",
-          },
-        ]}
-        noImgDetails
-        noNavbar
-        changeable
-      />
 
       <ProfileViewer
         show={showProfile}
@@ -201,5 +178,23 @@ function GalleryShow() {
     </>
   );
 }
+const styles = {
+  backToTopButton: {
+    position: "fixed",
+    bottom: "30px",
+    right: "30px",
+    backgroundColor: "#007bff",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    padding: "10px",
+    cursor: "pointer",
+    zIndex: 1000,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "16px",
+  },
+};
 
 export default GalleryShow;

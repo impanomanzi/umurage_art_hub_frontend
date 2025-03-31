@@ -1,8 +1,116 @@
  
- 
- 
- 
+.exhibition-main-section{
+    height: 100vh;
+    background: url('/images/home.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+   
+}
 
+.exhibition-main-section nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.exhibition-main-section nav div{
+    display: flex;
+    
+}
+
+.exhibition-inner-container{
+    width: min(900px, 100%);
+    height: max(500px, 50vh);
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.826);
+    display: flex;
+ 
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+}
+ .exhibition-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+ }
+ .exhibitionpage-title{
+    font-size: 3rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.793);
+ }
+ #exhibition-image{
+    width: min(400px,100%);
+   
+     
+    
+ 
+ }
+ .exhibitionpage-meta{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    color: rgba(255, 255, 255, 0.793);
+ }
+ .exhibition-desc-content{
+    color: rgba(255, 255, 255, 0.793);
+    font-size: var(--font-size-md);
+    text-align: justify;
+    word-break: normal;
+    margin-block: 1rem;
+ }
+ .host-credit{
+    color: rgba(255, 255, 255, 0.793);
+    font-weight: 700;
+    text-transform:capitalize;
+    font-size: var(--font-size-md);
+
+ }
+
+.exhibition-main-section nav .nav-links a{
+    text-decoration: none;
+    height: 35px;
+    background-color: rgba(255, 255, 255, 0.915);
+    padding: 20px;
+    margin-inline: 0.5em;
+    margin-block: 0.7rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    border-radius: 50px;
+    color: black;
+    font-size: var(--font-size-sm);
+
+}
+
+.exhibition-main-section nav .nav-links a:hover{
+    opacity: 0.7;
+
+}
+.exhibition-main-section nav .nav-links a.btn-register{
+    background-color: black;
+    color: rgba(255, 255, 255, 0.915);
+    border:1px solid rgba(255, 255, 255, 0.915);
+}
+
+
+ @media (max-width: 768px){
+    .exhibition-desc-content{
+        
+        font-size: 1rem;
+    
+        
+     }
+
+     .exhibitionpage-title{
+        font-size: var(--font-size-xlg);
+      
+     }
+
+ }
  
  
  

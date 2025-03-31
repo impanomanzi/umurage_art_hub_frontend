@@ -1,21 +1,81 @@
-.checkout-form-container{
-    position:absolute;
-    top: 0%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    justify-items: center;
-    z-index: 300;
+  
+ .payment-main-section{
+    height: 100vh;
+    background: url('/images/home.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    overflow-y: scroll;
+   
+   }
+  
+   
+   .payment-form-group *{
     width: 100%;
-    height: 120vh;
-    padding-top: 1rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    background-color: rgba(10, 2, 9, .5);
-}
-.phone-form-control{
-    width: 1px;
-}
-.react-tel-input{
-    max-width: min-content;
-}
+    
+   }
+   .payment-form-group{
+    margin-block: 0.6em;
+   }
+   .payment-form-group label, .payment-form-container p{
+    color: white;
+   }
+  
+   .payment-form-group input{
+    height: 2.5rem;
+    font-size: var(--font-size-sm);
+   }
+  
+   .payment-form-group button{
+    height: 2.5rem !important;
+    font-size: var(--font-size-sm);
+   }
+    .payment-form-inputs-container {
+      display: flex;
+      margin-bottom: 1em;
+    }
+   
+    
+   
+    
+    .payment-form-inner-container{
+   
+      width: min(500px, 100%);
+      height: max(800px, 100vh);
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.619);
+    }
+    .payment-form-container{
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: center;
+  
+    }
+    
+    
+    
+    
+     
+    @media screen and (max-device-width: 676px) {
+       
+      
+      .form-inputs-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+     
+     
+      
+    }
+    
+
+
+ 
+ 
+ 
+
+ 

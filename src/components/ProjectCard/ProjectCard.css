@@ -4,7 +4,7 @@
   max-height: 20%;
   border-radius: 15px;
   margin: 10px;
-  color: black;
+  color:var(--primary-font-color);
 }
 
 .project-meta {
@@ -14,7 +14,7 @@
 }
 
 .project-details details summary {
-  font-weight: 658;
+  font-weight: var(--font-weight-strong);
 }
 .project-nav {
   width: 100%;
@@ -47,8 +47,8 @@
 }
 
 .project-card .primary {
-  background-color: white;
-  color: black;
+  background-color: var(--background-color);
+  color: var(--primary-font-color);
   font-weight: 850;
   box-shadow: 2px 2px 5px rgb(180, 175, 175), -2px -2px 5px rgb(60, 54, 54);
   border-radius: 2rem;

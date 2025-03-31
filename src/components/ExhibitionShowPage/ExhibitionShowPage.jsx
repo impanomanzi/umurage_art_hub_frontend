@@ -1,21 +1,26 @@
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import "../Forms/FormTemplate/FormTemplate.css";
-import FormNavbar from "../NavBar/FormNavbar";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import settings from "../settings.json";
 import "./ExhibitionShowPage.css";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import useExhibitions from "../../hooks/useExhibitions";
 import ReactMarkdown from "react-markdown";
 import { Helmet } from "react-helmet-async";
+import CurrencyView from "../CurrencyView/CurrencyView";
 
 function ExhibitionShowPage() {
   const { exhibitions } = useExhibitions();
+  const[wanted, setwanted]= useState({})
   const exhibitionId = useParams().id;
-  const wanted = useMemo(
-    () => exhibitions.filter((item) => (item.id = exhibitionId))[0],
-    [exhibitions]
-  );
+  const location= useLocation();
+  
+  
+  useEffect(() => {
+    const ex = exhibitions.find((item) => item.id === exhibitionId);
+    if (ex) {
+      setwanted(ex);
+    }
+  }, [exhibitions, exhibitionId]);
 
   return (
     <>
@@ -30,76 +35,73 @@ function ExhibitionShowPage() {
           content={`${wanted?.name}, Virtual Exhibition, Online Art Event, Digital Art Showcase,Art Exhibition`}
         />
       </Helmet>
-      <FormNavbar />
-      <div className="form-outer-container">
-        <div className="form-inner-container">
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
-            <h1 id="customer-form-header" className="main-title">
-              {wanted?.name.toUpperCase()} by {wanted?.host}
-            </h1>
+     
+      <div className="exhibition-main-section">
+      <nav>
+          <div className="nav-logo">
+          <Link to="/"><img src="/UMURAGE HEADER.png" alt="" /></Link>
+          </div>
+         <div className="nav-links"> 
+          <Link
+                to={`/payment/${exhibitionId}`}
+                className="btn-register"
+                state={{ exhibition: wanted }}
+              >
+                Register
+              </Link>
+              
+              <Link
+                to={`/check_payment/${exhibitionId}`}
+                className="btn-signin"
+                
+              >
+                Sign in
+              </Link>
+              </div>
+        </nav>
+        <div className="exhibition-container">
+        <div className="exhibition-inner-container">
+         
+            <h3 className="exhibitionpage-title">
+              {wanted?.name?.toUpperCase()} | {wanted?.host?.toUpperCase()}
+            </h3>
+            <div className="exhibitionpage-meta">
+
+            <p>
+              <i className="fas">&nbsp; Start:</i> &nbsp;{" "}
+              {wanted.startdate}
+            </p>
+
+            <p>
+              <i className="fas">&nbsp; End:</i>
+              &nbsp; {wanted.enddate}
+            </p>
+         
+           <p>  
+            <CurrencyView
+              number={wanted.fees}
+              style={{ fontSize: "1.3em" }}
+            />
+            </p>
+         
+        </div>
             <LazyLoadImage
-              src={`${wanted?.image.replace(
+              src={`${wanted?.image?.replace(
                 "http://localhost:5000",
                 `${settings.server_domain}`
               )}`}
               effect="blur"
               placeholderSrc="/placeholder.png"
-              width={"300px"}
-              height={"350px"}
+              id="exhibition-image"
             />
-            <ReactMarkdown className="w-20">{wanted.description}</ReactMarkdown>
-          </div>
 
-          <div>
-            <div>
-              <p>
-                <i className="fas fa-user-alt">&nbsp;Host</i> &nbsp;
-                {wanted.host}
-              </p>
+         
+            <ReactMarkdown className="w-20 exhibition-desc-content">{wanted.description}</ReactMarkdown> <br />
+            <span className="host-credit">{wanted.host}</span>
+          
 
-              <p>
-                <i className="fas fa-calendar">&nbsp; Start</i> &nbsp;{" "}
-                {wanted.startdate}
-              </p>
-
-              <p>
-                <i className="fas fa-calendar">&nbsp; End</i>
-                &nbsp; {wanted.enddate}
-              </p>
-            </div>
-            <div>
-              <h3>Entrace:&nbsp;{wanted.fees} Rwf </h3>
-
-              <Link
-                to={`/payment/${exhibitionId}`}
-                className="btn btn-primary"
-                style={{ width: "100%", marginBottom: "1em" }}
-                state={{ exhibition: wanted }}
-              >
-                Register
-              </Link>
-              <br />
-              <div className="horizontal-line">
-                <span className="left-line">&nbsp;</span>
-                <span className="text"> or</span>
-                <span className="right-line">&nbsp;</span>
-              </div>
-
-              <Link
-                to={`/check_payment/${exhibitionId}`}
-                className="btn btn-outline-primary"
-                style={{ marginTop: "1em", width: "100%" }}
-              >
-                Sign in
-              </Link>
-            </div>
-          </div>
+         
+        </div>
         </div>
       </div>
     </>

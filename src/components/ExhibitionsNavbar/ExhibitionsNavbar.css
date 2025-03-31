@@ -14,7 +14,7 @@
   align-items: center;
 }
 #exhibitions {
-  font-size: 2rem;
-  color: black;
-  font-weight: 700;
+  font-size: var(--font-size-xlg);
+  color:var(--primary-font-color);
+  font-weight: var(--font-weight-strong);
 }

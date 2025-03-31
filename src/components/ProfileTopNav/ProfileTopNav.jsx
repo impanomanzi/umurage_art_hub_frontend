@@ -14,22 +14,50 @@ function ProfileTopNav(props) {
   const [openMenu, setOpenMenu] = useState(false);
   const user = useUser();
   return (
-    <div className="profile-top-nav-container">
+    <div className="profile-top-nav-container home-navbar bg-light">
       <div className="home-navbar__logo" id="NavBarLogo">
         <Link to={"/"}>
           <img src="/UMURAGE HEADER.png" alt="" width={"100px"} />
         </Link>
       </div>
+      <span>
+        <h5 className="h5">
+          <i className="fas fa-shield-alt"></i>&nbsp;ADMIN
+        </h5>
+        &nbsp;|&nbsp; <i>{user.user}</i>
+      </span>
+      <span
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "right",
+          justifyItems: "right",
+          alignItems: "right",
+        }}
+      >
+        <button
+          onClick={() => setOpenMenu(!openMenu)}
+          className="menu-button-bars btn btn-outline-secondary "
+          style={{
+            marginRight: "0.5rem",
+            backgroundColor: "transparent",
+            color: "black",
+          }}
+          onMouseEnter={() => setOpenMenu(!openMenu)}
+        >
+          <i className="fas fa-bars"></i>
+        </button>
+      </span>
       <Drawer
-        className="user-profile-drawer"
         open={openMenu}
         onClose={() => setOpenMenu(false)}
         anchor="right"
+        className="user-profile-drawer"
+        style={{ zIndex: 12001 }}
       >
         <Box
           sx={{ width: 250 }}
           role="presentation"
-          onClick={() => setOpenMenu(false)}
           onKeyDown={() => setOpenMenu(false)}
         >
           <List className="drawer">
@@ -86,21 +114,7 @@ function ProfileTopNav(props) {
           </List>
         </Box>
       </Drawer>
-      <span>
-        <h5 className="h5">
-          <i className="fas fa-shield-alt"></i>&nbsp;PAINTER
-        </h5>
-        &nbsp;|&nbsp; <i>{user.user}</i>
-      </span>
-      <div className="navbar-menu">
-        <button
-          onClick={() => setOpenMenu(true)}
-          className="menu-button-bars btn btn-outline-secondary"
-          style={{ color: "black" }}
-        >
-          <i className="fas fa-bars"></i>
-        </button>
-      </div>
+  
     </div>
   );
 }

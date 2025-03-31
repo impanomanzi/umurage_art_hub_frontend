@@ -1,0 +1,13 @@
+#main-text{
+    font-size: var(--font-size-sm);
+    color: black !important;
+    height: 30px;
+    border: 2.5px solid var(--primary-site-color);
+    padding: 2px 4px 2px 4px;
+    font-weight: 200;
+    border-radius: 10px;
+}
+
+#main-text:hover{
+    color: var(--background-color) !important;
+}

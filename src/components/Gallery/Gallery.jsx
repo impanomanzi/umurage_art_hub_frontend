@@ -1,25 +1,19 @@
 import "./Gallery.css";
 import "../ExhibitionCard/ExhibitionCard.css";
 import "bootstrap/dist/css/bootstrap.css";
-
-import { Link } from "react-router-dom";
-import { useMemo, useState, lazy, Suspense } from "react";
+import { useMemo, useState,useCallback } from "react";
 import usePaintings from "../../hooks/usePaintings";
 import { removeDuplication } from "../../lib/removeDuplication";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import ErrorComponent from "../ErrorComponent/ErrorComponent";
-import Loading from "../loading/loading";
+import { useNavigate } from "react-router-dom";
+import HomeProjectSlider from "../HomeProjectsSlider/HomeProjectsSlider";
 function Gallery() {
-  const HomeProjectSlider = lazy(() =>
-    import("../HomeProjectsSlider/HomeProjectsSlider")
-  );
   const { paintings } = usePaintings();
   const [query, setQuery] = useState("");
-
+  const navigate = useNavigate();
   const filteredGalleries = useMemo(
     () =>
       paintings?.data?.filter((gallery) =>
-        gallery.owner.toLowerCase().includes(query)
+        gallery.owner.toLowerCase().includes(query.toLocaleLowerCase())
       ),
     [paintings, query]
   );
@@ -28,11 +22,15 @@ function Gallery() {
     const galleryOwners = filteredGalleries?.map((gallery) => gallery.owner);
     return removeDuplication(galleryOwners);
   }, [filteredGalleries]);
+  const gotoGallery= useCallback((painter)=>navigate(`/gallery/${painter}`),[ paintings])
 
   return (
-    <div className="gallery-outer-container">
+    <>
+    <p className="section-description">
+      Explore our vibrant gallery, where each artist's unique collection is displayed in a stunning carousel. Simply click on a painting to discover more about the artist and their full range of work. Each section is dedicated to a different painter, offering a seamless journey through their artistic world.</p>
+     <div className="gallery-outer-container">
       <div
-        className="btn-group"
+        className="btn-group search-box-container"
         role="group"
         aria-label="button group for filtering and sorting exhibitions"
       >
@@ -41,15 +39,13 @@ function Gallery() {
           placeholder="Search by gallery name"
           className="search-input"
           onChange={(event) => setQuery(event.target.value)}
-          style={{ borderRadius: "0px" }}
+         
         />
-        <button className="btn btn-primary" style={{ borderRadius: "0px" }}>
-          <i className="fas fa-search"></i>
-        </button>
+       
       </div>
-      <div className="message"></div>
+       
       <div className="gallery-container">
-        {galleryOwners.map((owner, index) => {
+        {galleryOwners.length>0?galleryOwners.map((owner, index) => {
           return (
             <div
               key={index}
@@ -57,27 +53,27 @@ function Gallery() {
               style={{ borderColor: "#cbcfd4", borderWidth: "20px" }}
             >
               <h3
-                className="lead h3"
-                style={{ color: "black", fontWeight: 600 }}
+                className="gallery_name"
+                 
               >
                 {owner}
               </h3>
-              <Link to={`/gallery/${owner}`}>
-                <ErrorBoundary fallback={<ErrorComponent />}>
-                  <Suspense fallback={<Loading />}>
+            
+                 
                     <HomeProjectSlider
                       projects={filteredGalleries.filter((gallery) => {
                         return gallery.owner === owner;
                       })}
+                       onClick= {()=>gotoGallery(owner)}
                     />
-                  </Suspense>
-                </ErrorBoundary>
-              </Link>
+                
+              
             </div>
           );
-        })}
+        }):<p>No Gallery found</p>}
       </div>
-    </div>
+    </div></>
+   
   );
 }
 

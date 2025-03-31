@@ -11,7 +11,7 @@ function StatusView({ status, isLoading }) {
           : null
       }
     >
-      {isLoading ? <Spinner /> : status}
+      {isLoading ? <Spinner /> : status} 
     </Badge>
   );
 }

@@ -1,7 +1,8 @@
 {
-  "server_domain": "https://umurage-backend-v4oe.onrender.com",
+  "server_domain": "http://localhost:5000",
   "site_name": "Umurage Art Hub",
-  "public_key":"FLWPUBK-bb1365e57e78f41662f89a2dc0a54bc0-X"
+  "public_key":"FLWPUBK-5b35fb8455abc2dcd3edcf1139cb7736-X",
+  "gallery":"http://192.168.1.120:3000"
 }
 
 

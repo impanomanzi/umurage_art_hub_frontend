@@ -5,7 +5,9 @@ import "bootstrap/dist/css/bootstrap.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { API } from "../../API/serverRequest";
 import useToast from "../../hooks/useToast";
+import useImageViewer from "../../hooks/useImageViewer";
 function GalleryCard(props) {
+  const{setImageUrl}= useImageViewer()
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(props.likes);
   const setToast = useToast();
@@ -65,9 +67,7 @@ function GalleryCard(props) {
     <div className="col-md-4 mt-2 col-lg-3 gallery-card">
       <a
         className="image-viewer"
-        onClick={(event) => {
-          props.onImageClicked(event, props.gallery);
-        }}
+        onClick={()=>setImageUrl(imageUrl)}
       >
         <LazyLoadImage
           src={newUrl}
@@ -96,7 +96,7 @@ function GalleryCard(props) {
             onClick={share}
             style={{ borderRadius: "0px" }}
           >
-            <i class="fas fa-share-alt"></i>&nbsp; share
+            <i className="fas fa-share-alt"></i>&nbsp; share
           </button>
           <button
             className="btn btn-outline-tertiary"

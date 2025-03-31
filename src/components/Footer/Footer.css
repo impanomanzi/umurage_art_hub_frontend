@@ -5,11 +5,7 @@
   justify-content: space-between;
   /* font-family: roboto-itallic; */
 }
-/* .footer-outer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-} */
+ 
 .footer-outer {
   position: relative;
   bottom: 0%;
@@ -18,7 +14,7 @@
 }
 .footer-container {
   margin-top: 2rem;
-  background-color: #0a0b0c;
+  background-color: var(--primary-font-color);
 }
 .footer-container .back-top {
   display: flex;
@@ -26,6 +22,7 @@
   align-items: center;
   justify-content: center;
 }
+
 
 /* .footer div, */
 .socials {
@@ -42,7 +39,7 @@
   align-items: center;
 }
 .footer a {
-  color: white;
+  color: var(--secondary-font-color);
   text-decoration: none;
 }
 @media screen and (max-device-width: 576px) {

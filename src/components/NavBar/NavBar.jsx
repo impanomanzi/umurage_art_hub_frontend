@@ -1,7 +1,5 @@
 import "./NavBar.css";
 import { useState } from "react";
-import { jwtDecode } from "jwt-decode";
-import { toast } from "react-hot-toast";
 import "bootstrap/dist/css/bootstrap.css";
 
 import {
@@ -59,6 +57,7 @@ function NavBar(props) {
         onClose={() => setOpenMenu(false)}
         anchor="right"
         className="user-profile-drawer"
+        style={{ zIndex: 12001 }}
       >
         <Box
           sx={{ width: 250 }}
